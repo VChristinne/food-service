@@ -6,14 +6,14 @@
   \begin{tabular}{ l | l | c }
     \hline
     \textbf{ID} & \textbf{Descrição} & \textbf{Use Case} \\ \hline
-    RF-AUT-01 & Cadastro de clientes (nome, email, senha, telefone, endereço) & UC01 \\ \hline
-    RF-AUT-02 & Login de clientes (email e senha) & UC03 \\ \hline
+    RF-AUT-01 & Cadastro de clientes & UC01 \\ \hline
+    RF-AUT-02 & Login de clientes & UC03 \\ \hline
     RF-AUT-03 & Recuperação de senha via email & --- \\ \hline
     RF-AUT-04 & Envio de email de confirmação após cadastro & UC01 \\ \hline
     RF-AUT-05 & Validação de unicidade de email & UC01 \\ \hline
     RF-AUT-06 & Logout de clientes & UC03 \\ \hline
     RF-AUT-07 & Cadastro de funcionários pelo administrador & UC02 \\ \hline
-    RF-AUT-08 & Login de funcionários (email e senha) & UC03 \\ \hline
+    RF-AUT-08 & Login de funcionários & UC03 \\ \hline
     RF-AUT-09 & Geração de senha temporária para funcionários & UC02 \\ \hline
     RF-AUT-10 & Envio de credenciais para funcionários via email & UC02 \\ \hline
     RF-AUT-11 & Link de ativação de conta para funcionários com prazo de 7 dias & UC02 \\ \hline
@@ -43,7 +43,7 @@
   \begin{tabular}{ l | l | c }
     \hline
     \textbf{ID} & \textbf{Descrição} & \textbf{Use Case} \\ \hline
-    RF-CAT-01 & Exibição de catálogo (foto, nome, descrição, preço) por unidade & UC05 \\ \hline
+    RF-CAT-01 & Exibição de catálogo por unidade & UC05 \\ \hline
     RF-CAT-02 & Busca de produtos por nome & UC05 \\ \hline
     RF-CAT-03 & Filtro de produtos por categoria & UC05 \\ \hline
     RF-CAT-04 & Registro de entrada de produtos no estoque & UC06 \\ \hline
@@ -62,10 +62,10 @@
     RF-PED-02 & Remoção de produtos do carrinho & UC08 \\ \hline
     RF-PED-03 & Atualização de quantidade de produtos no carrinho & UC08 \\ \hline
     RF-PED-04 & Cálculo automático do valor total do pedido & UC08 \\ \hline
-    RF-PED-05 & Finalização de pedido com escolha de forma de pagamento (cartão, dinheiro, pix) & UC09 \\ \hline
+    RF-PED-05 & Finalização de pedido com escolha de forma de pagamento & UC09 \\ \hline
     RF-PED-06 & Geração de código único de pedido & UC08 \\ \hline
     RF-PED-07 & Cancelamento de pedido antes do preparo & --- \\ \hline
-    RF-PED-08 & Rastreamento do status do pedido (preparando, a caminho, entregue) & --- \\ \hline
+    RF-PED-08 & Rastreamento do status do pedido & --- \\ \hline
   \end{tabular}
 \end{center}
 
@@ -88,12 +88,12 @@
   \begin{tabular}{ l | l | c }
     \hline
     \textbf{ID} & \textbf{Descrição} & \textbf{Use Case} \\ \hline
-    RF-FID-01 & Acúmulo de pontos por valor gasto (1 ponto a cada R\$1) & UC10 \\ \hline
+    RF-FID-01 & Acúmulo de pontos por valor gasto & UC10 \\ \hline
     RF-FID-02 & Visualização do saldo de pontos no perfil do cliente & UC10 \\ \hline
     RF-FID-04 & Resgate de recompensas com pontos & UC10 \\ \hline
     RF-FID-05 & Dedução de pontos do saldo após resgaste & UC10 \\ \hline
     RF-FID-06 & Exibição de histórico de pontuação & --- \\ \hline
-    RF-FID-07 & Categorização de clientes por faixa de pontos (Bronze, Prata, Ouro) & --- \\ \hline
+    RF-FID-07 & Categorização de clientes por faixa de pontos & --- \\ \hline
   \end{tabular}
 \end{center}
 
@@ -108,6 +108,8 @@
     RF-PRO-03 & Aplicação de cupom de desconto no pedido & UC11 \\ \hline
     RF-PRO-04 & Validação de expiração e regras do cupom de desconto & UC11 \\ \hline
     RF-PRO-05 & Bloqueio de uso de cupom já utilizado & UC11 \\ \hline
-    RF-PRO-06 & Envio de notificação de campanhas (personalizável) & --- \\ \hline
+    RF-PRO-06 & Envio de notificações opcionais de descontos & --- \\ \hline
   \end{tabular}
 \end{center}
+
+\newpage
