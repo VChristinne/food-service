@@ -8,9 +8,9 @@
     \textbf{ID} & \textbf{Descrição} & \textbf{Relacionado} \\ \hline
     RNF-SEC-01 & Criptografia de senhas usando bcrypt & UC01-UC03 \\ \hline
     RNF-SEC-02 & Implementação de HTTPS para todas as comunicações & Todos \\ \hline
-    RNF-SEC-03 & Sistema deve implementar autenticação JWT para sessões de usuário & UC01-UC04, UC06-UC11 \\ \hline
+    RNF-SEC-03 & Sistema deve implementar JWT para sessões de usuário & UC01-UC11 \\ \hline
     RNF-SEC-04 & Token JWT deve conter a função do usuário & UC02 \\ \hline
-    RNF-SEC-05 & Endpoints protegidos devem validar o JWT no header Authorization & UC01-UC04, UC06-UC11 \\ \hline
+    RNF-SEC-05 & Endpoints protegidos devem validar o JWT & UC01-UC11 \\ \hline
     RNF-SEC-06 & Sistema deve implementar controle de acesso baseado em funções & UC01-UC04 \\ \hline
     RNF-SEC-07 & Máximo de 5 tentativas de login por hora por IP & UC01-UC03 \\ \hline
     RNF-SEC-08 & Implementação de logout automático após 30 minutos de inatividade & UC03 \\ \hline
@@ -47,9 +47,9 @@
   \begin{tabular}{ l | l | c }
     \hline
     \textbf{ID} & \textbf{Descrição} & \textbf{Relacionado} \\ \hline
-    RNF-PER-01 & Sistema deve processar pedidos em até 5 segundos em condições normais de carga & UC09 \\ \hline
+    RNF-PER-01 & Sistema deve processar pedidos em até 5s em condições normais & UC09 \\ \hline
     RNF-PER-02 & Sistema deve suportar horáros de pico do almoço e jantar & UC09 \\ \hline
-    RNF-PER-03 & Sistema deve ser escalável para suportar crescimento de usuários e pedidos & Todos \\ \hline
+    RNF-PER-03 & Sistema deve ser escalável para suportar crescimento & Todos \\ \hline
   \end{tabular}
 \end{center}
 
@@ -60,10 +60,8 @@
     \hline
     \textbf{ID} & \textbf{Descrição} & \textbf{Relacionado} \\ \hline
     RNF-LGPD-01 & Sistema deve implementar direito ao esquecimento & UC04 \\ \hline
-    RNF-LGPD-02 & Sistema deve registrar consentimento para coleta e uso de dados pessoais & UC01 \\ \hline
+    RNF-LGPD-02 & Sistema deve registrar consentimento da LGPD & UC01 \\ \hline
     RNF-LGPD-03 & Sistema deve anonimizar os logs & --- \\ \hline
     RNF-LGPD-04 & Sistema deve armazenar os logs por apenas 90 dias & UC04 \\ \hline
   \end{tabular}
 \end{center}
-
-\newpage
