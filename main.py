@@ -1,16 +1,16 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+from fastapi import FastAPI
+from Client.client_routers import router as client_router
+from Catalogue.catalogue_routers import router as catalogue_router
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+version = "v1"
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+app = FastAPI(
+    title="Food Service API",
+    description="A RESTful API for managing a food service application.",
+    version=version,
+)
+
+app.include_router(client_router, prefix=f"/api/{version}/clients", tags=["clients"])
+# app.include_router(employee_router, prefix=f"/api/{version}/employees", tags=["employees"])
+app.include_router(catalogue_router, prefix=f"/api/{version}/catalogue", tags=["catalogue"])
