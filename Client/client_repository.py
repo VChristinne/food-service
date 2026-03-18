@@ -1,4 +1,4 @@
-from typing import Any, Sequence
+from typing import Sequence
 from sqlmodel import Session, select
 
 from Client.client import ClientModel
@@ -14,7 +14,7 @@ class ClientRepository:
         self.session.refresh(client)
         return client
 
-    def get_all(self) -> Sequence[Any]:
+    def get_all(self) -> Sequence[ClientModel]:
         return self.session.exec(select(ClientModel)).all()
 
     def get_by_id(self, client_id: str) -> ClientModel | None:

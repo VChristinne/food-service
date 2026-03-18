@@ -1,10 +1,10 @@
 from typing import Sequence
-from fastapi import APIRouter, Depends, status
 from sqlmodel import Session
+from fastapi import APIRouter, Depends, status
 
 from Database.db_config import db
-from Client.client import ClientSchema, ClientModel
 from Client.client_service import ClientService
+from Client.client import ClientSchema, ClientModel
 
 router = APIRouter()
 
