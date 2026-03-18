@@ -1,44 +1,30 @@
-from fastapi import APIRouter, HTTPException, status
+from typing import Sequence
+from sqlmodel import Session
+from fastapi import APIRouter, Depends, status
 
-from Catalogue.catalogue_data import catalogue
-from Catalogue.catalogue import CatalogueSchema, DishUpdateModel
+from Database.db_config import db
+from Catalogue.catalogue_service import CatalogueService
+from Catalogue.catalogue import CatalogueSchema, CatalogueModel
 
 router = APIRouter()
 
 
+def get_catalogue_service(session: Session = Depends(db.get_session)) -> CatalogueService:
+    return CatalogueService(session)
+
 @router.get("/", status_code=status.HTTP_200_OK)
-async def get_catalogue() -> list:
-    return catalogue
-
-
-@router.get("/{dish_id}")
-async def get_dish(dish_id: int) -> dict:
-    for dish in catalogue:
-        if dish["id"] == dish_id:
-            return dish
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dish not found")
-
+async def get_catalogue(service: CatalogueService = Depends(get_catalogue_service)) -> Sequence[CatalogueModel]:
+    return await service.get_catalogue()
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_dish(dish_data: CatalogueSchema) -> dict:
-    new_dish = dish_data.model_dump()
-    catalogue.append(new_dish)
-    return new_dish
-
+async def create_dish(catalogue_data: CatalogueSchema, service: CatalogueService = Depends(get_catalogue_service)) -> dict:
+    dish = await service.create_dish(catalogue_data)
+    return {"message": "Dish created successfully", "dish": dish}
 
 @router.patch("/{dish_id}")
-async def update_dish(dish_id: int, dish_update_data: DishUpdateModel) -> dict:
-    for dish in catalogue:
-        if dish["id"] == dish_id:
-            dish.update(dish_update_data.model_dump(exclude_unset=True))
-            return dish
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dish not found")
-
+async def update_dish() -> dict:
+    pass
 
 @router.delete("/{dish_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_dish(dish_id: int) -> None:
-    for dish in catalogue:
-        if dish["id"] == dish_id:
-            catalogue.remove(dish)
-            return
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dish not found")
+async def delete_dish() -> None:
+    pass

@@ -1,19 +1,16 @@
 from decimal import Decimal
-from typing import Optional
 from pydantic import BaseModel
-from sqlmodel import SQLModel, Field
+from sqlmodel import SQLModel, Field, Relationship
 from uuid import uuid7
+
+from Inventory.inventory import InventoryModel
+from Catalogue.dish_ingredient import DishIngredient
 
 
 class CatalogueSchema(BaseModel):
     name: str
     price: Decimal = Field(max_digits=10, decimal_places=2)
-    stock: int
-
-class DishUpdateModel(BaseModel):
-    id: str
-    name: Optional[str]
-    price: Optional[Decimal] = Field(max_digits=10, decimal_places=2)
+    available: bool = Field(default=True)
 
 
 class CatalogueModel(SQLModel, table=True):
@@ -22,4 +19,8 @@ class CatalogueModel(SQLModel, table=True):
     id: str = Field(primary_key=True, default_factory=lambda: str(uuid7()))
     name: str
     price: Decimal = Field(max_digits=10, decimal_places=2)
-    stock: int
+    available: bool = Field(default=True)
+
+    ingredients: list["InventoryModel"] = Relationship(
+        back_populates="dishes", link_model=DishIngredient
+    )
