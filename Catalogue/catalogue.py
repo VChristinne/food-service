@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from sqlmodel import SQLModel, Field, Relationship
 from uuid import uuid7
 
-from Inventory.inventory import InventoryModel
 from Catalogue.dish_ingredient import DishIngredient
 
 
