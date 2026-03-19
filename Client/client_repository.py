@@ -19,3 +19,11 @@ class ClientRepository:
 
     def get_by_id(self, client_id: str) -> ClientModel | None:
         return self.session.get(ClientModel, client_id)
+
+    def delete(self, client_id: str) -> None:
+        client = self.get_by_id(client_id)
+        if client:
+            self.session.delete(client)
+            self.session.commit()
+        else:
+            raise ValueError(f"Client with id {client_id} not found")
