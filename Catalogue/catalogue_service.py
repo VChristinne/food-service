@@ -1,5 +1,5 @@
 from typing import Sequence
-from uuid import uuid7
+from uuid_extensions import uuid7
 from sqlmodel import Session
 
 from Catalogue.catalogue import CatalogueSchema, CatalogueModel

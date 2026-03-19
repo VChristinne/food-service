@@ -4,7 +4,7 @@ from sqlmodel import SQLModel, Field
 from pydantic import BaseModel
 from fastapi import APIRouter
 from typing import Optional
-from uuid import uuid7
+from uuid_extensions import uuid7
 
 router = APIRouter()
 

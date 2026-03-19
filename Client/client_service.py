@@ -1,6 +1,6 @@
 from typing import Sequence
 from sqlmodel import Session
-from uuid import uuid7
+from uuid_extensions import uuid7
 
 from Client.client import ClientSchema, ClientModel
 from Client.client_repository import ClientRepository

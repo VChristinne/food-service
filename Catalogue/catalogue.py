@@ -1,7 +1,7 @@
 from decimal import Decimal
 from pydantic import BaseModel
 from sqlmodel import SQLModel, Field, Relationship
-from uuid import uuid7
+from uuid_extensions import uuid7
 
 from Catalogue.dish_ingredient import DishIngredient
 
