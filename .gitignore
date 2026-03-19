@@ -5,3 +5,4 @@ __pycache__/
 .idea/
 Documentation/build
 Documentation/.DS_Store/
+migrations/
