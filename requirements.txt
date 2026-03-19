@@ -43,3 +43,5 @@ websockets
 sqlalchemy
 passlib
 sqlmodel
+uliweb-alembic
+uuid7
