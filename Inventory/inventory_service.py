@@ -1,6 +1,7 @@
+from fastapi import HTTPException, status
 from typing import Sequence
 from sqlmodel import Session
-from uuid import uuid7
+from uuid_extensions import uuid7
 
 from Inventory.inventory import InventorySchema, InventoryModel
 from Inventory.inventory_repository import InventoryRepository
@@ -9,9 +10,6 @@ from Inventory.inventory_repository import InventoryRepository
 class InventoryService:
     def __init__(self, session: Session):
         self.repository = InventoryRepository(session)
-
-    async def get_inventory(self) -> Sequence[InventoryModel]:
-        return self.repository.get_all()
 
     async def create_item(self, item_data: InventorySchema) -> InventoryModel:
         item = InventoryModel(
@@ -22,3 +20,22 @@ class InventoryService:
             min_quantity=item_data.min_quantity,
         )
         return self.repository.create(item)
+
+    async def get_inventory(self) -> Sequence[InventoryModel]:
+        return self.repository.get_all()
+
+    async def update_inventory(self, item_id: str, item_data: InventorySchema) -> None:
+        item = self.repository.get_by_id(item_id)
+        if not item:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
+        item.name = item_data.name
+        item.quantity = item_data.quantity
+        item.unit = item_data.unit
+        item.min_quantity = item_data.min_quantity
+        self.repository.create(item)  # Using create to update the existing item
+
+    async def delete_item(self, item_id: str) -> None:
+        item = self.repository.get_by_id(item_id)
+        if not item:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
+        self.repository.delete(item_id)
