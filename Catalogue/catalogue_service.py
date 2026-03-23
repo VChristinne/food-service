@@ -2,6 +2,7 @@ from typing import Sequence
 from uuid_extensions import uuid7
 from sqlmodel import Session
 
+from Audit.audit_service import AuditService
 from Catalogue.catalogue import CatalogueSchema, CatalogueModel
 from Catalogue.catalogue_repository import CatalogueRepository
 
@@ -9,6 +10,7 @@ from Catalogue.catalogue_repository import CatalogueRepository
 class CatalogueService:
     def __init__(self, session: Session):
         self.repository = CatalogueRepository(session)
+        self.audit_service = AuditService(session)
 
     async def get_catalogue(self) -> Sequence[CatalogueModel]:
         return self.repository.get_all()

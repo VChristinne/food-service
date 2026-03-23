@@ -3,6 +3,7 @@ from typing import Sequence
 from sqlmodel import Session
 from uuid_extensions import uuid7
 
+from Audit.audit_service import AuditService
 from Inventory.inventory import InventorySchema, InventoryModel
 from Inventory.inventory_repository import InventoryRepository
 
@@ -10,6 +11,7 @@ from Inventory.inventory_repository import InventoryRepository
 class InventoryService:
     def __init__(self, session: Session):
         self.repository = InventoryRepository(session)
+        self.audit_service = AuditService(session)
 
     async def create_item(self, item_data: InventorySchema) -> InventoryModel:
         item = InventoryModel(

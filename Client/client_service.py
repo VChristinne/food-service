@@ -2,6 +2,7 @@ from typing import Sequence
 from sqlmodel import Session
 from uuid_extensions import uuid7
 
+from Audit.audit_service import AuditService
 from Client.client import ClientSchema, ClientModel
 from Client.client_repository import ClientRepository
 from Utils.address import fetch_address
@@ -11,6 +12,7 @@ from Utils.validations import hash_password
 class ClientService:
     def __init__(self, session: Session):
         self.repository = ClientRepository(session)
+        self.audit_service = AuditService(session)
 
     async def get_clients(self) -> Sequence[ClientModel]:
         return self.repository.get_all()
