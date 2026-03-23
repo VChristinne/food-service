@@ -3,6 +3,7 @@ from typing import Sequence
 from sqlmodel import Session
 from uuid_extensions import uuid7
 
+from Audit.audit import AuditActionEnum
 from Audit.audit_service import AuditService
 from Inventory.inventory import InventorySchema, InventoryModel
 from Inventory.inventory_repository import InventoryRepository
@@ -13,6 +14,9 @@ class InventoryService:
         self.repository = InventoryRepository(session)
         self.audit_service = AuditService(session)
 
+    async def get_inventory(self) -> Sequence[InventoryModel]:
+        return self.repository.get_all()
+
     async def create_item(self, item_data: InventorySchema) -> InventoryModel:
         item = InventoryModel(
             id=str(uuid7()),
@@ -21,12 +25,17 @@ class InventoryService:
             unit=item_data.unit,
             min_quantity=item_data.min_quantity,
         )
-        return self.repository.create(item)
+        created_item = self.repository.create(item)
 
-    async def get_inventory(self) -> Sequence[InventoryModel]:
-        return self.repository.get_all()
+        self.audit_service.log(
+            action=AuditActionEnum.CREATE,
+            entity="inventory_item",
+            entity_id=created_item.id,
+            user_id="system"  # TODO: Change to emplyeeid when implemented
+        )
+        return created_item
 
-    async def update_inventory(self, item_id: str, item_data: InventorySchema) -> None:
+    async def update_inventory(self, item_id: str, item_data: InventorySchema) -> InventoryModel:
         item = self.repository.get_by_id(item_id)
         if not item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
@@ -34,10 +43,25 @@ class InventoryService:
         item.quantity = item_data.quantity
         item.unit = item_data.unit
         item.min_quantity = item_data.min_quantity
-        self.repository.create(item)  # Using create to update the existing item
+        updated_item = self.repository.create(item)
+
+        self.audit_service.log(
+            action=AuditActionEnum.UPDATE,
+            entity="inventory_item",
+            entity_id=updated_item.id,
+            user_id="system"  # TODO: Change to emplyeeid when implemented
+        )
+        return updated_item
 
     async def delete_item(self, item_id: str) -> None:
         item = self.repository.get_by_id(item_id)
         if not item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
+
+        self.audit_service.log(
+            action=AuditActionEnum.DELETE,
+            entity="inventory_item",
+            entity_id=item.id,
+            user_id="system"  # TODO: Change to emplyeeid when implemented
+        )
         self.repository.delete(item_id)

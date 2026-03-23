@@ -19,7 +19,7 @@ async def get_catalogue(service: CatalogueService = Depends(get_catalogue_servic
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_dish(catalogue_data: CatalogueSchema, service: CatalogueService = Depends(get_catalogue_service)) -> dict:
     dish = await service.create_dish(catalogue_data)
-    return {"message": "Dish created successfully", "dish": dish}
+    return {"message": "Dish created successfully", "dish": {"id": dish.id}}
 
 @router.patch("/{dish_id}")
 async def update_dish() -> dict:

@@ -2,6 +2,7 @@ from typing import Sequence
 from uuid_extensions import uuid7
 from sqlmodel import Session
 
+from Audit.audit import AuditActionEnum
 from Audit.audit_service import AuditService
 from Catalogue.catalogue import CatalogueSchema, CatalogueModel
 from Catalogue.catalogue_repository import CatalogueRepository
@@ -22,7 +23,15 @@ class CatalogueService:
             price=catalogue_data.price,
             available=catalogue_data.available
         )
-        return self.repository.create(dish)
+        created_dish = self.repository.create(dish)
+
+        self.audit_service.log(
+            action=AuditActionEnum.CREATE,
+            entity="catalogue",
+            entity_id=created_dish.id,
+            user_id="system"  # TODO: Change to employee id when implemented
+        )
+        return created_dish
 
     async def update_dish(self, dish_id, update_data):
         pass

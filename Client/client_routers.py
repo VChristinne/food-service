@@ -19,4 +19,4 @@ async def get_clients(service: ClientService = Depends(get_client_service)) -> S
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_client(client_data: ClientSchema, service: ClientService = Depends(get_client_service)) -> dict:
     client = await service.create_client(client_data)
-    return {"message": "Client created successfully", "client": client}
+    return {"message": "Client created successfully", "client": {"id": client.id}}

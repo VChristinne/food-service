@@ -2,6 +2,7 @@ from typing import Sequence
 from sqlmodel import Session
 from uuid_extensions import uuid7
 
+from Audit.audit import AuditActionEnum
 from Audit.audit_service import AuditService
 from Client.client import ClientSchema, ClientModel
 from Client.client_repository import ClientRepository
@@ -27,6 +28,14 @@ class ClientService:
             password_hash=hash_password(client_data.password),
             email=client_data.email,
             phone=client_data.phone,
-            address=address,
+            address=address
         )
-        return self.repository.create(client)
+        created_client = self.repository.create(client)
+
+        self.audit_service.log(
+            action=AuditActionEnum.CREATE,
+            entity="client",
+            entity_id=created_client.id,
+            user_id=created_client.id  # TODO: Change to jwt when implemented
+        )
+        return created_client
