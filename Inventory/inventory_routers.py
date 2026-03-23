@@ -19,12 +19,12 @@ async def get_inventory(service: InventoryService = Depends(get_inventory_servic
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_item(item_data: InventorySchema, service: InventoryService = Depends(get_inventory_service)) -> dict:
     item = await service.create_item(item_data)
-    return {"message": "Item created successfully", "item": item}
+    return {"message": "Item created successfully", "item": {"id": item.id}}
 
 @router.put("/{item_id}", status_code=status.HTTP_200_OK)
 async def update_item(item_id: str, item_data: InventorySchema, service: InventoryService = Depends(get_inventory_service)) -> dict:
     await service.update_inventory(item_id, item_data)
-    return {"message": "Item updated successfully", "item_id": item_id}
+    return {"message": "Item updated successfully", "item": {"id": item_id}}
 
 @router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_item(item_id: str, service: InventoryService = Depends(get_inventory_service)) -> None:

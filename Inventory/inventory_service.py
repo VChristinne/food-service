@@ -29,7 +29,7 @@ class InventoryService:
 
         self.audit_service.log(
             action=AuditActionEnum.CREATE,
-            entity="inventory_item",
+            entity="inventory",
             entity_id=created_item.id,
             user_id="system"  # TODO: Change to emplyeeid when implemented
         )
