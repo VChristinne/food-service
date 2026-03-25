@@ -20,6 +20,9 @@ class ClientRepository:
     def get_by_id(self, client_id: str) -> ClientModel | None:
         return self.session.get(ClientModel, client_id)
 
+    def get_by_email(self, email: str) -> ClientModel | None:
+        return self.session.exec(select(ClientModel).where(ClientModel.email == email)).first()
+
     def delete(self, client_id: str) -> None:
         client = self.get_by_id(client_id)
         if client:
