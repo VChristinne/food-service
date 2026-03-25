@@ -45,3 +45,4 @@ passlib
 sqlmodel
 uliweb-alembic
 uuid7
+pyjwt
