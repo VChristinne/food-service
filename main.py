@@ -4,6 +4,7 @@ from Database.db_config import db
 from Client.client_routers import router as client_router
 from Inventory.inventory_routers import router as inventory_router
 from Catalogue.catalogue_routers import router as catalogue_router
+from Auth.auth_routers import router as auth_router
 
 
 version = "v1"
@@ -19,3 +20,4 @@ db.create_tables()
 app.include_router(client_router, prefix=f"/api/{version}/clients", tags=["clients"])
 app.include_router(inventory_router, prefix=f"/api/{version}/inventory", tags=["inventory"])
 app.include_router(catalogue_router, prefix=f"/api/{version}/catalogue", tags=["catalogue"])
+app.include_router(auth_router, prefix=f"/api/{version}/auth", tags=["auth"])
