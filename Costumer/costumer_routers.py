@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status, Request
 
 from Database.db_config import db
 from Costumer.costumer_service import CostumerService
-from Costumer.costumer import CostumerSchema, CostumerModel
+from Costumer.costumer import CostumerSchema, CostumerModel, CostumerUpdateSchema
 
 router = APIRouter()
 
@@ -12,11 +12,24 @@ router = APIRouter()
 def get_costumer_service(session: Session = Depends(db.get_session)) -> CostumerService:
     return CostumerService(session)
 
+
 @router.get("/", status_code=status.HTTP_200_OK)
 async def get_costumers(service: CostumerService = Depends(get_costumer_service)) -> Sequence[CostumerModel]:
     return await service.get_costumers()
 
+
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_costumer(request: Request, client_data: CostumerSchema, service: CostumerService = Depends(get_costumer_service)) -> dict:
+async def create_costumer(request: Request, client_data: CostumerSchema,
+                          service: CostumerService = Depends(get_costumer_service)) -> dict:
     costumer = await service.create_costumer(client_data, request, status.HTTP_201_CREATED)
     return {"message": "Costumer created successfully", "client": {"id": costumer.id}}
+
+
+@router.patch("/{costumer_id}", status_code=status.HTTP_200_OK)
+async def update_costumer(
+        costumer_id: str,
+        costumer_data: CostumerUpdateSchema,
+        request: Request,
+        service: CostumerService = Depends(get_costumer_service)
+) -> CostumerModel:
+    return await service.update_costumer(costumer_id, costumer_data, request)

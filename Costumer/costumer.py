@@ -18,6 +18,15 @@ class CostumerSchema(BaseModel):
     complement: Optional[str] = None
 
 
+class CostumerUpdateSchema(BaseModel):
+    name: Optional[str] = None
+    password: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    cep: Optional[str] = None
+    complement: Optional[str] = None
+
+
 class CostumerModel(SQLModel, table=True):
     __tablename__ = "costumers"
 
