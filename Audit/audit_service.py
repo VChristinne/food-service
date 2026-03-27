@@ -12,22 +12,22 @@ class AuditService:
     def log(
             self,
             action: AuditActionEnum,
-            entity: str,
-            entity_id: str,
+            model: str,
+            record_id: str,
             requester_id: str,
             ip_address: str,
-            router: str,
+            route: str,
             status_code: int,
             user_agent: str
     ) -> AuditModel:
         audit = AuditModel(
             id=str(uuid7()),
             action=action,
-            entity=entity,
-            entity_id=entity_id,
+            model=model,
+            record_id=record_id,
             requester_id=requester_id,
             ip_address=ip_address,
-            router=router,
+            route=route,
             status_code=status_code,
             user_agent=user_agent
         )

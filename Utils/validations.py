@@ -1,4 +1,5 @@
 from passlib.hash import sha256_crypt
+import re
 
 
 def hash_password(password: str) -> str:
@@ -7,3 +8,13 @@ def hash_password(password: str) -> str:
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return sha256_crypt.verify(plain_password, hashed_password)
+
+def sanitize_user_agent(user_agent: str | None, max_length: int = 300) -> str:
+    if not user_agent:
+        return "unknown"
+
+    user_agent = user_agent[:max_length]
+    user_agent = re.sub(r'[^\w\s/().;,_:\-]', '', user_agent)   # whitelist common characters
+    user_agent = re.sub(r'[\x00-\x1f\x7f]', '', user_agent)     # blacklist control characters
+
+    return user_agent.strip() or "unknown"

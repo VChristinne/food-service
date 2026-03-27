@@ -35,12 +35,12 @@ class CostumerService:
 
         self.audit_service.log(
             action=AuditActionEnum.CREATE,
-            entity="costumers",
-            entity_id=created_costumer.id,
+            model="costumers",
+            record_id=created_costumer.id,
             requester_id=created_costumer.id,
             ip_address=request.client.host,
             user_agent=request.headers.get("user-agent"),
-            router=request.url.path,
+            route=request.url.path,
             status_code=status_code
         )
         return created_costumer

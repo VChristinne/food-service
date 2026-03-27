@@ -29,8 +29,8 @@ class InventoryService:
 
         self.audit_service.log(
             action=AuditActionEnum.CREATE,
-            entity="inventory",
-            entity_id=created_item.id,
+            model="inventory",
+            record_id=created_item.id,
             user_id="system"  # TODO: Change to emplyeeid when implemented
         )
         return created_item
@@ -47,8 +47,8 @@ class InventoryService:
 
         self.audit_service.log(
             action=AuditActionEnum.UPDATE,
-            entity="inventory_item",
-            entity_id=updated_item.id,
+            model="inventory_item",
+            record_id=updated_item.id,
             user_id="system"  # TODO: Change to emplyeeid when implemented
         )
         return updated_item
@@ -60,8 +60,8 @@ class InventoryService:
 
         self.audit_service.log(
             action=AuditActionEnum.DELETE,
-            entity="inventory_item",
-            entity_id=item.id,
+            model="inventory_item",
+            record_id=item.id,
             user_id="system"  # TODO: Change to emplyeeid when implemented
         )
         self.repository.delete(item_id)
