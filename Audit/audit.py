@@ -21,7 +21,6 @@ class AuditSchema(BaseModel):
     affected_item_id: str
     requester_id: str           # who performed the action
     ip_address: str             # IP address of the requester
-    route: str                  # API endpoint accessed
     status_code: int            # HTTP status code of the response
     user_agent: str
 
@@ -36,6 +35,5 @@ class AuditModel(SQLModel, table=True):
     affected_item_id: str
     requester_id: str
     ip_address: str
-    route: str
     status_code: int
     user_agent: str
