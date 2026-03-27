@@ -1,13 +1,13 @@
 from sqlmodel import Session
 
-from Client.client_repository import ClientRepository
+from Costumer.costumer_repository import CostumerRepository
 from Auth.auth import create_access_token
 from Utils.validations import verify_password
 
 
 class AuthService:
     def __init__(self, session: Session):
-        self.client_repository = ClientRepository(session)
+        self.client_repository = CostumerRepository(session)
 
     async def login(self, email: str, password: str) -> dict:
         client = self.client_repository.get_by_email(email)

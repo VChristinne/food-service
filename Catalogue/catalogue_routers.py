@@ -1,6 +1,6 @@
 from typing import Sequence
 from sqlmodel import Session
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Request
 
 from Database.db_config import db
 from Catalogue.catalogue_service import CatalogueService
@@ -17,8 +17,8 @@ async def get_catalogue(service: CatalogueService = Depends(get_catalogue_servic
     return await service.get_catalogue()
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_dish(catalogue_data: CatalogueSchema, service: CatalogueService = Depends(get_catalogue_service)) -> dict:
-    dish = await service.create_dish(catalogue_data)
+async def create_dish(request: Request, catalogue_data: CatalogueSchema, service: CatalogueService = Depends(get_catalogue_service)) -> dict:
+    dish = await service.create_dish(catalogue_data, request, status.HTTP_201_CREATED)
     return {"message": "Dish created successfully", "dish": {"id": dish.id}}
 
 @router.patch("/{dish_id}")

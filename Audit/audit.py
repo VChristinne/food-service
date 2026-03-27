@@ -1,8 +1,8 @@
-from datetime import datetime, timezone
 from sqlmodel import SQLModel, Field
 from pydantic import BaseModel
 from enum import Enum
 from uuid_extensions import uuid7
+from time import time
 
 
 class AuditActionEnum(str, Enum):
@@ -16,17 +16,26 @@ class AuditActionEnum(str, Enum):
 
 class AuditSchema(BaseModel):
     action: AuditActionEnum
-    entity: str
-    entity_id: str
-    user_id: str
+    entity: str             # table/entity affected
+    entity_id: str          # affected record
+    requester_id: str       # who performed the action
+    ip_address: str         # IP address of the requester
+    router: str             # API endpoint accessed
+    status_code: int        # HTTP status code of the response
+    timestamp: int
+    user_agent: str
 
 
 class AuditModel(SQLModel, table=True):
     __tablename__ = "audit"
 
     id: str = Field(primary_key=True, default_factory=lambda: str(uuid7()))
+    timestamp: int = Field(default_factory=lambda: int(time()))
     action: AuditActionEnum
     entity: str
     entity_id: str
-    user_id: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(tz=timezone.utc))
+    requester_id: str
+    ip_address: str
+    router: str
+    status_code: int
+    user_agent: str

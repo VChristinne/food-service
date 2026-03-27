@@ -1,6 +1,7 @@
 from typing import Sequence
 from uuid_extensions import uuid7
 from sqlmodel import Session
+from fastapi import Request
 
 from Audit.audit import AuditActionEnum
 from Audit.audit_service import AuditService
@@ -16,7 +17,7 @@ class CatalogueService:
     async def get_catalogue(self) -> Sequence[CatalogueModel]:
         return self.repository.get_all()
 
-    async def create_dish(self, catalogue_data: CatalogueSchema) -> CatalogueModel:
+    async def create_dish(self, catalogue_data: CatalogueSchema, request: Request, status_code: int) -> CatalogueModel:
         dish = CatalogueModel(
             id=str(uuid7()),
             name=catalogue_data.name,
@@ -29,7 +30,11 @@ class CatalogueService:
             action=AuditActionEnum.CREATE,
             entity="catalogue",
             entity_id=created_dish.id,
-            user_id="system"  # TODO: Change to employee id when implemented
+            requester_id="system",
+            ip_address=request.client.host,
+            user_agent=request.headers.get("user-agent"),
+            router=request.url.path,
+            status_code=status_code
         )
         return created_dish
 

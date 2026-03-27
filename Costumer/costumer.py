@@ -1,15 +1,15 @@
-from datetime import datetime, timezone
 from sqlalchemy import Column, JSON
 from sqlmodel import SQLModel, Field
 from pydantic import BaseModel
 from fastapi import APIRouter
 from typing import Optional
 from uuid_extensions import uuid7
+from time import time
 
 router = APIRouter()
 
 
-class ClientSchema(BaseModel):
+class CostumerSchema(BaseModel):
     name: str
     password: str
     email: str
@@ -18,8 +18,8 @@ class ClientSchema(BaseModel):
     complement: Optional[str] = None
 
 
-class ClientModel(SQLModel, table=True):
-    __tablename__ = "client"
+class CostumerModel(SQLModel, table=True):
+    __tablename__ = "costumers"
 
     id: str = Field(primary_key=True, default_factory=lambda: str(uuid7()))
     name: str
@@ -27,6 +27,7 @@ class ClientModel(SQLModel, table=True):
     email: str = Field(unique=True)
     phone: str = Field(unique=True)
     address: dict = Field(sa_column=Column(JSON))
-    created_at: datetime = Field(default_factory=lambda: datetime.now(tz=timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(tz=timezone.utc))
-    deleted_at: Optional[datetime] = None
+    created_at: int = Field(default_factory=lambda: int(time()))
+    updated_at: int = Field(default_factory=lambda: int(time()))
+    deleted_at: Optional[int] = None
+
