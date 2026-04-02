@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, status, Request
 from Database.db_config import db
 from Costumer.costumer_service import CostumerService
 from Costumer.costumer import CostumerSchema, CostumerModel, CostumerUpdateSchema
+from Auth.auth import get_current_user
 
 router = APIRouter()
 
@@ -19,10 +20,13 @@ async def get_costumers(service: CostumerService = Depends(get_costumer_service)
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_costumer(request: Request, client_data: CostumerSchema,
-                          service: CostumerService = Depends(get_costumer_service)) -> dict:
+async def create_costumer(
+        request: Request,
+        client_data: CostumerSchema,
+        service: CostumerService = Depends(get_costumer_service)
+) -> dict:
     costumer = await service.create_costumer(client_data, request, status.HTTP_201_CREATED)
-    return {"message": "Costumer created successfully", "client": {"id": costumer.id}}
+    return {"id": costumer.id}
 
 
 @router.patch("/{costumer_id}", status_code=status.HTTP_200_OK)
@@ -30,6 +34,7 @@ async def update_costumer(
         costumer_id: str,
         costumer_data: CostumerUpdateSchema,
         request: Request,
-        service: CostumerService = Depends(get_costumer_service)
+        service: CostumerService = Depends(get_costumer_service),
+        current_user: dict = Depends(get_current_user)
 ) -> CostumerModel:
-    return await service.update_costumer(costumer_id, costumer_data, request)
+    return await service.update_costumer(costumer_id, costumer_data, request, current_user["sub"])  # noqa
