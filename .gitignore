@@ -6,3 +6,5 @@ __pycache__/
 Documentation/build
 Documentation/.DS_Store/
 migrations/
+pyproject.toml
+.python-version
