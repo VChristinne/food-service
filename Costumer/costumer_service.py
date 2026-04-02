@@ -1,8 +1,7 @@
+from fastapi import HTTPException, status, Request
 from typing import Sequence
 from sqlmodel import Session
-from fastapi import HTTPException, status
 from uuid_extensions import uuid7
-from fastapi import Request
 from time import time
 
 from Costumer.costumer import CostumerSchema, CostumerModel, CostumerUpdateSchema
@@ -21,7 +20,12 @@ class CostumerService:
     async def get_costumers(self) -> Sequence[CostumerModel]:
         return self.repository.get_all()
 
-    async def create_costumer(self, costumer_data: CostumerSchema, request: Request, status_code: int) -> CostumerModel:
+    async def create_costumer(
+            self,
+            costumer_data: CostumerSchema,
+            request: Request,
+            status_code: int
+    ) -> CostumerModel:
         address = await fetch_address(costumer_data.cep)
         address["complement"] = costumer_data.complement
 
@@ -47,7 +51,14 @@ class CostumerService:
         )
         return created_costumer
 
-    async def update_costumer(self, costumer_id: str, costumer_data: CostumerUpdateSchema, request: Request) -> CostumerModel:
+    async def update_costumer(
+            self,
+            costumer_id: str,
+            costumer_data: CostumerUpdateSchema,
+            request: Request,
+            status_code: int,
+            requester_id: str
+    ) -> CostumerModel:
         existing_costumer = self.repository.get_by_id(costumer_id)
         if not existing_costumer:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Costumer not found")
@@ -76,6 +87,6 @@ class CostumerService:
             ip_address=request.client.host,
             user_agent=request.headers.get("user-agent"),
             route=request.url.path,
-            status_code=200
+            status_code=status.HTTP_200_OK
         )
         return updated_costumer

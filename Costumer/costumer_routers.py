@@ -24,7 +24,7 @@ async def create_costumer(
         request: Request,
         client_data: CostumerSchema,
         service: CostumerService = Depends(get_costumer_service)
-) -> dict:
+) -> dict[str, str]:
     costumer = await service.create_costumer(client_data, request, status.HTTP_201_CREATED)
     return {"id": costumer.id}
 
@@ -37,4 +37,4 @@ async def update_costumer(
         service: CostumerService = Depends(get_costumer_service),
         current_user: dict = Depends(get_current_user)
 ) -> CostumerModel:
-    return await service.update_costumer(costumer_id, costumer_data, request, current_user["sub"])  # noqa
+    return await service.update_costumer(costumer_id, costumer_data, request, status.HTTP_200_OK, requester_id=current_user["sub"])
