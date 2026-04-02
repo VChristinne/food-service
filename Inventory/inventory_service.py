@@ -1,4 +1,4 @@
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Request
 from typing import Sequence
 from sqlmodel import Session
 from uuid_extensions import uuid7
@@ -17,7 +17,7 @@ class InventoryService:
     async def get_inventory(self) -> Sequence[InventoryModel]:
         return self.repository.get_all()
 
-    async def create_item(self, item_data: InventorySchema) -> InventoryModel:
+    async def create_item(self, item_data: InventorySchema, request: Request, status_code: int) -> InventoryModel:
         item = InventoryModel(
             id=str(uuid7()),
             name=item_data.name,
@@ -30,12 +30,16 @@ class InventoryService:
         self.audit_service.log(
             action=AuditActionEnum.CREATE,
             model="inventory",
-            record_id=created_item.id,
-            user_id="system"  # TODO: Change to emplyeeid when implemented
+            affected_item_id=created_item.id,
+            requester_id="system",  # TODO: Change to emplyeeid when implemented
+            ip_address=request.client.host,
+            user_agent=request.headers.get("user-agent"),
+            route=request.url.path,
+            status_code=status_code
         )
         return created_item
 
-    async def update_inventory(self, item_id: str, item_data: InventorySchema) -> InventoryModel:
+    async def update_inventory(self, item_id: str, item_data: InventorySchema, request: Request) -> InventoryModel:
         item = self.repository.get_by_id(item_id)
         if not item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
@@ -48,20 +52,29 @@ class InventoryService:
         self.audit_service.log(
             action=AuditActionEnum.UPDATE,
             model="inventory_item",
-            record_id=updated_item.id,
-            user_id="system"  # TODO: Change to emplyeeid when implemented
+            affected_item_id=updated_item.id,
+            requester_id="system",  # TODO: Change to emplyeeid when implemented
+            ip_address=request.client.host,
+            user_agent=request.headers.get("user-agent"),
+            route=request.url.path,
+            status_code=status.HTTP_200_OK
         )
         return updated_item
 
-    async def delete_item(self, item_id: str) -> None:
-        item = self.repository.get_by_id(item_id)
-        if not item:
+    async def delete_item(self, item_id: str, request: Request) -> None:
+        try:
+            self.repository.get_by_id(item_id)
+        except:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
-
-        self.audit_service.log(
-            action=AuditActionEnum.DELETE,
-            model="inventory_item",
-            record_id=item.id,
-            user_id="system"  # TODO: Change to emplyeeid when implemented
-        )
-        self.repository.delete(item_id)
+        finally:
+            self.audit_service.log(
+                action=AuditActionEnum.DELETE,
+                model="inventory_item",
+                affected_item_id=item_id,
+                requester_id="system",  # TODO: Change to emplyeeid when implemented
+                ip_address=request.client.host,
+                user_agent=request.headers.get("user-agent"),
+                route=request.url.path,
+                status_code=status.HTTP_204_NO_CONTENT
+            )
+            self.repository.delete(item_id)
