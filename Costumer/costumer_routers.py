@@ -2,9 +2,11 @@ from typing import Sequence
 from sqlmodel import Session
 from fastapi import APIRouter, Depends, status, Request
 
-from Database.db_config import db
-from Costumer.costumer_service import CostumerService
 from Costumer.costumer import CostumerSchema, CostumerModel, CostumerUpdateSchema
+from Costumer.costumer_service import CostumerService
+from main import audit_decorator
+from Database.db_config import db
+from Audit.audit import AuditActionEnum
 from Auth.auth import get_current_user
 
 router = APIRouter()
@@ -20,13 +22,14 @@ async def get_costumers(service: CostumerService = Depends(get_costumer_service)
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
+@audit_decorator.log(AuditActionEnum.CREATE, CostumerModel)
 async def create_costumer(
         request: Request,
         client_data: CostumerSchema,
         service: CostumerService = Depends(get_costumer_service)
-) -> dict[str, str]:
-    costumer = await service.create_costumer(client_data, request, status.HTTP_201_CREATED)
-    return {"id": costumer.id}
+) -> CostumerModel:
+    costumer = await service.create_costumer(client_data)
+    return costumer
 
 
 @router.patch("/{costumer_id}", status_code=status.HTTP_200_OK)
@@ -37,4 +40,4 @@ async def update_costumer(
         service: CostumerService = Depends(get_costumer_service),
         current_user: dict = Depends(get_current_user)
 ) -> CostumerModel:
-    return await service.update_costumer(costumer_id, costumer_data, request, status.HTTP_200_OK, requester_id=current_user["sub"])
+    pass
