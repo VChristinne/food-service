@@ -7,6 +7,7 @@ from time import time
 
 class AuditActionEnum(str, Enum):
     CREATE = "CREATE"
+    READ = "READ"
     UPDATE = "UPDATE"
     DELETE = "DELETE"
     LOGIN = "LOGIN"

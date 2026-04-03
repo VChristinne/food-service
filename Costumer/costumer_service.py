@@ -20,12 +20,7 @@ class CostumerService:
     async def get_costumers(self) -> Sequence[CostumerModel]:
         return self.repository.get_all()
 
-    async def create_costumer(
-            self,
-            costumer_data: CostumerSchema,
-            request: Request,
-            status_code: int
-    ) -> CostumerModel:
+    async def create_costumer(self, costumer_data: CostumerSchema) -> CostumerModel:
         address = await fetch_address(costumer_data.cep)
         address["complement"] = costumer_data.complement
 
@@ -37,28 +32,9 @@ class CostumerService:
             phone=costumer_data.phone,
             address=address
         )
-        created_costumer = self.repository.create(costumer)
+        return self.repository.create(costumer)
 
-        self.audit_service.log(
-            action=AuditActionEnum.CREATE,
-            model="costumers",
-            affected_item_id=created_costumer.id,
-            requester_id=created_costumer.id,
-            ip_address=request.client.host,
-            user_agent=request.headers.get("user-agent"),
-            route=request.url.path,
-            status_code=status_code
-        )
-        return created_costumer
-
-    async def update_costumer(
-            self,
-            costumer_id: str,
-            costumer_data: CostumerUpdateSchema,
-            request: Request,
-            status_code: int,
-            requester_id: str
-    ) -> CostumerModel:
+    async def update_costumer(self, costumer_id: str, costumer_data: CostumerUpdateSchema) -> CostumerModel:
         existing_costumer = self.repository.get_by_id(costumer_id)
         if not existing_costumer:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Costumer not found")
@@ -77,16 +53,4 @@ class CostumerService:
             setattr(existing_costumer, field, value)
 
         existing_costumer.updated_at = int(time())
-        updated_costumer = self.repository.update(existing_costumer)
-
-        self.audit_service.log(
-            action=AuditActionEnum.UPDATE,
-            model="costumers",
-            affected_item_id=updated_costumer.id,
-            requester_id=existing_costumer.id,
-            ip_address=request.client.host,
-            user_agent=request.headers.get("user-agent"),
-            route=request.url.path,
-            status_code=status.HTTP_200_OK
-        )
-        return updated_costumer
+        return self.repository.update(existing_costumer)
