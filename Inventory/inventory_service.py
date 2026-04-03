@@ -56,7 +56,6 @@ class InventoryService:
             requester_id="system",  # TODO: Change to emplyeeid when implemented
             ip_address=request.client.host,
             user_agent=request.headers.get("user-agent"),
-            route=request.url.path,
             status_code=status.HTTP_200_OK
         )
         return updated_item
@@ -74,7 +73,6 @@ class InventoryService:
                 requester_id="system",  # TODO: Change to emplyeeid when implemented
                 ip_address=request.client.host,
                 user_agent=request.headers.get("user-agent"),
-                route=request.url.path,
                 status_code=status.HTTP_204_NO_CONTENT
             )
             self.repository.delete(item_id)

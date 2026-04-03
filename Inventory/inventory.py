@@ -29,6 +29,6 @@ class InventoryModel(SQLModel, table=True):
     unit: UnitEnum
     min_quantity: Decimal = Field(max_digits=10, decimal_places=3)
 
-    dishes: list["CatalogueModel"] = Relationship(
+    dishes: list["CatalogueModel"] = Relationship(     # noqa
         back_populates="ingredients", link_model=DishIngredient
     )
