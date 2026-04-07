@@ -1,6 +1,6 @@
+from fastapi import APIRouter, Depends, status, Request, HTTPException
 from typing import Sequence
 from sqlmodel import Session
-from fastapi import APIRouter, Depends, status, Request, HTTPException
 
 from Costumer.costumer import CostumerSchema, CostumerModel, CostumerUpdateSchema
 from Costumer.costumer_service import CostumerService
@@ -17,27 +17,29 @@ router = APIRouter()
 def get_costumer_service(session: Session = Depends(db.get_session)) -> CostumerService:
     return CostumerService(session)
 
+def require_admin(current_user: dict = Depends(get_current_user)):
+    if current_user.get("role") != RoleEnum.ADMIN:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Acesso negado")
+    return current_user
+
 
 @router.get("/", status_code=status.HTTP_200_OK)
 @audit_decorator.log(AuditActionEnum.READ, CostumerModel)
 async def get_costumers(
         request: Request,
-        current_user: EmployeeService = Depends(get_current_user),
+        current_user: dict = Depends(require_admin),
         service: CostumerService = Depends(get_costumer_service)
 ) -> Sequence[CostumerModel]:
-    if current_user.role != RoleEnum.ADMIN:
-        raise HTTPException(status_code=403, detail="Acesso negado")
-    return await service.get_all()
-
+    return await service.get_costumers()
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 @audit_decorator.log(AuditActionEnum.CREATE, CostumerModel)
 async def create_costumer(
         request: Request,
-        client_data: CostumerSchema,
+        costumer_data: CostumerSchema,
         service: CostumerService = Depends(get_costumer_service)
 ) -> CostumerModel:
-    costumer = await service.create_costumer(client_data)
+    costumer = await service.create_costumer(costumer_data)
     return costumer
 
 

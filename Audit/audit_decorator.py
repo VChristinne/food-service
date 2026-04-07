@@ -24,7 +24,10 @@ class AuditDecorator:
                     else result.get("id") if isinstance(result, dict)
                     else "N/A"
                 )
-                request.state.requester_id = current_user.id if current_user else "system"
+                request.state.requester_id = (
+                    current_user.get("sub") if isinstance(current_user, dict)
+                    else getattr(current_user, "id", "system")
+                ) or "system"
 
                 return result
             return wrapper
