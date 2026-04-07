@@ -32,6 +32,7 @@ async def get_costumers(
 ) -> Sequence[CostumerModel]:
     return await service.get_costumers()
 
+
 @router.post("/", status_code=status.HTTP_201_CREATED)
 @audit_decorator.log(AuditActionEnum.CREATE, CostumerModel)
 async def create_costumer(

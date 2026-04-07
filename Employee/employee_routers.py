@@ -17,28 +17,20 @@ router = APIRouter()
 def get_employee_service(session: Session = Depends(db.get_session)) -> EmployeeService:
     return EmployeeService(session)
 
+def require_admin(current_user: dict = Depends(get_current_user)):
+    if current_user.get("role") != RoleEnum.ADMIN:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Acesso negado")
+    return current_user
+
 
 @router.get("/", status_code=status.HTTP_200_OK)
 @audit_decorator.log(AuditActionEnum.READ, EmployeeModel)
 async def get_employees(
         request: Request,
-        current_user: EmployeeService = Depends(get_current_user),
+        current_user: dict = Depends(require_admin),
         service: EmployeeService = Depends(get_employee_service)
 ) -> Sequence[EmployeeModel]:
-    if current_user.role != RoleEnum.ADMIN:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Acesso negado")
     return await service.get_employees()
-
-
-@router.post("/", status_code=status.HTTP_201_CREATED)
-@audit_decorator.log(AuditActionEnum.CREATE, EmployeeModel)
-async def create_admin_employee(
-        request: Request,
-        employee_data: EmployeeSchema,
-        service: EmployeeService = Depends(get_employee_service),
-) -> EmployeeModel:
-    employee = await service.create_employee(employee_data)
-    return employee
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
@@ -46,10 +38,9 @@ async def create_admin_employee(
 async def create_employee(
         request: Request,
         employee_data: EmployeeSchema,
+        current_user: dict = Depends(require_admin),
         service: EmployeeService = Depends(get_employee_service),
 ) -> EmployeeModel:
-    if current_user.role != RoleEnum.ADMIN:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Acesso negado")
     employee = await service.create_employee(employee_data)
     return employee
 
