@@ -1,6 +1,7 @@
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 from fastapi import Request
+from Utils.validations import sanitize_user_agent
 
 
 class AuditMiddleware(BaseHTTPMiddleware):
@@ -11,14 +12,14 @@ class AuditMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> Response:
         response = await call_next(request)
 
-        if hasattr(request.state, 'audit_action'):
+        if hasattr(request.state, "audit_action"):
             self.audit_service.log(
                 action=request.state.audit_action,
                 model=request.state.audit_model,
                 affected_item_id=request.state.audit_item_id,
                 requester_id=request.state.requester_id,
                 ip_address=request.client.host,
-                user_agent=request.headers.get("user-agent"),
+                user_agent=sanitize_user_agent(request.headers.get("user-agent")),
                 status_code=response.status_code
             )
         return response
