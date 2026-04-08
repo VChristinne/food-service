@@ -1,7 +1,5 @@
 from fastapi import APIRouter, Depends, status, Request, HTTPException
 from typing import Sequence
-
-from sqlalchemy.sql.functions import current_user
 from sqlmodel import Session
 
 from Employee.employee import EmployeeSchema, EmployeeModel, EmployeeUpdateSchema, RoleEnum

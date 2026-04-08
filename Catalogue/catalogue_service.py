@@ -30,11 +30,9 @@ class CatalogueService:
         self.audit_service.log(
             action=AuditActionEnum.CREATE,
             model="catalogue",
-            record_id=created_dish.id,
             requester_id="system",
             ip_address=request.client.host,
             user_agent=sanitize_user_agent(request.headers.get("User-Agent")),
-            route=request.url.path,
             status_code=status_code
         )
         return created_dish

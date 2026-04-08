@@ -1,4 +1,4 @@
-from fastapi import HTTPException, status, Request
+from fastapi import HTTPException, status
 from typing import Sequence
 from sqlmodel import Session
 from uuid_extensions import uuid7
@@ -6,7 +6,6 @@ from time import time
 
 from Costumer.costumer import CostumerSchema, CostumerModel, CostumerUpdateSchema
 from Costumer.costumer_repository import CostumerRepository
-from Audit.audit import AuditActionEnum
 from Audit.audit_service import AuditService
 from Utils.address import fetch_address
 from Utils.validations import hash_password
