@@ -16,16 +16,9 @@ class EmployeeRepository:
         return employee
 
     def update(self, employee: EmployeeModel) -> EmployeeModel:
-        employee = self.get_by_id(employee.id)
-        if not employee:
+        existing = self.get_by_id(employee.id)
+        if not existing:
             raise ValueError(f"Employee with id {employee.id} not found")
-        employee.name = employee.name
-        employee.password_hash = employee.password_hash
-        employee.email = employee.email
-        employee.phone = employee.phone
-        employee.address = employee.address
-        employee.role = employee.role
-        employee.updated_at = int(time())
         self.session.add(employee)
         self.session.commit()
         self.session.refresh(employee)

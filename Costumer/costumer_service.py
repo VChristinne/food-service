@@ -41,8 +41,14 @@ class CostumerService:
         update_data = costumer_data.model_dump(exclude_unset=True)
         for field, value in list(update_data.items()):
             match field:
+                case "name":
+                    update_data["name"] = update_data.pop("name")
                 case "password":
                     update_data["password_hash"] = hash_password(update_data.pop("password"))
+                case "email":
+                    update_data["email"] = update_data.pop("email")
+                case "phone":
+                    update_data["phone"] = update_data.pop("phone")
                 case "cep":
                     address = await fetch_address(update_data.pop("cep"))
                     address["complement"] = update_data.pop("complement", existing_costumer.address.get("complement"))

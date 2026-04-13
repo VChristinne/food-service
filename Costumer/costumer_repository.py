@@ -16,15 +16,9 @@ class CostumerRepository:
         return costumer
 
     def update(self, costumer: CostumerModel) -> CostumerModel:
-        costumer = self.get_by_id(costumer.id)
-        if not costumer:
+        existing = self.get_by_id(costumer.id)
+        if not existing:
             raise ValueError(f"Costumer with id {costumer.id} not found")
-        costumer.name = costumer.name
-        costumer.password_hash = costumer.password_hash
-        costumer.email = costumer.email
-        costumer.phone = costumer.phone
-        costumer.address = costumer.address
-        costumer.updated_at = int(time())
         self.session.add(costumer)
         self.session.commit()
         self.session.refresh(costumer)
