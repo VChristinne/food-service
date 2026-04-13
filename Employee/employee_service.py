@@ -40,20 +40,23 @@ class EmployeeService:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Employee not found")
 
         update_data = employee_data.model_dump(exclude_unset=True)
-        for field, value in list(update_data.items()):
+
+        for field in list(update_data.keys()):
             match field:
+                case "name":
+                    existing_employee.name = update_data["name"]
                 case "password":
-                    update_data["password"] = hash_password(update_data.pop("password"))
+                    existing_employee.password_hash = hash_password(update_data["password"])
                 case "email":
-                    update_data["email"] = update_data.pop("email")
+                    existing_employee.email = update_data["email"]
                 case "phone":
-                    update_data["phone"] = update_data.pop("phone")
+                    existing_employee.phone = update_data["phone"]
                 case "cep":
-                    update_data["cep"] = update_data.pop("cep")
-                case "complement":
-                    update_data["complement"] = update_data.pop("complement")
+                    address = await fetch_address(update_data["cep"])
+                    address["complement"] = update_data.get("complement", existing_employee.address.get("complement"))
+                    existing_employee.address = address
                 case "role":
-                    update_data["role"] = update_data.pop("role")
+                    existing_employee.role = update_data["role"]
 
         update_data["updated_at"] = int(time())
         existing_employee.updated_at = int(time())

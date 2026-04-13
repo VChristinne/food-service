@@ -35,7 +35,7 @@ class EmployeeUpdateSchema(BaseModel):
     phone: Optional[str] = None
     cep: Optional[str] = None
     complement: Optional[str] = None
-    role: RoleEnum
+    role: Optional[RoleEnum] = None
 
 
 class EmployeeModel(SQLModel, table=True):
