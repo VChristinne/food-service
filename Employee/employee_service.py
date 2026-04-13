@@ -56,5 +56,5 @@ class EmployeeService:
                     update_data["role"] = update_data.pop("role")
 
         update_data["updated_at"] = int(time())
-        existing_employee = existing_employee.model_copy(update=update_data)
+        existing_employee.updated_at = int(time())
         return self.repository.update(existing_employee)
