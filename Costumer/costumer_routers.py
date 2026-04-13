@@ -22,6 +22,7 @@ def get_costumer_service(session: Session = Depends(db.get_session)) -> Costumer
 @audit_decorator.log(AuditActionEnum.READ, CostumerModel)
 async def get_costumers(
         request: Request,
+        current_user: dict = Depends(get_current_user),
         service: CostumerService = Depends(get_costumer_service)
 ) -> Sequence[CostumerModel]:
     return await service.get_costumers()

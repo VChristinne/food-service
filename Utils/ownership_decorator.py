@@ -18,7 +18,7 @@ def require_roles(roles: list[str]):
             if not current_user:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Dados inválidos"
+                    detail="Dados Inválidos"
                 )
 
             user_id = str(current_user.get("sub"))
