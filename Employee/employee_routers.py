@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, status, Request, HTTPException
+from fastapi import APIRouter, Depends, status, Request
 from typing import Sequence
 from sqlmodel import Session
 
-from Employee.employee import EmployeeSchema, EmployeeModel, EmployeeUpdateSchema, RoleEnum
+from Employee.employee import EmployeeSchema, EmployeeModel, EmployeeUpdateSchema
 from Employee.employee_service import EmployeeService
 from Utils.ownership_decorator import require_roles
-from main import audit_decorator
+from main import save_log
 from Database.db_config import db
 from Audit.audit import AuditActionEnum
 from Auth.auth import get_current_user
@@ -19,7 +19,7 @@ def get_employee_service(session: Session = Depends(db.get_session)) -> Employee
 
 @router.get("/", status_code=status.HTTP_200_OK)
 @require_roles(["admin", "manager"])
-@audit_decorator.log(AuditActionEnum.READ, EmployeeModel)
+@save_log(AuditActionEnum.READ, EmployeeModel)
 async def get_employees(
         request: Request,
         current_user: dict = Depends(get_current_user),
@@ -30,11 +30,11 @@ async def get_employees(
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 @require_roles(["admin", "manager"])
-@audit_decorator.log(AuditActionEnum.CREATE, EmployeeModel)
+@save_log(AuditActionEnum.CREATE, EmployeeModel)
 async def create_employee(
         request: Request,
         employee_data: EmployeeSchema,
-        service: EmployeeService = Depends(get_employee_service),
+        service: EmployeeService = Depends(get_employee_service)
 ) -> EmployeeModel:
     employee = await service.create_employee(employee_data)
     return employee
@@ -42,13 +42,13 @@ async def create_employee(
 
 @router.patch("/{employee_id}", status_code=status.HTTP_200_OK)
 @require_roles(["admin", "manager"])
-@audit_decorator.log(AuditActionEnum.UPDATE, EmployeeModel)
+@save_log(AuditActionEnum.UPDATE, EmployeeModel)
 async def update_employee(
         request: Request,
         employee_id: str,
         employee_data: EmployeeUpdateSchema,
         current_user: dict = Depends(get_current_user),
-        service: EmployeeService = Depends(get_employee_service),
+        service: EmployeeService = Depends(get_employee_service)
 ) -> EmployeeModel:
     updated_employee = await service.update_employee(employee_id, employee_data)
     return updated_employee

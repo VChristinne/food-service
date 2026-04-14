@@ -7,7 +7,7 @@ class AuditDecorator:
     def __init__(self, audit_service):
         self.audit_service = audit_service
 
-    def log(self, action, model_class: Union[Type, str]):
+    def __call__(self, action, model_class: Union[Type, str]):
         def decorator(func: Callable):
             @wraps(func)
             async def wrapper(*args, **kwargs):

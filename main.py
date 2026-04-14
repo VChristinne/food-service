@@ -11,7 +11,7 @@ version = "v1"
 db.create_tables()
 session = Session(db.engine)
 audit_service = AuditService(session)
-audit_decorator = AuditDecorator(audit_service)
+save_log = AuditDecorator(audit_service)
 
 app = FastAPI(
     title="Food Service API",
