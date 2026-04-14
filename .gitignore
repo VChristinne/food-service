@@ -8,4 +8,3 @@ Documentation/.DS_Store/
 migrations/
 pyproject.toml
 .python-version
-/Documentation/Generated/
