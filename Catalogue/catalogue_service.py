@@ -1,13 +1,12 @@
+from fastapi import HTTPException, status, Request
 from typing import Sequence
-from uuid_extensions import uuid7
 from sqlmodel import Session
-from fastapi import Request
+from uuid_extensions import uuid7
+from time import time
 
-from Audit.audit import AuditActionEnum
-from Audit.audit_service import AuditService
-from Catalogue.catalogue import CatalogueSchema, CatalogueModel
+from Catalogue.catalogue import CatalogueSchema, CatalogueModel, CatalogueUpdateSchema
 from Catalogue.catalogue_repository import CatalogueRepository
-from Utils.validations import sanitize_user_agent
+from Audit.audit_service import AuditService
 
 
 class CatalogueService:
@@ -18,27 +17,36 @@ class CatalogueService:
     async def get_catalogue(self) -> Sequence[CatalogueModel]:
         return self.repository.get_all()
 
-    async def create_dish(self, catalogue_data: CatalogueSchema, request: Request, status_code: int) -> CatalogueModel:
+    async def create_dish(self, catalogue_data: CatalogueSchema) -> CatalogueModel:
         dish = CatalogueModel(
             id=str(uuid7()),
             name=catalogue_data.name,
             price=catalogue_data.price,
             available=catalogue_data.available
         )
-        created_dish = self.repository.create(dish)
+        return self.repository.create(dish)
 
-        self.audit_service.log(
-            action=AuditActionEnum.CREATE,
-            model="catalogue",
-            requester_id="system",
-            ip_address=request.client.host,
-            user_agent=sanitize_user_agent(request.headers.get("User-Agent")),
-            status_code=status_code
-        )
-        return created_dish
+    async def update_dish(self, dish_id: str, dish_data: CatalogueUpdateSchema) -> CatalogueModel:
+        existing_dish = self.repository.get_by_id(dish_id)
+        if not existing_dish:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dish not found")
 
-    async def update_dish(self, dish_id, update_data):
-        pass
+        update_data = dish_data.model_dump(exclude_unset=True)
 
-    async def delete_dish(self, dish_id):
-        pass
+        for field in list(update_data.keys()):
+            match field:
+                case "name":
+                    existing_dish.name = update_data["name"]
+                case "price":
+                    existing_dish.price = update_data["price"]
+                case "available":
+                    existing_dish.available = update_data["available"]
+
+        update_data["updated_at"] = int(time())
+        return self.repository.update(existing_dish)
+
+    async def delete_dish(self, dish_id: str, request: Request) -> None:
+        existing_dish = self.repository.get_by_id(dish_id)
+        if not existing_dish:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dish not found")
+        self.repository.delete(dish_id)
