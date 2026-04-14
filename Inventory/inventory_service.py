@@ -45,6 +45,8 @@ class InventoryService:
                 case "min_quantity":
                     existing_item.min_quantity = update_data["min_quantity"]
 
+        return self.repository.update(existing_item)
+
     async def delete_item(self, item_id: str, request: Request) -> None:
         existing_item = self.repository.get_by_id(item_id)
         if not existing_item:
