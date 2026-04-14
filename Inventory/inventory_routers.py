@@ -34,13 +34,14 @@ async def get_inventory(
 async def create_item(
         request: Request,
         item_data: InventorySchema,
+        current_user: dict = Depends(get_current_user),
         service: InventoryService = Depends(get_inventory_service)
 ) -> InventoryModel:
     item = await service.create_item(item_data)
     return item
 
 
-@router.put("/{item_id}", status_code=status.HTTP_200_OK)
+@router.patch("/{item_id}", status_code=status.HTTP_200_OK)
 @require_roles(["admin", "manager"])
 @save_log(AuditActionEnum.UPDATE, InventoryModel)
 async def update_item(

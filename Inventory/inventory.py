@@ -1,8 +1,10 @@
+from sqlmodel import SQLModel, Field, Relationship
 from enum import Enum
 from decimal import Decimal
 from pydantic import BaseModel
-from sqlmodel import SQLModel, Field, Relationship
 from uuid_extensions import uuid7
+from typing import Optional
+from time import time
 
 from Catalogue.dish_ingredient import DishIngredient
 
@@ -20,6 +22,13 @@ class InventorySchema(BaseModel):
     min_quantity: Decimal = Field(decimal_places=3)
 
 
+class InventoryUpdateSchema(BaseModel):
+    name: Optional[str]
+    quantity: Optional[Decimal] = Field(max_digits=10, decimal_places=3)
+    unit: Optional[UnitEnum]
+    min_quantity: Optional[Decimal] = Field(max_digits=10, decimal_places=3)
+
+
 class InventoryModel(SQLModel, table=True):
     __tablename__ = "inventory"
 
@@ -28,7 +37,9 @@ class InventoryModel(SQLModel, table=True):
     quantity: Decimal = Field(max_digits=10, decimal_places=3)
     unit: UnitEnum
     min_quantity: Decimal = Field(max_digits=10, decimal_places=3)
-
     dishes: list["CatalogueModel"] = Relationship(     # noqa
         back_populates="ingredients", link_model=DishIngredient
     )
+    created_at: int = Field(default_factory=lambda: int(time()))
+    updated_at: int = Field(default_factory=lambda: int(time()))
+    deleted_at: Optional[int] = None

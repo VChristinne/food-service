@@ -2,11 +2,11 @@ from fastapi import HTTPException, status, Request
 from typing import Sequence
 from sqlmodel import Session
 from uuid_extensions import uuid7
+from time import time
 
-from Audit.audit import AuditActionEnum
-from Audit.audit_service import AuditService
 from Inventory.inventory import InventorySchema, InventoryModel
 from Inventory.inventory_repository import InventoryRepository
+from Audit.audit_service import AuditService
 
 
 class InventoryService:
@@ -27,7 +27,7 @@ class InventoryService:
         )
         return self.repository.create(item)
 
-    async def update_inventory(self, item_id: str, item_data: InventorySchema, request: Request) -> InventoryModel:
+    async def update_inventory(self, item_id: str, item_data: InventorySchema) -> InventoryModel:
         existing_item = self.repository.get_by_id(item_id)
         if not existing_item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
@@ -45,6 +45,7 @@ class InventoryService:
                 case "min_quantity":
                     existing_item.min_quantity = update_data["min_quantity"]
 
+        update_data["updated_at"] = int(time())
         return self.repository.update(existing_item)
 
     async def delete_item(self, item_id: str, request: Request) -> None:
