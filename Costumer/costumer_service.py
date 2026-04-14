@@ -1,60 +1,51 @@
-from fastapi import HTTPException, status
-from typing import Sequence
 from sqlmodel import Session
 from uuid_extensions import uuid7
-from time import time
 
 from Costumer.costumer import CostumerSchema, CostumerModel, CostumerUpdateSchema
 from Costumer.costumer_repository import CostumerRepository
+from Utils.base_service import BaseService
 from Audit.audit_service import AuditService
 from Utils.address import fetch_address
 from Utils.validations import hash_password
 
 
-class CostumerService:
+class CostumerService(BaseService[CostumerModel, CostumerSchema, CostumerUpdateSchema]):
     def __init__(self, session: Session):
-        self.repository = CostumerRepository(session)
+        super().__init__(session, CostumerRepository, CostumerModel, "Customer")
         self.audit_service = AuditService(session)
 
-    async def get_costumers(self) -> Sequence[CostumerModel]:
-        return self.repository.get_all()
-
     async def create_costumer(self, costumer_data: CostumerSchema) -> CostumerModel:
+        """Cria customer com transformações (password hash, address fetch)"""
         address = await fetch_address(costumer_data.cep)
         address["complement"] = costumer_data.complement
 
         costumer = CostumerModel(
             id=str(uuid7()),
             name=costumer_data.name,
-            password_hash=hash_password(costumer_data.password),
             email=costumer_data.email,
             phone=costumer_data.phone,
+            password_hash=hash_password(costumer_data.password),
             address=address
         )
-        return self.repository.create(costumer)
+        return self.create(costumer)
 
     async def update_costumer(self, costumer_id: str, costumer_data: CostumerUpdateSchema) -> CostumerModel:
-        existing_costumer = self.repository.get_by_id(costumer_id)
-        if not existing_costumer:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Costumer not found")
+        """Atualiza customer com handlers customizados"""
+        return await self.update_by_id(
+            costumer_id,
+            costumer_data,
+            field_handlers={
+                "password": self._handle_password,
+                "cep": self._handle_cep,
+            }
+        )
 
-        update_data = costumer_data.model_dump(exclude_unset=True)
+    def _handle_password(self, entity: CostumerModel, password: str) -> None:
+        """Atualiza password com hash"""
+        entity.password_hash = hash_password(password)
 
-        for field in list(update_data.keys()):
-            match field:
-                case "name":
-                    existing_costumer.name = update_data["name"]
-                case "password":
-                    existing_costumer.password_hash = hash_password(update_data["password"])
-                case "email":
-                    existing_costumer.email = update_data["email"]
-                case "phone":
-                    existing_costumer.phone = update_data["phone"]
-                case "cep":
-                    address = await fetch_address(update_data["cep"])
-                    address["complement"] = update_data.get("complement", existing_costumer.address.get("complement"))
-                    existing_costumer.address = address
-
-        update_data["updated_at"] = int(time())
-        existing_costumer.updated_at = int(time())
-        return self.repository.update(existing_costumer)
+    async def _handle_cep(self, entity: CostumerModel, cep: str) -> None:
+        """Atualiza endereço a partir do CEP"""
+        address = await fetch_address(cep)
+        address["complement"] = entity.address.get("complement")
+        entity.address = address
