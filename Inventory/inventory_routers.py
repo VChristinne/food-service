@@ -12,10 +12,8 @@ from Auth.auth import get_current_user
 
 router = APIRouter()
 
-
 def get_inventory_service(session: Session = Depends(db.get_session)) -> InventoryService:
     return InventoryService(session)
-
 
 @router.get("/", status_code=status.HTTP_200_OK)
 @require_roles(["admin", "manager"])
@@ -25,8 +23,18 @@ async def get_inventory(
         current_user: dict = Depends(get_current_user),
         service: InventoryService = Depends(get_inventory_service)
 ) -> Sequence[InventoryModel]:
-    return await service.get_inventory()
+    return await service.get_all()
 
+@router.get("/{item_id}", status_code=status.HTTP_200_OK)
+@require_roles(["admin", "manager"])
+@save_log(AuditActionEnum.READ, InventoryModel)
+async def get_item(
+        request: Request,
+        item_id: str,
+        current_user: dict = Depends(get_current_user),
+        service: InventoryService = Depends(get_inventory_service)
+) -> InventoryModel:
+    return await service.get_by_id(item_id)
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 @require_roles(["admin", "manager"])
@@ -37,9 +45,8 @@ async def create_item(
         current_user: dict = Depends(get_current_user),
         service: InventoryService = Depends(get_inventory_service)
 ) -> InventoryModel:
-    item = await service.create_item(item_data)
-    return item
-
+    new_item = service.create_from_schema(item_data)
+    return new_item
 
 @router.patch("/{item_id}", status_code=status.HTTP_200_OK)
 @require_roles(["admin", "manager"])
@@ -51,9 +58,8 @@ async def update_item(
         current_user: dict = Depends(get_current_user),
         service: InventoryService = Depends(get_inventory_service)
 ) -> InventoryModel:
-    updated_item = await service.update_inventory(item_id, item_data)
+    updated_item = await service.update_by_id(item_id, item_data)
     return updated_item
-
 
 @router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
 @require_roles(["admin", "manager"])
@@ -64,4 +70,4 @@ async def delete_item(
         current_user: dict = Depends(get_current_user),
         service: InventoryService = Depends(get_inventory_service)
 ) -> None:
-    await service.delete_item(item_id, request)
+    await service.delete(item_id)

@@ -12,7 +12,6 @@ from Auth.auth import get_current_user
 
 router = APIRouter()
 
-
 def get_catalogue_service(session: Session = Depends(db.get_session)) -> CatalogueService:
     return CatalogueService(session)
 
@@ -23,8 +22,15 @@ async def get_catalogue(
         request: Request,
         service: CatalogueService = Depends(get_catalogue_service)
 ) -> Sequence[CatalogueModel]:
-    return await service.get_catalogue()
+    return await service.get_all()
 
+@router.get("/{dish_id}", status_code=status.HTTP_200_OK)
+async def get_dish(
+        request: Request,
+        dish_id: str,
+        service: CatalogueService = Depends(get_catalogue_service)
+) -> CatalogueModel:
+    return await service.get_by_id(dish_id)
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 @require_roles(["admin", "manager"])
@@ -32,11 +38,11 @@ async def get_catalogue(
 async def create_dish(
         request: Request,
         catalogue_data: CatalogueSchema,
+        current_user: dict = Depends(get_current_user),
         service: CatalogueService = Depends(get_catalogue_service)
 ) -> CatalogueModel:
-    dish = await service.create_dish(catalogue_data)
-    return dish
-
+    new_dish = service.create_from_schema(catalogue_data)
+    return new_dish
 
 @router.patch("/{dish_id}", status_code=status.HTTP_200_OK)
 @require_roles(["admin", "manager"])
@@ -48,9 +54,8 @@ async def update_dish(
         current_user: dict = Depends(get_current_user),
         service: CatalogueService = Depends(get_catalogue_service)
 ) -> CatalogueModel:
-    updated_dish = await service.update_dish(dish_id, catalogue_data)
+    updated_dish = await service.update_by_id(dish_id, catalogue_data)
     return updated_dish
-
 
 @router.delete("/{dish_id}", status_code=status.HTTP_204_NO_CONTENT)
 @require_roles(["admin", "manager"])
@@ -61,4 +66,4 @@ async def delete_dish(
         current_user: dict = Depends(get_current_user),
         service: CatalogueService = Depends(get_catalogue_service)
 ) -> None:
-    await service.delete_dish(dish_id, request)
+    await service.delete(dish_id)

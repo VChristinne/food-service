@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, Request, HTTPException
+from fastapi import APIRouter, Depends, status, Request
 from typing import Sequence
 from sqlmodel import Session
 
@@ -12,7 +12,6 @@ from Auth.auth import get_current_user
 
 router = APIRouter()
 
-
 def get_costumer_service(session: Session = Depends(db.get_session)) -> CostumerService:
     return CostumerService(session)
 
@@ -25,8 +24,28 @@ async def get_costumers(
         current_user: dict = Depends(get_current_user),
         service: CostumerService = Depends(get_costumer_service)
 ) -> Sequence[CostumerModel]:
-    return await service.get_costumers()
+    return await service.get_all()
 
+@router.get("/{costumer_id}", status_code=status.HTTP_200_OK)
+@require_roles(["admin"])
+@save_log(AuditActionEnum.READ, CostumerModel)
+async def get_costumer(
+        request: Request,
+        costumer_id: str,
+        current_user: dict = Depends(get_current_user),
+        service: CostumerService = Depends(get_costumer_service)
+) -> CostumerModel:
+    return await service.get_by_id(costumer_id)
+
+@router.post("/", status_code=status.HTTP_201_CREATED)
+@save_log(AuditActionEnum.CREATE, CostumerModel)
+async def create_costumer(
+        request: Request,
+        costumer_data: CostumerSchema,
+        service: CostumerService = Depends(get_costumer_service)
+) -> CostumerModel:
+    new_costumer = service.create_from_schema(costumer_data)
+    return new_costumer
 
 @router.patch("/{costumer_id}", status_code=status.HTTP_200_OK)
 @require_roles(["owner"])
@@ -38,16 +57,7 @@ async def update_costumer(
         current_user: dict = Depends(get_current_user),
         service: CostumerService = Depends(get_costumer_service)
 ) -> CostumerModel:
-    updated_costumer = await service.update_costumer(costumer_id, costumer_data)
+    updated_costumer = await service.update_by_id(costumer_id, costumer_data)
     return updated_costumer
 
-
-@router.post("/", status_code=status.HTTP_201_CREATED)
-@save_log(AuditActionEnum.CREATE, CostumerModel)
-async def create_costumer(
-        request: Request,
-        costumer_data: CostumerSchema,
-        service: CostumerService = Depends(get_costumer_service)
-) -> CostumerModel:
-    costumer = await service.create_costumer(costumer_data)
-    return costumer
+# TODO: IMPLEMENT SOFT DELETE

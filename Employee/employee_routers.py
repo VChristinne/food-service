@@ -12,7 +12,6 @@ from Auth.auth import get_current_user
 
 router = APIRouter()
 
-
 def get_employee_service(session: Session = Depends(db.get_session)) -> EmployeeService:
     return EmployeeService(session)
 
@@ -25,8 +24,18 @@ async def get_employees(
         current_user: dict = Depends(get_current_user),
         service: EmployeeService = Depends(get_employee_service)
 ) -> Sequence[EmployeeModel]:
-    return await service.get_employees()
+    return await service.get_all()
 
+@router.get("/{employee_id}", status_code=status.HTTP_200_OK)
+@require_roles(["admin", "manager"])
+@save_log(AuditActionEnum.READ, EmployeeModel)
+async def get_employee(
+        request: Request,
+        employee_id: str,
+        current_user: dict = Depends(get_current_user),
+        service: EmployeeService = Depends(get_employee_service)
+) -> EmployeeModel:
+    return await service.get_by_id(employee_id)
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 @require_roles(["admin", "manager"])
@@ -36,9 +45,8 @@ async def create_employee(
         employee_data: EmployeeSchema,
         service: EmployeeService = Depends(get_employee_service)
 ) -> EmployeeModel:
-    employee = await service.create_employee(employee_data)
-    return employee
-
+    new_employee = service.create_from_schema(employee_data)
+    return new_employee
 
 @router.patch("/{employee_id}", status_code=status.HTTP_200_OK)
 @require_roles(["admin", "manager"])
@@ -50,5 +58,7 @@ async def update_employee(
         current_user: dict = Depends(get_current_user),
         service: EmployeeService = Depends(get_employee_service)
 ) -> EmployeeModel:
-    updated_employee = await service.update_employee(employee_id, employee_data)
+    updated_employee = await service.update_by_id(employee_id, employee_data)
     return updated_employee
+
+# TODO: IMPLEMENT SOFT DELETE
