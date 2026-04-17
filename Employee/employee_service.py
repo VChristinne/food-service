@@ -9,13 +9,22 @@ from Utils.address import fetch_address
 from Utils.validations import hash_password
 
 
+async def _handle_cep(entity: EmployeeModel, cep: str) -> None:
+    address = await fetch_address(cep)
+    address["complement"] = entity.address.get("complement")
+    entity.address = address
+
+
+def _handle_password(entity: EmployeeModel, password: str) -> None:
+    entity.password_hash = hash_password(password)
+
+
 class EmployeeService(BaseService[EmployeeModel, EmployeeSchema, EmployeeUpdateSchema]):
     def __init__(self, session: Session):
         super().__init__(session, EmployeeRepository, EmployeeModel, "Employee")
         self.audit_service = AuditService(session)
 
     async def create_employee(self, employee_data: EmployeeSchema) -> EmployeeModel:
-        """Cria employee com transformações (password hash, address fetch)"""
         address = await fetch_address(employee_data.cep)
         address["complement"] = employee_data.complement
 
@@ -31,22 +40,11 @@ class EmployeeService(BaseService[EmployeeModel, EmployeeSchema, EmployeeUpdateS
         return self.create(employee)
 
     async def update_employee(self, employee_id: str, employee_data: EmployeeUpdateSchema) -> EmployeeModel:
-        """Atualiza employee com handlers customizados"""
         return await self.update_by_id(
             employee_id,
             employee_data,
             field_handlers={
-                "password": self._handle_password,
-                "cep": self._handle_cep,
+                "password": _handle_password,
+                "cep": _handle_cep,
             }
         )
-
-    def _handle_password(self, entity: EmployeeModel, password: str) -> None:
-        """Atualiza password com hash"""
-        entity.password_hash = hash_password(password)
-
-    async def _handle_cep(self, entity: EmployeeModel, cep: str) -> None:
-        """Atualiza endereço a partir do CEP"""
-        address = await fetch_address(cep)
-        address["complement"] = entity.address.get("complement")
-        entity.address = address

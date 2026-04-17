@@ -1,12 +1,22 @@
 from sqlmodel import Session
 from uuid_extensions import uuid7
 
-from Costumer.costumer import CostumerSchema, CostumerModel, CostumerUpdateSchema
+from Costumer.costumer import CostumerModel, CostumerSchema, CostumerUpdateSchema
 from Costumer.costumer_repository import CostumerRepository
 from Utils.base_service import BaseService
 from Audit.audit_service import AuditService
 from Utils.address import fetch_address
 from Utils.validations import hash_password
+
+
+def _handle_password(entity: CostumerModel, password: str) -> None:
+    entity.password_hash = hash_password(password)
+
+
+async def _handle_cep(entity: CostumerModel, cep: str) -> None:
+    address = await fetch_address(cep)
+    address["complement"] = entity.address.get("complement")
+    entity.address = address
 
 
 class CostumerService(BaseService[CostumerModel, CostumerSchema, CostumerUpdateSchema]):
@@ -15,7 +25,6 @@ class CostumerService(BaseService[CostumerModel, CostumerSchema, CostumerUpdateS
         self.audit_service = AuditService(session)
 
     async def create_costumer(self, costumer_data: CostumerSchema) -> CostumerModel:
-        """Cria customer com transformações (password hash, address fetch)"""
         address = await fetch_address(costumer_data.cep)
         address["complement"] = costumer_data.complement
 
@@ -30,22 +39,11 @@ class CostumerService(BaseService[CostumerModel, CostumerSchema, CostumerUpdateS
         return self.create(costumer)
 
     async def update_costumer(self, costumer_id: str, costumer_data: CostumerUpdateSchema) -> CostumerModel:
-        """Atualiza customer com handlers customizados"""
         return await self.update_by_id(
             costumer_id,
             costumer_data,
             field_handlers={
-                "password": self._handle_password,
-                "cep": self._handle_cep,
+                "password": _handle_password,
+                "cep": _handle_cep,
             }
         )
-
-    def _handle_password(self, entity: CostumerModel, password: str) -> None:
-        """Atualiza password com hash"""
-        entity.password_hash = hash_password(password)
-
-    async def _handle_cep(self, entity: CostumerModel, cep: str) -> None:
-        """Atualiza endereço a partir do CEP"""
-        address = await fetch_address(cep)
-        address["complement"] = entity.address.get("complement")
-        entity.address = address
