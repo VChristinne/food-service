@@ -11,8 +11,7 @@ UpdateSchemaT = TypeVar("UpdateSchemaT")
 
 class BaseService(Generic[ModelT, CreateSchemaT, UpdateSchemaT]):
     """
-    Serviço genérico que implementa operações CRUD completas para qualquer modelo.
-    Reduz duplicação de código entre services específicos.
+    Generic service to handle CRUD operations for any entity type, using a repository pattern.
     """
 
     def __init__(self, session: Session, repository_class: Type, model_class: Type[ModelT], model_name: str = None):
@@ -23,11 +22,11 @@ class BaseService(Generic[ModelT, CreateSchemaT, UpdateSchemaT]):
     # ==================== GET OPERATIONS ====================
 
     async def get_all(self) -> Sequence[ModelT]:
-        """Retorna todas as entidades."""
+        """Return any entities."""
         return self.repository.get_all()
 
     async def get_by_id(self, entity_id: str) -> ModelT:
-        """Retorna uma entidade pelo ID, lançando exceção se não encontrada."""
+        """Return an entity by ID, or raise 404 if not found."""
         entity = self.repository.get_by_id(entity_id)
         if not entity:
             raise HTTPException(
@@ -39,12 +38,12 @@ class BaseService(Generic[ModelT, CreateSchemaT, UpdateSchemaT]):
     # ==================== CREATE OPERATIONS ====================
 
     def create(self, entity: ModelT) -> ModelT:
-        """Cria uma nova entidade."""
+        """Create a new entity."""
         return self.repository.create(entity)
 
     def create_from_schema(self, schema: CreateSchemaT,
                           field_transformers: Dict[str, Callable[[Any], Any]] = None) -> ModelT:
-        """Cria uma entidade a partir de um schema, com transformações opcionais."""
+        """Create a new entity from a Pydantic schema, applying optional field transformations."""
         data = schema.model_dump()
         data["id"] = str(uuid7())
 
@@ -59,17 +58,17 @@ class BaseService(Generic[ModelT, CreateSchemaT, UpdateSchemaT]):
     # ==================== UPDATE OPERATIONS ====================
 
     def update(self, entity: ModelT) -> ModelT:
-        """Atualiza uma entidade."""
+        """Update an existing entity."""
         entity.updated_at = int(time())
         return self.repository.update(entity)
 
     async def update_by_id(self, entity_id: str, schema: UpdateSchemaT,
                           field_handlers: Dict[str, Callable] = None) -> ModelT:
-        """Atualiza uma entidade pelo ID usando um schema."""
+        """Update an entity by ID using data from a Pydantic schema, with optional custom field handlers."""
         existing = await self.get_by_id(entity_id)
         update_data = schema.model_dump(exclude_unset=True)
 
-        # Aplica handlers customizados ou setattr padrão
+        # Applies custom handlers for specific fields
         if field_handlers:
             for field, value in update_data.items():
                 if field in field_handlers:
@@ -77,7 +76,7 @@ class BaseService(Generic[ModelT, CreateSchemaT, UpdateSchemaT]):
                 else:
                     setattr(existing, field, value)
         else:
-            # Sem handlers: aplica setattr para todos
+            # Default behavior: set attributes directly
             for field, value in update_data.items():
                 setattr(existing, field, value)
 
@@ -87,6 +86,6 @@ class BaseService(Generic[ModelT, CreateSchemaT, UpdateSchemaT]):
     # ==================== DELETE OPERATIONS ====================
 
     async def delete(self, entity_id: str) -> None:
-        """Deleta uma entidade pelo ID."""
+        """Delete an entity by ID, raising 404 if not found."""
         await self.get_by_id(entity_id)
         self.repository.delete(entity_id)
