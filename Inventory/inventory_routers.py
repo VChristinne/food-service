@@ -58,7 +58,7 @@ async def update_item(
         current_user: dict = Depends(get_current_user),
         service: InventoryService = Depends(get_inventory_service)
 ) -> InventoryModel:
-    updated_item = await service.update_by_id(item_id, item_data)
+    updated_item = await service.update_by_id(item_id, item_data)  # noqa
     return updated_item
 
 @router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)

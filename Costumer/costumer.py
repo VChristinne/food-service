@@ -16,6 +16,8 @@ class CostumerSchema(BaseModel):
     phone: str
     cep: str
     complement: Optional[str] = None
+    orders: list = Field(default_factory=list)
+    points: int = Field(default=0)
 
 
 class CostumerUpdateSchema(BaseModel):
@@ -25,6 +27,8 @@ class CostumerUpdateSchema(BaseModel):
     phone: Optional[str] = None
     cep: Optional[str] = None
     complement: Optional[str] = None
+    orders: Optional[list] = None
+    points: Optional[int] = None
 
 
 class CostumerModel(SQLModel, table=True):
@@ -36,7 +40,8 @@ class CostumerModel(SQLModel, table=True):
     email: str = Field(unique=True)
     phone: str = Field(unique=True)
     address: dict = Field(sa_column=Column(JSON))
+    orders: list = Field(default_factory=list, sa_column=Column(JSON))
+    points: int = Field(default=0)
     created_at: int = Field(default_factory=lambda: int(time()))
     updated_at: int = Field(default_factory=lambda: int(time()))
     deleted_at: Optional[int] = None
-

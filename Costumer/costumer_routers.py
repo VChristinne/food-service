@@ -44,7 +44,7 @@ async def create_costumer(
         costumer_data: CostumerSchema,
         service: CostumerService = Depends(get_costumer_service)
 ) -> CostumerModel:
-    new_costumer = service.create_from_schema(costumer_data)
+    new_costumer = await service.create_costumer(costumer_data)
     return new_costumer
 
 @router.patch("/{costumer_id}", status_code=status.HTTP_200_OK)

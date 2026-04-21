@@ -25,7 +25,7 @@ class CatalogueModel(SQLModel, table=True):
     __tablename__ = "catalogue"
 
     id: str = Field(primary_key=True, default_factory=lambda: str(uuid7()))
-    name: str = Field(unique=True)
+    name: str
     price: Decimal = Field(max_digits=10, decimal_places=2)
     available: bool = Field(default=True)
     ingredients: list["InventoryModel"] = Relationship(  # noqa
