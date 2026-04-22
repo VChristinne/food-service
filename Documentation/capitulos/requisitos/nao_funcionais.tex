@@ -1,67 +1,69 @@
 \section{Requisitos Não Funcionais}
 
-\subsection{Segurança}
+\begin{itemize}
+  \item \textbf{RNF1: Segurança}
 
-\begin{center}
-  \begin{tabular}{ l | l | c }
-    \hline
-    \textbf{ID} & \textbf{Descrição} & \textbf{Relacionado} \\ \hline
-    RNF-SEC-01 & Criptografia de senhas usando bcrypt & UC01-UC03 \\ \hline
-    RNF-SEC-02 & Implementação de HTTPS para todas as comunicações & Todos \\ \hline
-    RNF-SEC-03 & Sistema deve implementar JWT para sessões de usuário & UC01-UC11 \\ \hline
-    RNF-SEC-04 & Token JWT deve conter a função do usuário & UC02 \\ \hline
-    RNF-SEC-05 & Endpoints protegidos devem validar o JWT & UC01-UC11 \\ \hline
-    RNF-SEC-06 & Sistema deve implementar controle de acesso baseado em funções & UC01-UC04 \\ \hline
-    RNF-SEC-07 & Máximo de 5 tentativas de login por hora por IP & UC01-UC03 \\ \hline
-    RNF-SEC-08 & Implementação de logout automático após 30 minutos de inatividade & UC03 \\ \hline
-  \end{tabular}
-\end{center}
+  A segurança dos dados e das operações é fundamental para proteger informações sensíveis e garantir a integridade do sistema.
 
-\subsection{Multicanalidade}
+  \begin{itemize}[topsep=0pt, itemsep=0pt]
+    \item Criptografia de senhas usando bcrypt;
+    \item Implementação de HTTP para todas as comunicações;
+    \item Validação obrigatória de JWT em endpoints protegidos;
+    \item Token JWT codifica a função/role do usuário para autorização;
+    \item Controle de acesso baseado em funções (role-based access control);
+  \end{itemize}
+\end{itemize}
 
-\begin{center}
-  \begin{tabular}{ l | l | c }
-    \hline
-    \textbf{ID} & \textbf{Descrição} & \textbf{Relacionado} \\ \hline
-    RNF-MUL-01 & Sistema deve disponibilizar API REST & Todos \\ \hline
-    RNF-MUL-02 & Sistema deve atender app, totem, balcão, pickup e web & UC08, UC09 \\ \hline
-  \end{tabular}
-\end{center}
+\begin{itemize}
+  \item \textbf{RNF2: Multicanalidade}
 
-\subsection{Auditoria}
+  O sistema deve atender múltiplos canais de interação, mantendo coerência operacional.
 
-\begin{center}
-  \begin{tabular}{ l | l | c }
-    \hline
-    \textbf{ID} & \textbf{Descrição} & \textbf{Relacionado} \\ \hline
-    RNF-AUD-01 & Sistema deve registrar logs de todas as operações críticas & UC01, UC02, UC04 \\ \hline
-    RNF-AUD-02 & Sistema deve registar logs de todas as operações do estoque & UC07 \\ \hline
-    RNF-AUD-03 & Sistema deve registar logs de todas as operações de venda & UC09 \\ \hline
-    RNF-AUD-04 & Sistema deve registar logs de todas as ações dos funcionários & UC03, UC11 \\ \hline
-  \end{tabular}
-\end{center}
+  \begin{itemize}[topsep=0pt, itemsep=0pt]
+    \item Disponibilização de API REST como interface principal;
+    \item Suporte a múltiplos canais: App, Totem, Balcão, Pickup e Web;
+    \item Rastreabilidade de origem (canal) em todas as transações.
+  \end{itemize}
+\end{itemize}
 
-\subsection{Performance}
+\begin{itemize}
+  \item \textbf{RNF3: Auditoria e Rastreabilidade}
 
-\begin{center}
-  \begin{tabular}{ l | l | c }
-    \hline
-    \textbf{ID} & \textbf{Descrição} & \textbf{Relacionado} \\ \hline
-    RNF-PER-01 & Sistema deve processar pedidos em até 5s em condições normais & UC09 \\ \hline
-    RNF-PER-02 & Sistema deve suportar horáros de pico do almoço e jantar & UC09 \\ \hline
-    RNF-PER-03 & Sistema deve ser escalável para suportar crescimento & Todos \\ \hline
-  \end{tabular}
-\end{center}
+  Registro centralizado de operações críticas para conformidade e investigação.
 
-\subsection{Lei Geral de Proteção de Dados (LGPD)}
+  \begin{itemize}[topsep=2pt, itemsep=2pt]
+    \item Logging de operações críticas de autenticação;
+    \item Logging de todas as operações de estoque;
+    \item Logging de operações de venda;
+    \item Logging de ações administrativas e de funcionários;
+    \item Registro automático de timestamp, usuário, ação, recurso afetado e código de status HTTP.
+  \end{itemize}
+\end{itemize}
 
-\begin{center}
-  \begin{tabular}{ l | l | c }
-    \hline
-    \textbf{ID} & \textbf{Descrição} & \textbf{Relacionado} \\ \hline
-    RNF-LGPD-01 & Sistema deve implementar direito ao esquecimento & UC04 \\ \hline
-    RNF-LGPD-02 & Sistema deve registrar consentimento da LGPD & UC01 \\ \hline
-    RNF-LGPD-03 & Sistema deve anonimizar os logs & --- \\ \hline
-    RNF-LGPD-04 & Sistema deve armazenar os logs por apenas 90 dias & UC04 \\ \hline
-  \end{tabular}
-\end{center}
+\begin{itemize}
+  \item \textbf{RNF4: Performance e Disponibilidade}
+
+  O sistema deve ser responsivo em cenários de alto uso e escalável para crescimento.
+
+  \begin{itemize}[topsep=0pt, itemsep=0pt]
+    \item Capacidade de lidar com horários de pico (almoço e jantar);
+    \item Arquitetura preparada para escalabilidade horizontal (adicionar servidores);
+    \item Tolerância a falhas em integrações externas (ex: pagamento mock).
+  \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+  \item \textbf{RNF5: Lei Geral de Proteção de Dados (LGPD)}
+
+  Conformidade com a legislação brasileira de proteção de dados pessoais.
+
+  \begin{itemize}[topsep=0pt, itemsep=0pt]
+    \item Direito ao esquecimento: cliente pode solicitar exclusão de dados pessoais;
+    \item Registro de consentimento do usuário ao aceitar políticas de privacidade e LGPD;
+    \item Minimização de dados: coleta apenas do necessário (nome, email, telefone, endereço);
+    \item Retenção limitada: dados pessoais são mantidos apenas enquanto necessário para a finalidade;
+    \item Não exposição de dados sensíveis em respostas de API (ex: senhas, tokens internos).
+  \end{itemize}
+\end{itemize}
+
+\newpage

@@ -1,113 +1,100 @@
 \section{Requisitos Funcionais}
 
-\subsection{Autenticação e Cadastro}
+\begin{itemize}
+  \item \textbf{RF1: Autenticação e Cadastro de Usuários}
 
-\begin{center}
-  \begin{tabular}{ l | l | c }
-    \hline
-    \textbf{ID} & \textbf{Descrição} & \textbf{Use Case} \\ \hline
-    RF-AUT-01 & Cadastro de clientes & UC01 \\ \hline
-    RF-AUT-02 & Login de clientes & UC03 \\ \hline
-    RF-AUT-03 & Recuperação de senha via email & --- \\ \hline
-    RF-AUT-04 & Envio de email de confirmação após cadastro & UC01 \\ \hline
-    RF-AUT-05 & Validação de unicidade de email & UC01 \\ \hline
-    RF-AUT-06 & Logout de clientes & UC03 \\ \hline
-    RF-AUT-07 & Cadastro de funcionários pelo administrador & UC02 \\ \hline
-    RF-AUT-08 & Login de funcionários & UC03 \\ \hline
-    RF-AUT-09 & Geração de senha temporária para funcionários & UC02 \\ \hline
-    RF-AUT-10 & Envio de credenciais para funcionários via email & UC02 \\ \hline
-    RF-AUT-11 & Link de ativação de conta para funcionários com prazo de 7 dias & UC02 \\ \hline
-    RF-AUT-12 & Obrigatoriedade de troca de senha no primeiro acesso para funcionários & UC02 \\ \hline
-    RF-AUT-13 & Registro de aceite de políticas (LGPD) & UC02 \\ \hline
-    RF-AUT-14 & Log de autoria de cadastros e acessos de funcionários & UC02\\ \hline
-    RF-AUT-15 & Logout automático após 30 minutos de inatividade & UC03 \\ \hline
-  \end{tabular}
-\end{center}
+  O sistema deve permitir o cadastro e autenticação de clientes e funcionários, com regras específicas para cada tipo de usuário.
+  Cada perfil possui autenticação via JWT e gerenciamento de sessão, garantindo segurança e controle de acesso.
 
-\subsection{Gestão de Perfil}
+  \textbf{Clientes:}
+  \begin{itemize}[topsep=0pt, itemsep=0pt]
+    \item Cadastro com dados pessoais (nome, email, senha, telefone e endereço);
+    \item Email único no sistema;
+    \item Login com email e senha;
+    \item Logout com invalidação de sessão;
+    \item Aceite de políticas de privacidade e termos de uso (LGPD).
+  \end{itemize}
 
-\begin{center}
-  \begin{tabular}{ l | l | c }
-    \hline
-    \textbf{ID} & \textbf{Descrição} & \textbf{Use Case} \\ \hline
-    RF-PER-01 & Edição de dados cadatrais do cliente & --- \\ \hline
-    RF-PER-02 & Alteração de senha & --- \\ \hline
-    RF-PER-03 & Exclusão de conta (LGPD) & UC04 \\ \hline
-    RF-PER-04 & Visualização do histórico de pedidos & --- \\ \hline
-  \end{tabular}
-\end{center}
+  \textbf{Funcionários:}
+  \begin{itemize}[topsep=0pt, itemsep=0pt]
+    \item Cadastro realizado apenas por administradores;
+    \item Login com email e senha (domínio @raizesnordeste.com);
+    \item Logout com invalidação de sessão;
+    \item Registro de todo cadastro e acesso em log de auditoria (quem, quando, ação).
+  \end{itemize}
+\end{itemize}
 
-\subsection{Catálogo de Produtos}
+\begin{itemize}
+  \item \textbf{RF2: Inventário de Ingredientes}
 
-\begin{center}
-  \begin{tabular}{ l | l | c }
-    \hline
-    \textbf{ID} & \textbf{Descrição} & \textbf{Use Case} \\ \hline
-    RF-CAT-01 & Exibição de catálogo por unidade & UC05 \\ \hline
-    RF-CAT-02 & Busca de produtos por nome & UC05 \\ \hline
-    RF-CAT-03 & Filtro de produtos por categoria & UC05 \\ \hline
-    RF-CAT-04 & Registro de entrada de produtos no estoque & UC06 \\ \hline
-    RF-CAT-05 & Atualização de estoque após venda & UC07 \\ \hline
-    RF-CAT-07 & Identificação da unidade por GPS ou CEP & UC05 \\ \hline
-  \end{tabular}
-\end{center}
+  O sistema deve gerenciar um inventário de ingredientes utilizados na preparação dos alimentos, permitindo controle de estoque e planejamento de compras.
 
-\subsection{Carrinho e Pedidos}
+  \begin{itemize}[topsep=0pt, itemsep=0pt]
+    \item Cadastro de ingrediente (ID, nome, quantidade, quantidade mínima e medida de unidade);
+    \item Consulta de ingredientes disponíveis;
+    \item Atualização dos dados do ingrediente;
+    \item Consulta da data de cadastro e última atualização de cada ingrediente;
+    \item Consulta de ingredientes abaixo da quantidade mínima para alerta de reposição (opcional, documentado).
+  \end{itemize}
+\end{itemize}
 
-\begin{center}
-  \begin{tabular}{ l | l | c }
-    \hline
-    \textbf{ID} & \textbf{Descrição} & \textbf{Use Case} \\ \hline
-    RF-PED-01 & Adição de produtos ao carrinho & UC08 \\ \hline
-    RF-PED-02 & Remoção de produtos do carrinho & UC08 \\ \hline
-    RF-PED-03 & Atualização de quantidade de produtos no carrinho & UC08 \\ \hline
-    RF-PED-04 & Cálculo automático do valor total do pedido & UC08 \\ \hline
-    RF-PED-05 & Finalização de pedido com escolha de forma de pagamento & UC09 \\ \hline
-    RF-PED-06 & Geração de código único de pedido & UC08 \\ \hline
-    RF-PED-07 & Cancelamento de pedido antes do preparo & --- \\ \hline
-    RF-PED-08 & Rastreamento do status do pedido & --- \\ \hline
-  \end{tabular}
-\end{center}
+\begin{itemize}
+  \item \textbf{RF3: Gestão de Cardápio}
 
-\subsection{Entregas}
+  O sistema deve permitir a criação e gerenciamento de um cardápio, associando cada refeição a uma lista de ingredientes necessários para sua preparação.
 
-\begin{center}
-  \begin{tabular}{ l | l | c }
-    \hline
-    \textbf{ID} & \textbf{Descrição} & \textbf{Use Case} \\ \hline
-    RF-ENT-01 & Atualização de status do pedido por funcionário & UC09 \\ \hline
-    RF-ENT-02 & Atribuição de entregador ao pedido & UC09 \\ \hline
-    RF-ENT-03 & Registro de horário de cada mudança de status & UC09 \\ \hline
-    RF-ENT-04 & Notificação ao cliente sobre status do pedido via notificação & --- \\ \hline
-  \end{tabular}
-\end{center}
+  \begin{itemize}[topsep=0pt, itemsep=0pt]
+    \item Cadastro de refeição (ID, nome, disponibilidade, preço e associação com ingredientes);
+    \item Consulta de refeições disponíveis no cardápio;
+    \item Atualização dos dados da refeição;
+    \item Consulta dos ingredientes necessários para cada refeição;
+    \item Consulta da data de cadastro e última atualização de cada refeição;
+    \item Consulta de refeições que utilizam um ingrediente específico (opcional, documentado).
+  \end{itemize}
+\end{itemize}
 
-\subsection{Programa de Fidelidade}
+\begin{itemize}
+  \item \textbf{RF4: Realização e Gestão de Pedidos}
 
-\begin{center}
-  \begin{tabular}{ l | l | c }
-    \hline
-    \textbf{ID} & \textbf{Descrição} & \textbf{Use Case} \\ \hline
-    RF-FID-01 & Acúmulo de pontos por valor gasto & UC10 \\ \hline
-    RF-FID-02 & Visualização do saldo de pontos no perfil do cliente & UC10 \\ \hline
-    RF-FID-04 & Resgate de recompensas com pontos & UC10 \\ \hline
-    RF-FID-05 & Dedução de pontos do saldo após resgaste & UC10 \\ \hline
-    RF-FID-06 & Exibição de histórico de pontuação & --- \\ \hline
-    RF-FID-07 & Categorização de clientes por faixa de pontos & --- \\ \hline
-  \end{tabular}
-\end{center}
+  Pedidos registram itens solicitados, valores, status de preparo e canal de origem. \\
+  Fluxo completo: pendente $\rightarrow$ em preparo $\rightarrow$ pronto $\rightarrow$ entregue ou cancelado.
 
-\subsection{Promoções e Campanhas}
+  \begin{itemize}[topsep=0pt, itemsep=0pt]
+    \item Criação de pedido com múltiplos itens (produto, quantidade, preço unitário);
+    \item Registro obrigatório de canal de origem (APP, TOTEM, BALCÃO, DELIVERY, WEB);
+    \item Cálculo automático de valor total;
+    \item Atualização de status (pendente, em preparo, pronto, entregue, cancelado);
+    \item Cancelamento de pedido (com restrições por status);
+    \item Consulta e filtragem de pedidos por cliente, unidade ou canal;
+    \item Integração com serviço de pagamento (mock) no fluxo de confirmação.
+  \end{itemize}
+\end{itemize}
 
-\begin{center}
-  \begin{tabular}{ l | l | c }
-    \hline
-    \textbf{ID} & \textbf{Descrição} & \textbf{Use Case} \\ \hline
-    RF-PRO-01 & Exibição de promoções ativas no catálogo & UC11 \\ \hline
-    RF-PRO-02 & Aplicação automática de desconto em produtos promocionais & UC11 \\ \hline
-    RF-PRO-03 & Aplicação de cupom de desconto no pedido & UC11 \\ \hline
-    RF-PRO-04 & Validação de expiração e regras do cupom de desconto & UC11 \\ \hline
-    RF-PRO-05 & Bloqueio de uso de cupom já utilizado & UC11 \\ \hline
-    RF-PRO-06 & Envio de notificações opcionais de descontos & --- \\ \hline
-  \end{tabular}
-\end{center}
+\begin{itemize}
+  \item \textbf{RF5: Programa de Fidelização}
+
+  Sistema de pontos para incentivar a recompra e premiar clientes, integrado ao processo de pedidos.
+
+  \begin{itemize}[topsep=0pt, itemsep=0pt]
+    \item Acúmulo de pontos por pedido realizado (proporção ao valor gasto);
+    \item Consulta de saldo de pontos do cliente;
+    \item Resgate de pontos para desconto em pedido futuro;
+    \item Consentimento explícito do cliente para participar do programa;
+    \item Histórico de transações de pontos (acúmulo e resgate);
+    \item Definição de regras de conversão (1 real = 1 ponto).
+  \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+  \item \textbf{RF6: Auditoria e Rastreabilidade}
+
+  Registro centralizado de ações sensíveis para rastreabilidade operacional e conformidade.
+
+  \begin{itemize}[topsep=0pt, itemsep=0pt]
+    \item Log de operações administrativas referentes a funcionários (cadastro, acesso);
+    \item Log de operações de clientes (cadastro, acesso, pedidos);
+    \item Log de criação, atualização e cancelamento de pedidos;
+    \item Identificação de autor (usuário), timestamp, ação, recurso afetado e user-agent;
+    \item Persistência em banco de dados para consulta posterior.
+  \end{itemize}
+\end{itemize}
