@@ -1,0 +1,42 @@
+\subsection{UC-03: Login no Sistema}
+
+\begin{itemize}[topsep=1pt, itemsep=0pt]
+  \item[]\textbf{Descrição}: Login de usuários no sistema.
+
+  \item[]\textbf{Atores Principais}: Administrador, Cliente e Funcionário
+
+  \textbf{Pré-condições}:
+  \begin{enumerate}
+    \item Usuário possui conta ativa no sistema;
+    \item Sistema está disponível.
+  \end{enumerate}
+
+  \textbf{Pós-condições}:
+  \begin{enumerate}
+    \item Usuário autenticado no sistema;
+    \item Token JWT gerado com funções apropriadas;
+    \item Sessão do usuário iniciada;
+    \item Usuário redirecionado para a página correspondente ao seu perfil.
+  \end{enumerate}
+
+  \textbf{Fluxo Principal}:
+  \begin{enumerate}
+    \item Usuário acessa a página de login;
+    \item Sistema exibe formulário solicitando email e senha;
+    \item Usuário preenche o formulário e clica em "Entrar";
+    \item Sistema valida as credenciais e autentica o usuário;
+    \item Sistema inicia sessão e redireciona para a página correspondente.
+  \end{enumerate}
+
+  \textbf{Fluxos de Exceção}:
+  \begin{enumerate}
+    \item Credenciais inválidas: retorna 401 Unauthorized com mensagem "Email ou senha incorretos";
+    \item Conta inativa: retorna 403 Forbidden com mensagem "Conta inativa, entre em contato com o suporte".
+  \end{enumerate}
+
+  \textbf{Regras de Negócio}:
+  \begin{enumerate}
+    \item RN05: Sistema deve registrar todas as ações administrativas para auditoria;
+    \item RN07: Usuário pode solicitar recuperação de senha via email.
+  \end{enumerate}
+\end{itemize}

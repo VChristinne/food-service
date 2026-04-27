@@ -1,0 +1,23 @@
+\section{Decisões Técnicas}
+
+\begin{itemize}
+  \item \textbf{Python}
+
+  Apesar de possuir mais familiaridade técnica com Swift, Python foi escolhido por estar mais alinhado às expectativas
+  dos avaliadores e ao padrão de projetos acadêmicos. A linguagem oferece excelente suporte a bibliotecas para autenticação,
+  persistência e web, além de vasta comunidade e documentação, facilitando a avaliação e compreensão do código.
+
+  \item \textbf{FastAPI}
+
+  A escolha desse framework se deu por oferecer validação automática de dados via Pydantic, documentação interativa
+  (Swagger/OpenAPI) nativa e suporte a operações assíncronas. Tais características são cruciais para construir
+  endpoints que atendam multicanalidade (app, totem, web) e garantindo que a API seja autodocumentada
+  conforme requisitos do projeto.
+
+  \item \textbf{SQLite, SQLAlchemy e SQLModel}
+
+  Para persistência de dados, escolheu-se SQLite por ser zero-config e adequado ao ambiente acadêmico.
+  SQLAlchemy fornece abstração de banco de dados, facilitando migrações futuras sem afetar a lógica de negócio.
+  SQLModel unificia modelos SQLAlchemy com schemas Pydantic, eliminando duplicação entre camadas de dados e API.
+  Alembic complementa essa stack gerenciando versionamento de schema de forma reproduzível e auditável.
+\end{itemize}

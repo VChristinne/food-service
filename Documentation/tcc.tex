@@ -1,4 +1,8 @@
-\documentclass{abntex2}
+\documentclass[12pt]{abntex2}
+
+\usepackage[default]{opensans}
+\usepackage[T1]{fontenc}
+\renewcommand{\familydefault}{\sfdefault}
 
 \input{config}
 
@@ -11,6 +15,7 @@
 \textual
 \pagenumbering{arabic}
 \input{capitulos/requisitos/_index}
+\input{capitulos/diagramas/_index}
 \input{capitulos/arquitetura/_index}
 \input{capitulos/endpoints/_index}
 \input{capitulos/conclusao}

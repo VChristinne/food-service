@@ -1,0 +1,50 @@
+\subsection{UC-01: Cadastro de Cliente}
+
+\begin{itemize}[topsep=1pt, itemsep=0pt]
+  \item[]\textbf{Descrição}: Cadastro de cliente no sistema.
+
+  \item[]\textbf{Ator Principal}: Cliente
+
+  \item[]\textbf{Sistema Externo}: API ViaCEP (validação de CEP)
+
+  \textbf{Pré-condições}:
+  \begin{enumerate}
+    \item Cliente não possui conta no sistema;
+    \item Sistema está disponível.
+  \end{enumerate}
+
+  \textbf{Pós-condições}:
+  \begin{enumerate}
+    \item Cliente registrado no sistema com dados válidos;
+    \item Consentimento de políticas registrado;
+    \item Cliente pode acessar o sistema com email e senha.
+  \end{enumerate}
+
+  \textbf{Fluxo Principal}:
+  \begin{enumerate}
+    \item Cliente acessa a página de cadastro;
+    \item Cliente preenche o formulário com nome, email, senha, telefone, CEP e complemento opcional;
+    \item Sistema valida os dados, criptografa a senha e salva o cliente no banco.
+    \item Antes de confirmar, o cliente deve aceitar a LGPD, com consentimento registrado (data, hora, versão, IP);
+    \item Ao concluir, o sistema exibe mensagem de sucesso e redireciona para login.
+  \end{enumerate}
+
+  \textbf{Fluxos de Exceção}:
+  \begin{enumerate}
+    \item Duplicidade de email: retorna 409 Conflict com mensagem "Email já cadastrado";
+    \item Duplicidade de telefone: retorna 409 Conflict com mensagem "Telefone já cadastrado";
+    \item Nome inválido: retorna 400 Bad Request com mensagem "Nome inválido";
+    \item CEP inválido: retorna 400 Bad Request com mensagem "CEP inválido";
+    \item LGPD não aceito: retorna 400 Bad Request com mensagem "É obrigatório a aceitação da LGPD".
+  \end{enumerate}
+
+  \textbf{Regras de Negócio}:
+  \begin{enumerate}
+    \item RN01: Email e telefone devem ser únicos no sistema;
+    \item RN02: Nome deve conter apenas letras, espaços, hífens e apóstrofos;
+    \item RN03: CEP deve existir na base do ViaCEP;
+    \item RN04: Aceite obrigatório de política de privacidade (LGPD);
+    \item RN05: Sistema deve registrar todas as ações administrativas para auditoria;
+    \item RN06: Cliente pode solicitar exclusão de dados futuramente.
+  \end{enumerate}
+\end{itemize}

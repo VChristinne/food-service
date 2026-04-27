@@ -1,0 +1,55 @@
+\subsection{UC-02: Cadastro de Funcionário}
+
+\begin{itemize}[topsep=1pt, itemsep=0pt]
+  \item[]\textbf{Descrição}: Cadastro de funcionário no sistema.
+
+  \item[]\textbf{Ator Principal}: Administrador
+  \item[]\textbf{Ator Secundário}: Funcionário
+
+  \item[]\textbf{Sistema Externo}: API ViaCEP (validação de CEP)
+
+  \textbf{Pré-condições}:
+  \begin{enumerate}
+    \item Administrador autenticado no sistema;
+    \item Funcionário não possui conta no sistema;
+    \item Sistema está disponível.
+  \end{enumerate}
+
+  \textbf{Pós-condições}:
+  \begin{enumerate}
+    \item Funcionário registrado no sistema com dados válidos;
+    \item Email enviado ao funcionário com credenciais de primeiro acesso;
+    \item Funcionário pode fazer login após aceitar políticas.
+  \end{enumerate}
+
+  \textbf{Fluxo Principal}:
+  \begin{enumerate}
+    \item Administrador acessa painel administrativo, seção "Funcionários" e "Cadastrar Novo Funcionário";
+    \item Administrador preenche o formulário com nome, email, telefone, senha e cargo do funcionário;
+    \item Sistema valida os dados, criptografa a senha e salva o cliente no banco.
+    \item Sistema registra o cadastro com status "Pendente Ativação e Políticas";
+    \item Sistema envia email ao funcionário com link temporário para ativação e aceite de LGPD;
+    \item Sistema exibe mensagem "Funcionário cadastrado! Email enviado para [email]";
+    \item Funcionário acessa email, clica no link, é redirecionado para página de ativação;
+    \item Funcionário aceita a LGPD, sistema registra consentimento e ativa a conta;
+    \item Funcionário pode fazer login com email e senha definidos.
+  \end{enumerate}
+
+  \textbf{Fluxos de Exceção}:
+  \begin{enumerate}
+    \item Acesso não autorizado: retorna 403 Forbidden com mensagem "Acesso negado";
+    \item Nome inválido: retorna 400 Bad Request com mensagem "Nome inválido";
+    \item Duplicidade de email: retorna 409 Conflict com mensagem "Email já cadastrado";
+    \item Duplicidade de telefone: retorna 409 Conflict com mensagem "Telefone já cadastrado";
+    \item Cargo em branco: retorna 400 Bad Request com mensagem "Cargo é obrigatório".
+  \end{enumerate}
+
+  \textbf{Regras de Negócio}:
+  \begin{enumerate}[topsep=1pt]
+    \item RN01: Email e telefone devem ser únicos no sistema;
+    \item RN02: Nome deve conter apenas letras, espaços, hífens e apóstrofos;
+    \item RN03: CEP deve existir na base do ViaCEP;
+    \item RN04: Aceite obrigatório de política de privacidade (LGPD);
+    \item RN05: Sistema deve registrar todas as ações administrativas para auditoria.
+  \end{enumerate}
+\end{itemize}
