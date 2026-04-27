@@ -1,0 +1,185 @@
+\section{Arquitetura em Camadas}
+
+\hspace{0.5cm} A arquitetura em camadas da aplicação segue princípios consolidados de engenharia de software,
+integrando padrões de design amplamente adotados na indústria. A implementação fundamenta-se nos seguintes padrões:
+
+\begin{enumerate}
+  \item \textbf{Padrões de Design Clássicos}: Os padrões \textit{Template Method}, \textit{Strategy},
+  \textit{Decorator} e \textit{Dependency Injection} são classificados como padrões de design estruturais
+  e comportamentais conforme definido por \cite{gamma2009design}.
+
+  \item \textbf{Padrões Empresariais}: O padrão \textit{Repository} e \textit{Data Transfer Object (DTO)}
+  são padrões de aplicação empresarial descritos por \cite{fowler2015patterns} que facilitam a separação
+  entre lógica de negócio e camadas de persistência.
+
+  \item \textbf{Service Layer}: O padrão de organização \textit{Service Layer} concentra a lógica de negócio
+  em uma camada dedicada, seguindo arquiteturas em camadas conforme descrito por \cite{hohpe2015enterprise}
+  e \cite{evans2014domain}.
+\end{enumerate}
+
+\subsection{Domínio}
+
+\hspace{0.5cm} A camada de domínio encapsula a modelagem das entidades de negócio e suas regras de validação.
+Esta implementação separa explicitamente as responsabilidades através do padrão DTO, Repository e Service Layer,
+garantindo que validações sejam aplicadas em múltiplas camadas e que a lógica de persistência não se misture
+com a lógica de negócio.
+
+\subsubsection{Estrutura Padronizada}
+
+Cada domínio é implementado em um arquivo único que consolida três representações complementares da mesma entidade:
+
+\begin{itemize}
+  \item \textbf{Schema}: Classe Pydantic que valida dados de entrada para operações de criação.
+  Define tipos, restrições de tamanho (\texttt{max\_digits}, \texttt{decimal\_places}), valores padrão e enumerações.
+  Não inclui campos gerenciados pelo sistema como \texttt{id} ou \texttt{created\_at}.
+  É um DTO que transfere dados entre a API HTTP e as camadas internas.
+
+  \item \textbf{UpdateSchema}: Classe Pydantic com todos os campos como \texttt{Optional},
+  permitindo atualizações parciais sem requerer a entidade completa. Esta separação previne validações
+  que rejeitariam requisições legítimas com campos ausentes. Também funciona como DTO para operações de modificação.
+
+  \item \textbf{Model}: Classe SQLModel que utiliza o decorador \texttt{table=True}, mapeando a entidade diretamente para tabelas SQL.
+  Inclui campos de auditoria automática (\texttt{created\_at}, \texttt{updated\_at}, \texttt{deleted\_at}) para implementar soft delete,
+  UUIDs v7 como chaves primárias e relacionamentos através de \texttt{Relationship} com suporte a cardinalidade muitos-para-muitos
+  via modelos de ligação. Não contém lógica de persistência, apenas representação de dados.
+\end{itemize}
+
+\subsubsection{Enumerações}
+
+Para domínios com estados ou tipologias bem-definidas, enumerações Pydantic/SQLModel são utilizadas.
+Isso assegura type-safety em tempo de compilação (estática) e validação em tempo de execução, além de documentar
+os valores permitidos de forma explícita. Exemplos incluem:
+
+\begin{itemize}
+  \item \texttt{RoleEnum}: Define os papéis de acesso de funcionários (admin, manager, chef, waiter, delivery).
+  \item \texttt{StatusEnum}: Estados de um pedido (pending, preparing, in\_route, completed, failed, canceled).
+  \item \texttt{ChannelEnum}: Canais de origem de pedidos (app, totem, counter, web).
+  \item \texttt{OrderTypeEnum}: Modos de entrega (dine\_in, takeaway, delivery).
+  \item \texttt{PaymentMethodEnum}: Métodos de pagamento suportados (cash, credit\_card, pix, vale\_alimentacao).
+  \item \texttt{AuditActionEnum}: Ações registradas em auditoria (CREATE, READ, UPDATE, DELETE, LOGIN, LOGOUT, PASSWORD\_CHANGE).
+\end{itemize}
+
+\subsubsection{Padrão Repository}
+
+A camada Repository encapsula todas as operações de banco de dados em uma classe genérica
+\texttt{BaseRepository<T>}, que implementa CRUD padrão (create, read, update, delete) através de métodos type-safe.
+Esta separação mantém consultas SQL e gerenciamento de sessão afastados da lógica de negócio.
+
+Cada domínio pode estender \texttt{BaseRepository} com queries específicas quando necessário. Por exemplo,
+\texttt{EmployeeRepository} adiciona \texttt{get\_by\_email()}, permitindo buscar funcionários por email sem duplicar
+código de base de dados. O Repository é responsável por:
+
+\begin{itemize}
+  \item Gerenciar a sessão SQLModel/SQLAlchemy.
+  \item Executar queries de forma segura.
+  \item Controlar transações (commit/rollback).
+  \item Retornar entidades (Models) ou \texttt{None} em caso de não-encontrado.
+\end{itemize}
+
+\subsubsection{Padrão Service}
+
+A camada Service orquestra a transformação entre DTOs (entrada da API) e Models (persistência),
+aplicando lógica de negócio, validações e transformações adicionais. Cada domínio possui um Service que:
+
+\begin{itemize}
+  \item Consome um Repository para operações de banco de dados.
+  \item Valida regras de negócio que vão além da validação estrutural de Schemas.
+  \item Aplica transformações de dados (ex: hashing de senhas, busca de endereço por CEP).
+  \item Orquestra chamadas a serviços externos ou outros domínios.
+  \item Mapeia HTTPExceptions para erros adequados (404, 400, 403).
+\end{itemize}
+
+A classe genérica \texttt{BaseService<ModelT, CreateSchemaT, UpdateSchemaT>} implementa operações padrão,
+permitindo que Services específicos adicionem métodos customizados. Por exemplo, \texttt{CostumerService.create\_costumer()}
+não apenas cria um registro, mas também busca o endereço completo via CEP e aplica hash à senha antes de persistir.
+
+\subsubsection{Fluxo de Dados}
+
+Uma requisição segue o fluxo unidirecional:
+
+\begin{enumerate}
+  \item \textbf{Router (APIRouter)}: Recebe a requisição HTTP e valida contra um Schema (DTO).
+  \item \textbf{Service}: Recebe o Schema validado, aplica lógica de negócio, cria/atualiza um Model.
+  \item \textbf{Repository}: Recebe o Model e persiste no banco de dados via SQLModel.
+  \item \textbf{Resposta}: O Model é serializado novamente como JSON e retornado ao cliente.
+\end{enumerate}
+
+\subsubsection{Domínios Implementados}
+
+A aplicação organiza suas entidades em sete domínios principais:
+
+\begin{description}
+  \item[Audit] Registra todas as operações críticas do sistema (criação, leitura, atualização, exclusão, autenticação).
+  Armazena metadados como IP de origem, user agent, status HTTP e identificador do executor, permitindo rastreabilidade completa.
+
+  \item[Auth] Gerencia autenticação e tokens JWT para acesso à API. Separado em domínio próprio para manter segurança em primeiro plano.
+
+  \item[Catalogue] Representa o cardápio de pratos oferecidos. Estabelece relacionamento muitos-para-muitos com \texttt{Inventory}
+  através do modelo de ligação \texttt{DishIngredient}, que mapeia quais ingredientes compõem cada prato.
+
+  \item[Costumer] Modela clientes/usuários finais com autenticação, dados de contato, endereço como JSON estruturado e
+  sistema de pontos (loyalty). Mantém histórico de pedidos também em JSON para flexibilidade.
+
+  \item[Employee] Define funcionários com papéis de autorização (\texttt{RoleEnum}), dados de endereço e autenticação separada.
+  Estrutura preparada para hierarquia de acesso baseada em roles.
+
+  \item[Inventory] Controla o estoque de ingredientes com unidades de medida específicas (\texttt{UnitEnum}: gramas, mililitros, unidades).
+  Define quantidades mínimas para alertas de reposição. Conectado ao \texttt{Catalogue} através do modelo de ligação.
+
+  \item[Order] Encapsula o conceito central de negócio: pedidos. Agrupa múltiplas dimensões (origem, tipo, pagamento, status)
+  e armazena detalhes de itens como JSON estruturado para flexibilidade, pois cada item pode ter variações dinâmicas.
+\end{description}
+
+\subsubsection{Padrões de Persistência}
+
+Todas as entidades implementam soft delete através do campo \texttt{deleted\_at}. Isso preserva integridade referencial
+e permite auditoria histórica sem perder dados. Timestamps (\texttt{created\_at}, \texttt{updated\_at}) são gerenciados automaticamente
+via \texttt{default\_factory}, garantindo consistência sem requerer lógica explícita nos controladores.
+
+Tipos de dados complexos (endereços, itens de pedidos com variações) são serializados como JSON direto no banco,
+aproveitando a flexibilidade de plataformas modernas (PostgreSQL, SQLite com extensões) enquanto mantém
+queries mais simples e evita JOIN excessivos durante leitura.
+
+Chaves primárias utilizam UUIDs v7, que combinam propriedades de UUIDs tradicionais (unicidade global)
+com sortabilidade temporal, favorecendo índices e paginação eficiente.
+
+Os domínios atuais são organizados da seguinte forma:
+
+\begin{verbatim}
+├── Audit
+│   ├── audit_decorator.py
+│   ├── audit_middleware.py
+│   ├── audit_repository.py
+│   ├── audit_service.py
+│   └── audit.py
+├── Auth
+│   ├── auth_routers.py
+│   ├── auth_service.py
+│   └── auth.py
+├── Catalogue
+│   ├── catalogue_repository.py
+│   ├── catalogue_routers.py
+│   ├── catalogue_service.py
+│   ├── catalogue.py
+│   └── dish_ingredient.py
+├── Costumer
+│   ├── costumer_repository.py
+│   ├── costumer_routers.py
+│   ├── costumer_service.py
+│   └── costumer.py
+├── Employee
+│   ├── employee_repository.py
+│   ├── employee_routers.py
+│   ├── employee_service.py
+│   └── employee.py
+├── Inventory
+│   ├── inventory_repository.py
+│   ├── inventory_routers.py
+│   ├── inventory_service.py
+│   └── inventory.py
+├── Order
+│   ├── order_repository.py
+│   ├── order_routers.py
+│   ├── order_service.py
+│   └── order.py
+\end{verbatim}
