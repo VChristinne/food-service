@@ -33,8 +33,8 @@ class PaymentMethodEnum(str, Enum):
 class StatusEnum(str, Enum):
     PENDING = "pending"
     PREPARING = "preparing"
-    IN_ROUTE = "in_route"
-    COMPLETED = "completed"
+    TRANSIT = "transit"
+    DELIVERED = "delivered"
     FAILED = "failed"
     CANCELED = "canceled"
 
