@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlmodel import Session
 
 from Employee.employee_repository import EmployeeRepository
@@ -17,13 +18,13 @@ class AuthService:
         if is_employee:
             user = self.emploee_repository.get_by_email(email)
             if not user or not verify_password(password, user.password_hash):
-                raise ValueError("Email or password is invalid")
+                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Email or password is invalid")
             role = user.role
             user_id = user.id
         else:
             user = self.costumer_repository.get_by_email(email)
             if not user or not verify_password(password, user.password_hash):
-                raise ValueError("Email or password is invalid")
+                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Email or password is invalid")
             role = "COSTUMER"
             user_id = user.id
 
@@ -36,5 +37,8 @@ class AuthService:
         return {
             "id": user_id,
             "access_token": token,
-            "token_type": "bearer"
+            "token_type": "Bearer"
         }
+
+    async def logout(self) -> dict:
+        return {"message": "Logout successful"}

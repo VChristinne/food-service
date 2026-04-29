@@ -4,14 +4,14 @@ from sqlmodel import Session
 from Database.db_config import db
 from Audit.audit_service import AuditService
 from Audit.audit_middleware import AuditMiddleware
-from Audit.audit_decorator import AuditDecorator
+from Audit.audit_decorator import create_audit_decorator
 
 version = "v1"
 
 db.create_tables()
 session = Session(db.engine)
 audit_service = AuditService(session)
-save_log = AuditDecorator(audit_service)
+save_log = create_audit_decorator(audit_service)
 
 app = FastAPI(
     title="Food Service API",

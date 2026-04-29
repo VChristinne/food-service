@@ -1,7 +1,8 @@
 from sqlmodel import Session
 from uuid_extensions import uuid7
+from math import ceil
 
-from Employee.employee import EmployeeSchema, EmployeeModel, EmployeeUpdateSchema
+from Employee.employee import EmployeeSchema, EmployeeModel, EmployeeUpdateSchema, PaginatedEmployeeResponse
 from Employee.employee_repository import EmployeeRepository
 from Utils.base_service import BaseService
 from Audit.audit_service import AuditService
@@ -47,4 +48,16 @@ class EmployeeService(BaseService[EmployeeModel, EmployeeSchema, EmployeeUpdateS
                 "password": _handle_password,
                 "cep": _handle_cep,
             }
+        )
+
+    def get_paginated_employees(self, page: int, page_size: int) -> PaginatedEmployeeResponse:
+        employees, total = self.repository.get_paginated(page, page_size)
+        total_pages = ceil(total / page_size) if total > 0 else 0
+
+        return PaginatedEmployeeResponse(
+            data=employees,
+            total=total,
+            page=page,
+            page_size=page_size,
+            total_pages=total_pages
         )
