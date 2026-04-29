@@ -1,0 +1,63 @@
+\section{Gestão de Funcionários}
+
+\subsection{Listar Funcionários}
+
+\begin{itemize}[topsep=1pt, itemsep=0pt]
+  \item[]\textbf{Finalidade}: Listar todos os funcionários registrados.
+
+  \item[]\textbf{Rota}: GET /api/v1/employees
+
+  \item[]\textbf{Permissão}: JWT | Perfis: Admin, Manager
+
+  \item[]\textbf{Parâmetros}:
+  \begin{itemize}[topsep=1pt, itemsep=0pt]
+    \item Path: Nenhum
+    \item Query: page (mínimo 1, padrão 1), page\_size (mínimo 1, máximo 100, padrão 10)
+  \end{itemize}
+
+  \item[]\textbf{Request}:
+  \vspace{-0.3cm}
+  \begin{minted}{json}
+  {}
+  \end{minted}
+
+  \textbf{Status codes}:
+  \begin{itemize}[topsep=1pt, itemsep=0pt]
+    \item 200 OK: Retorna uma lista paginada de funcionários.
+    \item 401 Unauthorized: Token JWT ausente ou inválido.
+    \item 403 Forbidden: Permissão insuficiente para acessar o recurso.
+    \item 422 Unprocessable Entity: Parâmetros de consulta inválidos.
+  \end{itemize}
+
+  \item[]\textbf{Response 200}\footnote{Password hash encurtado para fins de documentação.}:
+  \vspace{-0.3cm}
+  \begin{minted}{json}
+  {
+    "data": [
+      {
+        "phone": "971-775-8075 x576",
+        "name": "Christinne",
+        "password_hash": "$5$rounds=1000$92p/zU46vlUQRX...",
+        "role": "admin",
+        "updated_at": 1776093068,
+        "email": "Christinne@raizesnordeste.com",
+        "id": "069d510e-a565-7add-8000-65391d41016c",
+        "address": {
+          "cep": "22775-053",
+          "state": "RJ",
+          "city": "Rio de Janeiro",
+          "neighborhood": "Barra Olímpica",
+          "street": "Rua Amilcar de Castro",
+          "complement": "Bloco E"
+        },
+        "created_at": 1775571178,
+        "deleted_at": null
+      }
+    ],
+    "total": 12,
+    "page": 1,
+    "page_size": 1,
+    "total_pages": 12
+  }
+  \end{minted}
+\end{itemize}
