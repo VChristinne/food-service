@@ -3,6 +3,7 @@ from fastapi import HTTPException, status
 from sqlmodel import Session
 from uuid_extensions import uuid7
 from time import time
+from math import ceil
 
 ModelT = TypeVar("ModelT")
 CreateSchemaT = TypeVar("CreateSchemaT")
@@ -89,3 +90,41 @@ class BaseService(Generic[ModelT, CreateSchemaT, UpdateSchemaT]):
         """Delete an entity by ID, raising 404 if not found."""
         await self.get_by_id(entity_id)
         self.repository.delete(entity_id)
+
+    # ==================== PAGINATION OPERATIONS ====================
+
+    async def get_paginated(self, page: int, page_size: int) -> Dict[str, Any]:
+        """Return paginated entities with metadata."""
+        total = self.repository.count()
+        total_pages = ceil(total / page_size) if total > 0 else 1
+        offset = (page - 1) * page_size
+
+        entities = self.repository.get_paginated(offset, page_size)
+
+        return {
+            "data": entities,
+            "total": total,
+            "page": page,
+            "page_size": page_size,
+            "total_pages": total_pages
+        }
+
+    async def get_paginated_by_store(self, store_id: str, page: int, page_size: int) -> Dict[str, Any]:
+        """Return paginated entities for a specific store with metadata."""
+        total = self.repository.count_by_store(store_id)
+        total_pages = ceil(total / page_size) if total > 0 else 1
+        offset = (page - 1) * page_size
+
+        entities = self.repository.get_paginated_by_store(store_id, offset, page_size)
+
+        return {
+            "data": entities,
+            "total": total,
+            "page": page,
+            "page_size": page_size,
+            "total_pages": total_pages
+        }
+
+    async def get_all_by_store(self, store_id: str) -> Sequence[ModelT]:
+        """Return all entities for a specific store."""
+        return self.repository.get_all_by_store(store_id)

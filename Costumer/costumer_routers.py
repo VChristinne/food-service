@@ -59,5 +59,3 @@ async def update_costumer(
 ) -> CostumerModel:
     updated_costumer = await service.update_by_id(costumer_id, costumer_data)
     return updated_costumer
-
-# TODO: IMPLEMENT SOFT DELETE

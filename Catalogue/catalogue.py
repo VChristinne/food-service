@@ -13,6 +13,7 @@ class CatalogueSchema(BaseModel):
     name: str
     price: Decimal = Field(max_digits=10, decimal_places=2)
     available: bool = Field(default=True)
+    store_id: Optional[str] = None
 
 
 class CatalogueUpdateSchema(BaseModel):
@@ -28,6 +29,7 @@ class CatalogueModel(SQLModel, table=True):
     name: str
     price: Decimal = Field(max_digits=10, decimal_places=2)
     available: bool = Field(default=True)
+    store_id: Optional[str] = Field(default=None, foreign_key="stores.id")
     ingredients: list["InventoryModel"] = Relationship(  # noqa
         back_populates="dishes", link_model=DishIngredient
     )

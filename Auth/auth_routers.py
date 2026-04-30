@@ -16,8 +16,30 @@ class LoginSchema(BaseModel):
     password: str
 
 
+class BootstrapAdminSchema(BaseModel):
+    name: str
+    email: str
+    password: str
+    phone: str
+    cep: str
+    complement: str = None
+
+
 def get_auth_service(session: Session = Depends(db.get_session)) -> AuthService:
     return AuthService(session)
+
+
+@router.post("/bootstrap-admin", status_code=status.HTTP_201_CREATED)
+async def bootstrap_admin(
+    request: Request,
+    admin_data: BootstrapAdminSchema,
+    service: AuthService = Depends(get_auth_service)
+) -> dict:
+    """
+    Cria o primeiro admin do sistema.
+    Só funciona se não houver nenhum admin criado ainda.
+    """
+    return await service.create_first_admin(admin_data)
 
 
 @router.post("/login", status_code=status.HTTP_200_OK)

@@ -20,6 +20,7 @@ class InventorySchema(BaseModel):
     quantity: Decimal = Field(decimal_places=3)
     unit: UnitEnum
     min_quantity: Decimal = Field(decimal_places=3)
+    store_id: str
 
 
 class InventoryUpdateSchema(BaseModel):
@@ -37,6 +38,7 @@ class InventoryModel(SQLModel, table=True):
     quantity: Decimal = Field(max_digits=10, decimal_places=3)
     unit: UnitEnum
     min_quantity: Decimal = Field(max_digits=10, decimal_places=3)
+    store_id: Optional[str] = Field(default=None, foreign_key="stores.id")
     dishes: list["CatalogueModel"] = Relationship(     # noqa
         back_populates="ingredients", link_model=DishIngredient
     )

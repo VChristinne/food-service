@@ -1,4 +1,5 @@
-from typing import TypeVar, Generic, Sequence, Type
+from typing import TypeVar, Generic, Sequence, Type, Any
+from sqlalchemy import func
 from sqlmodel import Session, select
 
 T = TypeVar("T")
@@ -47,3 +48,36 @@ class BaseRepository(Generic[T]):
             self.session.commit()
         else:
             raise ValueError(f"{self.model.__name__} with id {entity_id} not found")
+
+    def count(self) -> int:
+        """Retorna a quantidade total de entidades."""
+        return self.session.exec(select(func.count(self.model.id))).one()
+
+    def count_by_store(self, store_id: str) -> int:
+        """Retorna a quantidade de entidades para uma loja específica."""
+        return self.session.exec(
+            select(func.count(self.model.id)).where(self.model.store_id == store_id)
+        ).one()
+
+    def get_paginated(self, offset: int, page_size: int) -> Sequence[T]:
+        """Retorna uma lista paginada de entidades."""
+        return self.session.exec(
+            select(self.model)
+            .offset(offset)
+            .limit(page_size)
+        ).all()
+
+    def get_all_by_store(self, store_id: str) -> Sequence[T]:
+        """Retorna todas as entidades de uma loja específica."""
+        return self.session.exec(
+            select(self.model).where(self.model.store_id == store_id)
+        ).all()
+
+    def get_paginated_by_store(self, store_id: str, offset: int, page_size: int) -> Sequence[T]:
+        """Retorna uma lista paginada de entidades para uma loja específica."""
+        return self.session.exec(
+            select(self.model)
+            .where(self.model.store_id == store_id)
+            .offset(offset)
+            .limit(page_size)
+        ).all()

@@ -60,6 +60,7 @@ class OrderModel(SQLModel, table=True):
 
     id: str = Field(primary_key=True, default_factory=lambda: str(uuid7()))
     costumer_id: str = Field(foreign_key="costumers.id", ondelete="CASCADE")
+    store_id: str = Field(foreign_key="stores.id")
     channel: ChannelEnum
     type: OrderTypeEnum
     items: list[dict] = Field(sa_type=JSON)

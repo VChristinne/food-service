@@ -36,6 +36,7 @@ class EmployeeService(BaseService[EmployeeModel, EmployeeSchema, EmployeeUpdateS
             phone=employee_data.phone,
             password_hash=hash_password(employee_data.password),
             address=address,
+            store_id=employee_data.store_id,
             role=employee_data.role
         )
         return self.create(employee)
@@ -50,14 +51,14 @@ class EmployeeService(BaseService[EmployeeModel, EmployeeSchema, EmployeeUpdateS
             }
         )
 
-    def get_paginated_employees(self, page: int, page_size: int) -> PaginatedEmployeeResponse:
-        employees, total = self.repository.get_paginated(page, page_size)
-        total_pages = ceil(total / page_size) if total > 0 else 0
+    async def get_all_by_store(self, store_id: str, page: int, page_size: int) -> PaginatedEmployeeResponse:
+        """Get paginated employees for a specific store."""
+        result = await self.get_paginated_by_store(store_id, page, page_size)
 
         return PaginatedEmployeeResponse(
-            data=employees,
-            total=total,
-            page=page,
-            page_size=page_size,
-            total_pages=total_pages
+            data=result["data"],
+            total=result["total"],
+            page=result["page"],
+            page_size=result["page_size"],
+            total_pages=result["total_pages"]
         )

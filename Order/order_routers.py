@@ -2,13 +2,13 @@ from fastapi import APIRouter, Depends, status, Request
 from typing import Sequence
 from sqlmodel import Session
 
-from Order.order import OrderModel, OrderSchema, OrderUpdateSchema
+from Order.order import OrderModel
 from Order.order_service import OrderService
 from Utils.ownership_decorator import require_roles
+from Auth.auth import get_current_user
 from main import save_log
 from Database.db_config import db
 from Audit.audit import AuditActionEnum
-from Auth.auth import get_current_user
 
 router = APIRouter()
 
@@ -17,17 +17,18 @@ def get_order_service(session: Session = Depends(db.get_session)) -> OrderServic
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
-@require_roles(["admin"])
+@require_roles(["manager", "waiter", "delivery"])
 @save_log(AuditActionEnum.READ, OrderModel)
 async def get_orders(
         request: Request,
         current_user: dict = Depends(get_current_user),
         service: OrderService = Depends(get_order_service)
 ) -> Sequence[OrderModel]:
-    return await service.get_all()
+    store_id = request.state.store_id
+    return await service.get_all_by_store(store_id)
 
 @router.get("/{order_id}", status_code=status.HTTP_200_OK)
-@require_roles(["admin"])
+@require_roles(["manager", "waiter", "delivery"])
 @save_log(AuditActionEnum.READ, OrderModel)
 async def get_order(
         request: Request,
@@ -35,17 +36,17 @@ async def get_order(
         current_user: dict = Depends(get_current_user),
         service: OrderService = Depends(get_order_service)
 ) -> OrderModel:
-    return await service.get_by_id(order_id)
+    store_id = request.state.store_id
+    return await service.get_by_id_and_store(order_id, store_id)
 
 @router.post("/{costumer_id}", status_code=status.HTTP_201_CREATED)
-@require_roles(["admin", "owner"])
+@require_roles(["owner"])
 @save_log(AuditActionEnum.CREATE, OrderModel)
 async def create_order(
         request: Request,
         costumer_id: str,
-        order_data: OrderSchema,
         current_user: dict = Depends(get_current_user),
         service: OrderService = Depends(get_order_service)
 ) -> OrderModel:
-    new_order = await service.create_order(order_data, costumer_id)
-    return new_order
+    store_id = request.state.store_id
+    return await service.create_for_costumer(costumer_id, store_id)

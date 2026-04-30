@@ -25,6 +25,7 @@ class EmployeeSchema(BaseModel):
     phone: str
     cep: str
     complement: Optional[str] = None
+    store_id: Optional[str] = None
     role: RoleEnum
 
 
@@ -47,6 +48,7 @@ class EmployeeModel(SQLModel, table=True):
     email: str = Field(unique=True)
     phone: str = Field(unique=True)
     address: dict = Field(sa_column=Column(JSON))
+    store_id: Optional[str] = Field(default=None, foreign_key="stores.id")
     role: RoleEnum
     created_at: int = Field(default_factory=lambda: int(time()))
     updated_at: int = Field(default_factory=lambda: int(time()))

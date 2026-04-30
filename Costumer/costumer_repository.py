@@ -1,4 +1,4 @@
-from sqlmodel import Session, select
+from sqlmodel import Session, select, func
 
 from Costumer.costumer import CostumerModel
 from Utils.base_repository import BaseRepository
@@ -9,5 +9,7 @@ class CostumerRepository(BaseRepository[CostumerModel]):
         super().__init__(session, CostumerModel)
 
     def get_by_email(self, email: str) -> CostumerModel | None:
-        return self.session.exec(select(CostumerModel).where(CostumerModel.email == email)).first()
-
+        normalized_email = email.strip().lower()
+        return self.session.exec(
+            select(CostumerModel).where(func.lower(CostumerModel.email) == normalized_email)
+        ).first()
