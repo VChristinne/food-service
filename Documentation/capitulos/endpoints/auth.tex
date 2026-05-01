@@ -1,112 +1,112 @@
 \section{Autenticação de Usuários}
 
-\subsection{Login}
+\subsection{POST /api/v1/auth/login}
 
-\begin{itemize}[topsep=1pt, itemsep=0pt]
-  \item[]\textbf{Finalidade}: Autenticar usuários e retornar token de acesso.
+\fbox{\begin{minipage}{0.95\textwidth}
+\textbf{Finalidade:} Autenticar usuários
 
-  \item[]\textbf{Rota}: POST /api/v1/auth/login
+\textbf{Permissão:} Público
+\end{minipage}}
 
-  \item[]\textbf{Permissão}: Público
+\vspace{0.5cm}
 
-  \item[]\textbf{Parâmetros}:
-  \begin{itemize}[topsep=1pt, itemsep=0pt]
-    \item Path: Nenhum
-    \item Query: Nenhum
-  \end{itemize}
+\noindent\textbf{Request Body}:
 
-  \item[]\textbf{Request}:
-  \vspace{-0.3cm}
-  \begin{minted}{json}
-  {
-    "email": "Christinne@raizesnordeste.com",
-    "password": "12345678!A"
-  }
-  \end{minted}
+\vspace{-0.2cm}
 
-  \textbf{Status codes}:
-  \begin{itemize}[topsep=1pt, itemsep=0pt]
-    \item 200 OK: Login bem-sucedido, token de acesso retornado.
-    \item 401 Unauthorized: Credenciais inválidas, acesso negado.
-    \item 422 Unprocessable Content: Formato de requisição inválido.
-  \end{itemize}
+\begin{minted}{text}
+email      string, obrigatório
+password   string, obrigatório
+\end{minted}
 
-  \item[]\textbf{Response 200}\footnote{Token JWT encurtado para fins de documentação.}:
-  \vspace{-0.3cm}
-  \begin{minted}{json}
-  {
-    "id": "069d510e-a565-7add-8000-65391d41016c",
-    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "token_type": "Bearer"
-  }
-  \end{minted}
+\begin{minted}{json}
+{
+  "email": "christinne@raizesnordeste.com",
+  "password": "12345678!A"
+}
+\end{minted}
 
-  \item[]\textbf{Erro 401}:
-  \vspace{-0.3cm}
-  \begin{minted}{json}
-  { "detail": "Email or password is invalid" }
-  \end{minted}
+\noindent\textbf{Status Codes}: 200, 401, 422
 
-  \item[]\textbf{Erro 422}:
-  \vspace{-0.3cm}
-  \begin{minted}{json}
-  {
-    "detail": [
-      {
-        "type": "missing",
-        "loc": [
-          "body",
-          "email"
-        ],
-        "msg": "Field required",
-        "input": {
-          "": "Christinne@raizesnordeste.com",
-          "password": "12345678!A"
-        }
-      }
-    ]
-  }
-  \end{minted}
-\end{itemize}
+\vspace{0.4cm}
 
-\subsection{Logout}
+\noindent
+\fbox{\begin{minipage}{0.95\textwidth}
+\textbf{200 OK} --- Login bem-sucedido, token retornado
+\end{minipage}}
 
-\begin{itemize}[topsep=1pt, itemsep=0pt]
-  \item[]\textbf{Finalidade}: Encerrar sessão do usuário.
+\begin{minted}{json}
+{
+  "id": "069d510e-a565-7add-8000-65391d41016c",
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "Bearer"
+}
+\end{minted}
 
-  \item[]\textbf{Rota}: POST /api/v1/auth/logout
+\noindent
+\fbox{\begin{minipage}{0.95\textwidth}
+\textbf{401 Unauthorized} --- Credenciais inválidas
+\end{minipage}}
 
-  \item[]\textbf{Permissão}: JWT
+\begin{minted}{json}
+{
+  "detail": "Email or password is invalid"
+}
+\end{minted}
 
-  \item[]\textbf{Parâmetros}:
-  \begin{itemize}[topsep=1pt, itemsep=0pt]
-    \item Path: Nenhum
-    \item Query: Nenhum
-  \end{itemize}
+\noindent
+\fbox{\begin{minipage}{0.95\textwidth}
+\textbf{422 Unprocessable Content} --- Formato inválido
+\end{minipage}}
 
-  \item[]\textbf{Request}:
-  \vspace{-0.3cm}
-  \begin{minted}{json}
-  {}
-  \end{minted}
+\begin{minted}{json}
+{
+  "detail": [
+    {
+      "type": "missing",
+      "loc": ["body", "email"],
+      "msg": "Field required"
+    }
+  ]
+}
+\end{minted}
 
-  \textbf{Status codes}:
-  \begin{itemize}[topsep=1pt, itemsep=0pt]
-    \item 200 OK: Logout bem-sucedido\footnote{JWT é stateless, sendo necessário implementar blacklist para invalidar tokens.
-    Para fins de documentação, considero o logout como uma operação de sucesso.}.
-    \item 401 Unauthorized: Token de acesso inválido ou ausente.
-  \end{itemize}
+\subsection{POST /api/v1/auth/logout}
 
-  \item[]\textbf{Response 200}:
-  \vspace{-0.3cm}
-  \begin{minted}{json}
-  { "message": "Logout successful" }
-  \end{minted}
+\fbox{\begin{minipage}{0.95\textwidth}
+\textbf{Finalidade:} Encerrar sessão do usuário
 
-  \item[]\textbf{Erro 401}:
-  \vspace{-0.3cm}
-  \begin{minted}{json}
-  { "detail": "Invalid token" }
-  \end{minted}
+\textbf{Permissão:} Bearer Token (JWT)
+\end{minipage}}
 
-\end{itemize}
+\textbf{Parâmetros:} Nenhum
+
+\noindent\textbf{Request Body}
+
+\begin{minted}{json}
+{}
+\end{minted}
+
+\noindent\textbf{Respostas}
+
+\noindent
+\fbox{\begin{minipage}{0.95\textwidth}
+\textbf{200 OK} --- Logout bem-sucedido
+\end{minipage}}
+
+\begin{minted}{json}
+{
+  "message": "Logout successful"
+}
+\end{minted}
+
+\noindent
+\fbox{\begin{minipage}{0.95\textwidth}
+\textbf{401 Unauthorized} --- Token inválido ou ausente
+\end{minipage}}
+
+\begin{minted}{json}
+{
+  "detail": "Invalid token"
+}
+\end{minted}

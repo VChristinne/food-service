@@ -1,18 +1,19 @@
 \usepackage{lipsum}
 \usepackage{fontspec}
 \usepackage{graphicx}
+\usepackage{minted}
 \usepackage{csquotes}
-\usepackage[style=abnt]{biblatex}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[style=abnt, backend=biber]{biblatex}
 \addbibresource{references.bib}
 \usepackage[brazilian,noabbrev,capitalize]{cleveref}
-\usepackage{minted}
 
 \AtBeginDocument{\def\ref{\cref}}
 
 \setmonofont{JetBrains Mono}[
-    Scale=0.8,
-    Contextuals=Alternate,
-    Ligatures=TeX
+  Scale=0.8,
+  Ligatures=TeX
 ]
 
 \def \autor{Vanessa Christinne da Silva Siqueira}

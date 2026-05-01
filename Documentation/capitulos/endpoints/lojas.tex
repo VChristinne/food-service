@@ -1,0 +1,83 @@
+\section{Gestão de Lojas}
+
+\subsection{Criar Lojas}
+
+\begin{itemize}[topsep=1pt, itemsep=0pt]
+  \item[]\textbf{Finalidade}: Criar uma nova loja.
+
+  \item[]\textbf{Rota}: POST /api/v1/stores
+
+  \item[]\textbf{Permissão}: JWT | Perfis: Admin
+
+  \item[]\textbf{Parâmetros}:
+  \begin{itemize}[topsep=1pt, itemsep=0pt]
+    \item Path: Nenhum
+    \item Query: Nenhum
+  \end{itemize}
+
+  \textbf{Request}:
+  \vspace{-0.3cm}
+  \begin{minted}{json}
+  {
+    "phone": "{% faker 'randomPhoneNumber' %}",
+    "cep": "22775056",
+    "complement": "10"
+  }
+  \end{minted}
+
+  \textbf{Status codes}:
+  \begin{itemize}[topsep=1pt, itemsep=0pt]
+    \item 201 Created: Loja criada com sucesso.
+    \item 403 Forbidden: Permissão insuficiente para acessar o recurso.
+    \item 422 Unprocessable Entity: Formato de requisição inválido.
+  \end{itemize}
+
+  \textbf{Response 201}:
+  \vspace{-0.3cm}
+  \begin{minted}{json}
+  {
+    "created_at": 1777558556,
+    "phone": "(573) 327-4345 x43932",
+    "deleted_at": null,
+    "address": {
+        "cep": "22775-056",
+        "state": "RJ",
+        "city": "Rio de Janeiro",
+        "neighborhood": "Barra da Tijuca",
+        "street": "Avenida José Silva de Azevedo Neto",
+        "complement": "10"
+    },
+    "id": "069f3641-c09e-7731-8000-b04e75d39158",
+    "updated_at": 1777558556
+  }
+  \end{minted}
+
+  \textbf{Erro 403}:
+  \vspace{-0.3cm}
+  \begin{minted}{json}
+  {
+    "detail": "Acesso Negado (role)"
+  }
+  \end{minted}
+
+  \textbf{Erro 422}:
+  \vspace{-0.3cm}
+  \begin{minted}{json}
+  {
+    "detail": [
+        {
+            "type": "missing",
+            "loc": [
+                "body",
+                "cep"
+            ],
+            "msg": "Field required",
+            "input": {
+                "phone": "1-245-701-6559",
+                "complement": "10"
+            }
+        }
+    ]
+  }
+  \end{minted}
+\end{itemize}
