@@ -1,23 +1,14 @@
 \section{Autenticação de Usuários}
 
-\subsection{POST /api/v1/auth/login}
+\subsection{\texttt{POST /api/v1/auth/login}}
 
-\fbox{\begin{minipage}{0.95\textwidth}
-\textbf{Finalidade:} Autenticar usuários
+\noindent\textbf{Finalidade}: Autenticar usuários
 
-\textbf{Permissão:} Público
-\end{minipage}}
+\noindent\textbf{Permissão}: Público
 
-\vspace{0.5cm}
-
-\noindent\textbf{Request Body}:
+\noindent\textbf{Body}: Todos os campos são obrigatórios
 
 \vspace{-0.2cm}
-
-\begin{minted}{text}
-email      string, obrigatório
-password   string, obrigatório
-\end{minted}
 
 \begin{minted}{json}
 {
@@ -28,13 +19,8 @@ password   string, obrigatório
 
 \noindent\textbf{Status Codes}: 200, 401, 422
 
-\vspace{0.4cm}
-
-\noindent
-\fbox{\begin{minipage}{0.95\textwidth}
-\textbf{200 OK} --- Login bem-sucedido, token retornado
-\end{minipage}}
-
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+Para fins de documentação, o token é truncado na visualização.
 \begin{minted}{json}
 {
   "id": "069d510e-a565-7add-8000-65391d41016c",
@@ -42,71 +28,40 @@ password   string, obrigatório
   "token_type": "Bearer"
 }
 \end{minted}
+\end{tcolorbox}
 
-\noindent
-\fbox{\begin{minipage}{0.95\textwidth}
-\textbf{401 Unauthorized} --- Credenciais inválidas
-\end{minipage}}
+\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{401 Unauthorized}]
+Credenciais inválidas \\
+\small{\textit{Para mais detalhes, consulte o \ref{itm:401-response} na \ref{sec:respostas-erro-padrao}}}
+\end{tcolorbox}
 
-\begin{minted}{json}
-{
-  "detail": "Email or password is invalid"
-}
-\end{minted}
+\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{422 Unprocessable Entity}]
+Formato de requisição inválido \\
+\small{\textit{Para mais detalhes, consulte o \ref{itm:422-response} na \ref{sec:respostas-erro-padrao}}}
+\end{tcolorbox}
 
-\noindent
-\fbox{\begin{minipage}{0.95\textwidth}
-\textbf{422 Unprocessable Content} --- Formato inválido
-\end{minipage}}
+\subsection{\texttt{POST /api/v1/auth/logout}}
 
-\begin{minted}{json}
-{
-  "detail": [
-    {
-      "type": "missing",
-      "loc": ["body", "email"],
-      "msg": "Field required"
-    }
-  ]
-}
-\end{minted}
+\noindent\textbf{Finalidade}: Encerrar sessão do usuário
 
-\subsection{POST /api/v1/auth/logout}
+\noindent\textbf{Permissão}: JWT | Perfis: Todos os usuários autenticados
 
-\fbox{\begin{minipage}{0.95\textwidth}
-\textbf{Finalidade:} Encerrar sessão do usuário
+\noindent\textbf{Body}: Nenhum campo é necessário
 
-\textbf{Permissão:} Bearer Token (JWT)
-\end{minipage}}
+\noindent\textbf{Status Codes}: 200, 401
 
-\textbf{Parâmetros:} Nenhum
-
-\noindent\textbf{Request Body}
-
-\begin{minted}{json}
-{}
-\end{minted}
-
-\noindent\textbf{Respostas}
-
-\noindent
-\fbox{\begin{minipage}{0.95\textwidth}
-\textbf{200 OK} --- Logout bem-sucedido
-\end{minipage}}
+\begin{tcolorbox}[colback=green!10, colframe=black, title=\textbf{200 OK}]
+Logout simulado, pois o JWT é stateless e não pode ser invalidado pelo servidor. \\
+Todos os tokens expiram em 1 hora.
 
 \begin{minted}{json}
 {
   "message": "Logout successful"
 }
 \end{minted}
+\end{tcolorbox}
 
-\noindent
-\fbox{\begin{minipage}{0.95\textwidth}
-\textbf{401 Unauthorized} --- Token inválido ou ausente
-\end{minipage}}
-
-\begin{minted}{json}
-{
-  "detail": "Invalid token"
-}
-\end{minted}
+\begin{tcolorbox}[colback=red!10, colframe=black, title=\textbf{401 Unauthorized}]
+Token de autenticação inválido ou ausente \\
+\small{\textit{Para mais detalhes, consulte o \ref{itm:401-response} na \ref{sec:respostas-erro-padrao}}}
+\end{tcolorbox}

@@ -1,83 +1,205 @@
 \section{Gestão de Lojas}
 
-\subsection{Criar Lojas}
+\subsection{\texttt{POST /api/v1/stores}}
 
-\begin{itemize}[topsep=1pt, itemsep=0pt]
-  \item[]\textbf{Finalidade}: Criar uma nova loja.
+\noindent
+\textbf{Finalidade}: Criar uma nova loja \\
+\textbf{Permissão}: JWT | Perfil: Admin \\
+\textbf{Body}\footnote{Para fins de teste, é usado a biblioteca Faker para gerar dados aleatórios.}:
+Todos os campos são obrigatórios exceto \texttt{complement}
 
-  \item[]\textbf{Rota}: POST /api/v1/stores
+\vspace{-0.2cm}
 
-  \item[]\textbf{Permissão}: JWT | Perfis: Admin
+\begin{minted}{json}
+{
+  "phone": "{% faker 'randomPhoneNumber' %}",
+  "cep": "22775056",
+  "complement": "10"
+}
+\end{minted}
 
-  \item[]\textbf{Parâmetros}:
-  \begin{itemize}[topsep=1pt, itemsep=0pt]
-    \item Path: Nenhum
-    \item Query: Nenhum
-  \end{itemize}
+\noindent\textbf{Status Codes}: 201, 403, 422
 
-  \textbf{Request}:
-  \vspace{-0.3cm}
-  \begin{minted}{json}
-  {
-    "phone": "{% faker 'randomPhoneNumber' %}",
-    "cep": "22775056",
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{201 Created}]
+\begin{minted}{json}
+{
+  "created_at": 1777558556,
+  "phone": "(573) 327-4345 x43932",
+  "deleted_at": null,
+  "address": {
+    "cep": "22775-056",
+    "state": "RJ",
+    "city": "Rio de Janeiro",
+    "neighborhood": "Barra da Tijuca",
+    "street": "Avenida José Silva de Azevedo Neto",
     "complement": "10"
-  }
-  \end{minted}
+  },
+  "id": "069f3641-c09e-7731-8000-b04e75d39158",
+  "updated_at": 1777558556
+}
+\end{minted}
+\end{tcolorbox}
 
-  \textbf{Status codes}:
-  \begin{itemize}[topsep=1pt, itemsep=0pt]
-    \item 201 Created: Loja criada com sucesso.
-    \item 403 Forbidden: Permissão insuficiente para acessar o recurso.
-    \item 422 Unprocessable Entity: Formato de requisição inválido.
-  \end{itemize}
+\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{403 Forbidden}]
+Permissão insuficiente para acessar o recurso \\
+\small{\textit{Para mais detalhes, consulte o \ref{itm:403-response} na \ref{sec:respostas-erro-padrao}}}
+\end{tcolorbox}
 
-  \textbf{Response 201}:
-  \vspace{-0.3cm}
-  \begin{minted}{json}
-  {
-    "created_at": 1777558556,
-    "phone": "(573) 327-4345 x43932",
-    "deleted_at": null,
-    "address": {
-        "cep": "22775-056",
+\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{422 Unprocessable Entity}]
+Formato de requisição inválido \\
+\small{\textit{Para mais detalhes, consulte o \ref{itm:422-response} na \ref{sec:respostas-erro-padrao}}}
+\end{tcolorbox}
+
+\subsection{\texttt{GET /api/v1/stores}}
+
+\noindent\textbf{Finalidade}: Listar todas as lojas
+
+\noindent\textbf{Permissão}: JWT | Perfis: Admin
+
+\noindent\textbf{Body}: Nenhum campo é necessário
+
+\noindent\textbf{Query Parameters}\footnote{Para fins de documentação, a resposta é paginada com um item por página.}:
+\begin{itemize}[topsep=1pt, itemsep=0pt]
+  \item\texttt{page} (integer, opcional, mínimo 1, padrão 1)
+  \item\texttt{page\_size} (integer, opcional, mínimo 1, máximo 100, padrão 10)
+\end{itemize}
+
+\noindent\textbf{Status Codes}: 200, 403, 422
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+{
+  "data": [
+    {
+      "phone": "477-487-1816 x452",
+      "created_at": 1777558516,
+      "deleted_at": null,
+      "updated_at": 1777558516,
+      "id": "069f363f-4619-75bb-8000-db08e1b84c0e",
+      "address": {
+        "cep": "22775-058",
         "state": "RJ",
         "city": "Rio de Janeiro",
-        "neighborhood": "Barra da Tijuca",
-        "street": "Avenida José Silva de Azevedo Neto",
-        "complement": "10"
-    },
-    "id": "069f3641-c09e-7731-8000-b04e75d39158",
-    "updated_at": 1777558556
-  }
-  \end{minted}
+        "neighborhood": "Jacarepaguá",
+        "street": "Rua Imperatriz Leopoldina",
+        "complement": "103"
+      }
+    }
+  ],
+  "total": 3,
+  "page": 1,
+  "page_size": 1,
+  "total_pages": 3
+}
+\end{minted}
+\end{tcolorbox}
 
-  \textbf{Erro 403}:
-  \vspace{-0.3cm}
-  \begin{minted}{json}
-  {
-    "detail": "Acesso Negado (role)"
-  }
-  \end{minted}
+\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{403 Forbidden}]
+Permissão insuficiente para acessar o recurso \\
+\small{\textit{Para mais detalhes, consulte o \ref{itm:403-response} na \ref{sec:respostas-erro-padrao}}}
+\end{tcolorbox}
 
-  \textbf{Erro 422}:
-  \vspace{-0.3cm}
-  \begin{minted}{json}
-  {
-    "detail": [
-        {
-            "type": "missing",
-            "loc": [
-                "body",
-                "cep"
-            ],
-            "msg": "Field required",
-            "input": {
-                "phone": "1-245-701-6559",
-                "complement": "10"
-            }
-        }
-    ]
+\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{422 Unprocessable Entity}]
+Numero de página ou tamanho de página inválido \\
+\small{\textit{Para mais detalhes, consulte o \ref{itm:422-response} na \ref{sec:respostas-erro-padrao}}}
+\end{tcolorbox}
+
+\subsection{\texttt{GET /api/v1/stores/:store\_id}}
+
+\noindent\textbf{Finalidade}: Obter detalhes de uma loja específica
+
+\noindent\textbf{Permissão}: JWT | Perfis: Admin
+
+\noindent\textbf{Body}: Nenhum campo é necessário
+
+\noindent\textbf{Path Parameters}: \texttt{store\_id} (string, obrigatório)
+
+\noindent\textbf{Status Codes}: 200, 403, 404
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+{
+  "phone": "(573) 327-4345 x43932",
+  "created_at": 1777558556,
+  "deleted_at": null,
+  "id": "069f3641-c09e-7731-8000-b04e75d39158",
+  "updated_at": 1777558556,
+  "address": {
+    "cep": "22775-056",
+    "state": "RJ",
+    "city": "Rio de Janeiro",
+    "neighborhood": "Barra da Tijuca",
+    "street": "Avenida José Silva de Azevedo Neto",
+    "complement": "10"
   }
-  \end{minted}
-\end{itemize}
+}
+\end{minted}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{403 Forbidden}]
+Permissão insuficiente para acessar o recurso \\
+\small{\textit{Para mais detalhes, consulte o \ref{itm:403-response} na \ref{sec:respostas-erro-padrao}}}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{404 Not Found}]
+Loja com o ID especificado não encontrada \\
+\small{\textit{Para mais detalhes, consulte o \ref{itm:404-response} na \ref{sec:respostas-erro-padrao}}}
+\end{tcolorbox}
+
+\subsection{\texttt{PATCH /api/v1/stores/:store\_id}}
+
+\noindent\textbf{Finalidade}: Atualizar os detalhes de uma loja específica
+
+\noindent\textbf{Permissão}: JWT | Perfil: Admin
+
+\noindent\textbf{Body}: Todos os campos são opcionais
+
+\begin{minted}{json}
+{
+  "phone": "{% faker 'randomPhoneNumber' %}"
+}
+\end{minted}
+
+\noindent\textbf{Path Parameters}: \texttt{store\_id} (string, obrigatório)
+
+\noindent\textbf{Status Codes}: 200, 403, 404, 422
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{Dados Antes da Atualização}]
+\begin{minted}{json}
+{
+  "phone": "318.310.2954 x92290",
+  "created_at": 1777558542,
+  "deleted_at": null,
+  "id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "updated_at": 1777912650,
+  "address": {
+    "cep": "22775-053",
+    "state": "RJ",
+    "city": "Rio de Janeiro",
+    "neighborhood": "Barra Olímpica",
+    "street": "Rua Amilcar de Castro",
+    "complement": "255"
+  }
+}
+\end{minted}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+{
+  "phone": "985.337.0634",
+  "created_at": 1777558542,
+  "deleted_at": null,
+  "id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "updated_at": 1777912800,
+  "address": {
+    "cep": "22775-053",
+    "state": "RJ",
+    "city": "Rio de Janeiro",
+    "neighborhood": "Barra Olímpica",
+    "street": "Rua Amilcar de Castro",
+    "complement": "255"
+  }
+}
+\end{minted}
+\end{tcolorbox}

@@ -23,7 +23,7 @@ def is_admin(current_user: dict) -> bool:
 @save_log(AuditActionEnum.READ, EmployeeModel)
 async def get_employees(
         request: Request,
-        page: int = Query(1, ge=1, description="Current page number"),
+        page: int = Query(1, ge=1, description="Page number"),
         page_size: int = Query(10, ge=1, le=100, description="Number of items per page"),
         current_user: dict = Depends(get_current_user),
         service: EmployeeService = Depends(get_employee_service)

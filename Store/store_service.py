@@ -1,6 +1,7 @@
 from sqlmodel import Session
+from math import ceil
 
-from Store.store import StoreModel, StoreSchema, StoreUpdateSchema
+from Store.store import StoreModel, StoreSchema, StoreUpdateSchema, PaginatedStoreResponse
 from Store.store_repository import StoreRepositoy
 from Utils.base_service import BaseService
 from Utils.address import fetch_address
@@ -33,5 +34,17 @@ class StoreService(BaseService[StoreModel, StoreSchema, StoreUpdateSchema]):
             field_handlers={
                 "cep": _handle_cep,
             }
+        )
+
+    async def get_all_paginated(self, page: int, page_size: int) -> PaginatedStoreResponse:
+        """Get paginated stores."""
+        result = await self.get_paginated(page, page_size)
+
+        return PaginatedStoreResponse(
+            data=result["data"],
+            total=result["total"],
+            page=result["page"],
+            page_size=result["page_size"],
+            total_pages=result["total_pages"]
         )
 

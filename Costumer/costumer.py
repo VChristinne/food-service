@@ -1,6 +1,6 @@
 from sqlalchemy import Column, JSON
 from sqlmodel import SQLModel, Field
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from fastapi import APIRouter
 from typing import Optional
 from uuid_extensions import uuid7
@@ -45,3 +45,12 @@ class CostumerModel(SQLModel, table=True):
     created_at: int = Field(default_factory=lambda: int(time()))
     updated_at: int = Field(default_factory=lambda: int(time()))
     deleted_at: Optional[int] = None
+
+
+class PaginatedCostumerResponse(BaseModel):
+    data: list[CostumerModel]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+    model_config = ConfigDict(from_attributes=True)

@@ -47,3 +47,15 @@ class CostumerService(BaseService[CostumerModel, CostumerSchema, CostumerUpdateS
                 "cep": _handle_cep,
             }
         )
+
+    async def get_all_paginated(self, page: int, page_size: int):
+        """Get paginated costumers."""
+        result = await self.get_paginated(page, page_size)
+
+        return {
+            "data": result["data"],
+            "total": result["total"],
+            "page": result["page"],
+            "page_size": result["page_size"],
+            "total_pages": result["total_pages"]
+        }

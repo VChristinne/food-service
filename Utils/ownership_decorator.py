@@ -32,14 +32,14 @@ def require_roles(roles: list[str]):
                 if not (is_owner or has_role):
                     raise HTTPException(
                         status_code=status.HTTP_403_FORBIDDEN,
-                        detail="Acesso Negado (ownership)"
+                        detail="Acesso Negado"
                     )
             # role validation
             else:
                 if user_role not in roles:
                     raise HTTPException(
                         status_code=status.HTTP_403_FORBIDDEN,
-                        detail="Acesso Negado (role)"
+                        detail="Acesso Negado"
                     )
 
             return await func(*args, **kwargs)
