@@ -22,23 +22,27 @@ def is_admin(current_user: dict) -> bool:
 @require_roles(["admin", "manager"])
 @save_log(AuditActionEnum.READ, EmployeeModel)
 async def get_employees(
-        request: Request,
-        page: int = Query(1, ge=1, description="Page number"),
-        page_size: int = Query(10, ge=1, le=100, description="Number of items per page"),
-        current_user: dict = Depends(get_current_user),
-        service: EmployeeService = Depends(get_employee_service)
+    request: Request,
+    page: int = Query(1, ge=1, description="Page number"),
+    page_size: int = Query(10, ge=1, le=100, description="Number of items per page"),
+    current_user: dict = Depends(get_current_user),
+    service: EmployeeService = Depends(get_employee_service)
 ) -> PaginatedEmployeeResponse:
     store_id = request.state.store_id
-    return await service.get_all_by_store(store_id, page, page_size)
+
+    if is_admin(current_user):
+        return await service.get_all_paginated(page, page_size)
+    else:
+        return await service.get_all_by_store(store_id, page, page_size)
 
 @router.get("/{employee_id}", status_code=status.HTTP_200_OK)
 @require_roles(["admin", "manager"])
 @save_log(AuditActionEnum.READ, EmployeeModel)
 async def get_employee(
-        request: Request,
-        employee_id: str,
-        current_user: dict = Depends(get_current_user),
-        service: EmployeeService = Depends(get_employee_service)
+    request: Request,
+    employee_id: str,
+    current_user: dict = Depends(get_current_user),
+    service: EmployeeService = Depends(get_employee_service)
 ) -> EmployeeModel:
     store_id = request.state.store_id
     employee = await service.get_by_id(employee_id)
@@ -55,10 +59,10 @@ async def get_employee(
 @require_roles(["admin", "manager"])
 @save_log(AuditActionEnum.CREATE, EmployeeModel)
 async def create_employee(
-        request: Request,
-        employee_data: EmployeeSchema,
-        current_user: dict = Depends(get_current_user),
-        service: EmployeeService = Depends(get_employee_service)
+    request: Request,
+    employee_data: EmployeeSchema,
+    current_user: dict = Depends(get_current_user),
+    service: EmployeeService = Depends(get_employee_service)
 ) -> EmployeeModel:
     store_id = request.state.store_id
 
@@ -75,11 +79,11 @@ async def create_employee(
 @require_roles(["admin", "manager"])
 @save_log(AuditActionEnum.UPDATE, EmployeeModel)
 async def update_employee(
-        request: Request,
-        employee_id: str,
-        employee_data: EmployeeUpdateSchema,
-        current_user: dict = Depends(get_current_user),
-        service: EmployeeService = Depends(get_employee_service)
+    request: Request,
+    employee_id: str,
+    employee_data: EmployeeUpdateSchema,
+    current_user: dict = Depends(get_current_user),
+    service: EmployeeService = Depends(get_employee_service)
 ) -> EmployeeModel:
     store_id = request.state.store_id
     employee = await service.get_by_id(employee_id)
@@ -90,5 +94,5 @@ async def update_employee(
             detail="Você não pode atualizar funcionários de outra loja"
         )
 
-    updated_employee = await service.update_by_id(employee_id, employee_data)
+    updated_employee = await service.update_employee(employee_id, employee_data)
     return updated_employee

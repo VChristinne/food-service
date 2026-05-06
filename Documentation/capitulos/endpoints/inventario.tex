@@ -1,0 +1,151 @@
+\section{Gestão de Inventário}
+
+\subsection{\texttt{POST /api/v1/inventory}}
+
+\noindent\textbf{Finalidade}: Adicionar um novo item ao inventário
+
+\noindent\textbf{Permissão}: JWT | Perfil: Manager
+
+\noindent\textbf{Body}: Todos os campos são obrigatórios
+
+\vspace{-0.2cm}
+
+\begin{minted}{json}
+{
+  "name": "Frango",
+  "quantity": 5000,
+  "unit": "g",
+  "min_quantity": 1000,
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a"
+}
+\end{minted}
+
+\noindent\textbf{Status Codes}: 201, 401, 403, 422
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{201 Created}]
+\begin{minted}{json}
+{
+  "unit": "g",
+  "id": "069fb14d-a64e-79b3-8000-7e9fb7ca8730",
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "updated_at": 1778062554,
+  "name": "Frango",
+  "quantity": "5000.000",
+  "min_quantity": "1000.000",
+  "created_at": 1778062554,
+  "deleted_at": null
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{\texttt{GET /api/v1/inventory}}
+
+\noindent\textbf{Finalidade}: Listar itens do inventário da loja associada ao usuário autenticado
+
+\noindent\textbf{Permissão}: JWT | Perfil: Manager
+
+\noindent\textbf{Body}: Nenhum campo é necessário
+
+\noindent\textbf{Status Codes}: 200, 401, 403
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+Para fins de visualização breve, o item criado anteriormente está listado truncado.
+\begin{minted}{json}
+[
+  {
+    "..."
+  },
+  {
+    "unit": "g",
+    "id": "069fb465-548f-7cf8-8000-984bc84a85e6",
+    "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+    "updated_at": 1778075221,
+    "name": "Pão de Forma",
+    "quantity": "3000.000",
+    "min_quantity": "500.000",
+    "created_at": 1778075221,
+    "deleted_at": null
+  }
+]
+\end{minted}
+\end{tcolorbox}
+
+\subsection{\texttt{GET /api/v1/inventory/:item\_id}}
+
+\noindent\textbf{Finalidade}: Obter detalhes de um item específico do inventário
+
+\noindent\textbf{Permissão}: JWT | Perfil: Manager
+
+\noindent\textbf{Body}: Nenhum campo é necessário
+
+\noindent\textbf{Path Parameters}: \texttt{item\_id} (string, obrigatório)
+
+\noindent\textbf{Status Codes}: 200, 401, 403, 404
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+{
+  "unit": "g",
+  "id": "069fb465-548f-7cf8-8000-984bc84a85e6",
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "updated_at": 1778075221,
+  "name": "Pão de Forma",
+  "quantity": "3000.000",
+  "min_quantity": "500.000",
+  "created_at": 1778075221,
+  "deleted_at": null
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{\texttt{PATCH /api/v1/inventory/:item\_id}}
+
+\noindent\textbf{Finalidade}: Atualizar um item específico do inventário
+
+\noindent\textbf{Permissão}: JWT | Perfil: Manager
+
+\noindent\textbf{Body}: Todos os campos são opcionais
+
+\vspace{-0.2cm}
+
+\begin{minted}{json}
+{
+  "name": "Pão de Forma Tradicional"
+}
+\end{minted}
+
+\noindent\textbf{Path Parameters}: \texttt{item\_id} (string, obrigatório)
+
+\noindent\textbf{Status Codes}: 200, 401, 403, 404, 422
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+{
+  "unit": "g",
+  "id": "069fb465-548f-7cf8-8000-984bc84a85e6",
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "updated_at": 1778084191,
+  "name": "Pão de Forma Tradicional",
+  "quantity": "3000.000",
+  "min_quantity": "500.000",
+  "created_at": 1778075221,
+  "deleted_at": null
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{\texttt{DELETE /api/v1/inventory/:item\_id}}
+
+\noindent\textbf{Finalidade}: Excluir um item específico do inventário
+
+\noindent\textbf{Permissão}: JWT | Perfil: Manager
+
+\noindent\textbf{Body}: Nenhum campo é necessário
+
+\noindent\textbf{Path Parameters}: \texttt{item\_id} (string, obrigatório)
+
+\noindent\textbf{Status Codes}: 204, 401, 403, 404
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{204 No Content}]
+Item excluído com sucesso. Nenhum conteúdo é retornado.
+\end{tcolorbox}

@@ -1,0 +1,156 @@
+\section{Catálogo}
+
+\subsection{\texttt{POST /api/v1/catalogue}}
+
+\noindent\textbf{Finalidade}: Adicionar um novo prato ao catálogo
+
+\noindent\textbf{Permissão}: JWT | Perfil: Manager
+
+\noindent\textbf{Body}: Todos os campos são obrigatórios
+
+\begin{minted}{json}
+{
+  "name": "Hambúrguer com Batata Frita",
+  "price": 25.90,
+  "available": true,
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a"
+}
+\end{minted}
+
+\noindent\textbf{Status Codes}: 201, 403, 422
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{201 Created}]
+\begin{minted}{json}
+{
+  "price": "25.90",
+  "name": "Hambúrguer com Batata Frita",
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "updated_at": 1778085006,
+  "available": true,
+  "id": "069fb6c8-e763-7d3e-8000-39308786ceea",
+  "created_at": 1778085006,
+  "deleted_at": null
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{\texttt{GET /api/v1/catalogue}}
+
+\noindent\textbf{Finalidade}: Listar todos os produtos do catálogo
+
+\noindent\textbf{Permissão}: Público
+
+\noindent\textbf{Body}: Nenhum campo é necessário
+
+\noindent\textbf{Query Parameters}: \texttt{page} e \texttt{page\_size}
+
+\noindent\textbf{Status Codes}: 200, 422
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+{
+  "data": [
+    {
+      "price": "25.90",
+      "id": "069fb6c8-e763-7d3e-8000-39308786ceea",
+      "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+      "updated_at": 1778085006,
+      "available": true,
+      "name": "Hambúrguer com Batata Frita",
+      "created_at": 1778085006,
+      "deleted_at": null
+    },
+    {
+      "price": "10.00",
+      "id": "069fb715-30c8-7a37-8000-0f19c23558b4",
+      "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+      "updated_at": 1778086227,
+      "available": true,
+      "name": "Brigadeiro (6un)",
+      "created_at": 1778086227,
+      "deleted_at": null
+    }
+  ],
+  "total": 2,
+  "page": 1,
+  "page_size": 10,
+  "total_pages": 1
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{\texttt{GET /api/v1/catalogue/:dish\_id}}
+
+\noindent\textbf{Finalidade}: Obter detalhes de um prato específico
+
+\noindent\textbf{Permissão}: Público
+
+\noindent\textbf{Body}: Nenhum campo é necessário
+
+\noindent\textbf{Path Parameters}: \texttt{item\_id}
+
+\noindent\textbf{Status Codes}: 200, 404
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+{
+  "price": "10.00",
+  "id": "069fb715-30c8-7a37-8000-0f19c23558b4",
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "updated_at": 1778086227,
+  "available": true,
+  "name": "Brigadeiro (6un)",
+  "created_at": 1778086227,
+  "deleted_at": null
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{\texttt{PATCH /api/v1/catalogue/:dish\_id}}
+
+\noindent\textbf{Finalidade}: Atualizar os detalhes de um prato específico
+
+\noindent\textbf{Permissão}: JWT | Perfil: Manager
+
+\noindent\textbf{Body}: Todos os campos são opcionais
+
+\begin{minted}{json}
+{
+  "price": 9.50
+}
+\end{minted}
+
+\noindent\textbf{Path Parameters}: \texttt{item\_id}
+
+\noindent\textbf{Status Codes}: 200, 403, 404, 422
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+{
+  "price": "9.50",
+  "id": "069fb715-30c8-7a37-8000-0f19c23558b4",
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "updated_at": 1778086442,
+  "available": true,
+  "name": "Brigadeiro (6un)",
+  "created_at": 1778086227,
+  "deleted_at": null
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{\texttt{DELETE /api/v1/catalogue/:dish\_id}}
+
+\noindent\textbf{Finalidade}: Remover um prato do catálogo
+
+\noindent\textbf{Permissão}: JWT | Perfil: Manager
+
+\noindent\textbf{Body}: Nenhum campo é necessário
+
+\noindent\textbf{Path Parameters}: \texttt{item\_id}
+
+\noindent\textbf{Status Codes}: 204, 403, 404
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{204 No Content}]
+Prato excluído com sucesso. Nenhum conteúdo é retornado.
+\end{tcolorbox}

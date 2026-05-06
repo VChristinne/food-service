@@ -51,6 +51,18 @@ class EmployeeService(BaseService[EmployeeModel, EmployeeSchema, EmployeeUpdateS
             }
         )
 
+    async def get_all_paginated(self, page: int, page_size: int) -> PaginatedEmployeeResponse:
+        """Get paginated employees for all stores."""
+        result = await self.get_paginated(page, page_size)
+
+        return PaginatedEmployeeResponse(
+            data=result["data"],
+            total=result["total"],
+            page=result["page"],
+            page_size=result["page_size"],
+            total_pages=result["total_pages"]
+        )
+
     async def get_all_by_store(self, store_id: str, page: int, page_size: int) -> PaginatedEmployeeResponse:
         """Get paginated employees for a specific store."""
         result = await self.get_paginated_by_store(store_id, page, page_size)

@@ -1,0 +1,165 @@
+\section{Gestão de Clientes}
+
+\subsection{POST /api/v1/customers}
+
+\noindent\textbf{Finalidade}: Criar um novo cliente
+
+\noindent\textbf{Permissão}: Público
+
+\noindent\textbf{Body}: Todos os campos são obrigatórios exceto \texttt{complement}
+
+\vspace{-0.2cm}
+
+\begin{minted}{json}
+{
+  "name": "{{ _.firstName }} {{ _.lastName }}",
+  "password": "12345678!C",
+  "email": "{{ _.firstName }}{{ _.lastName }}@gmail.com",
+  "phone": "{% faker 'randomPhoneNumber' %}",
+  "cep": "22775055",
+  "complement": "string",
+  "orders": [
+    null
+  ],
+  "points": 0
+}
+\end{minted}
+
+\noindent\textbf{Status Codes}: 201, 422
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{201 Created}]
+\begin{minted}{json}
+{
+  "name": "Cory Balistreri",
+  "email": "CoryBalistreri@gmail.com",
+  "address": {
+    "cep": "22775-055",
+    "state": "RJ",
+    "city": "Rio de Janeiro",
+    "neighborhood": "Barra da Tijuca",
+    "street": "Avenida Luís Carlos Prestes",
+    "complement": "AP 42"
+  },
+  "points": 0,
+  "updated_at": 1778088064,
+  "id": "069fb788-0940-7431-8000-c1d2a353b3f0",
+  "phone": "737-209-4403 x53519",
+  "password_hash": "$5$rounds=1000$kHW63hGpr9eoOvm4$Ev1Y.hJ0S9ZN9QQ8abL9I...",
+  "orders": [],
+  "created_at": 1778088064,
+  "deleted_at": null
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{GET /api/v1/customers}
+
+\noindent\textbf{Finalidade}: Listar todos os clientes registrados
+
+\noindent\textbf{Permissão}: JWT | Perfil: Admin
+
+\noindent\textbf{Body}: Nenhum campo é necessário
+
+\noindent\textbf{Status Codes}: 200, 401, 403
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+Para fins de visualização breve, o cliente criado anteriormente está listado truncado.
+\begin{minted}{json}
+{
+  "data": [
+  {
+      "..."
+    },
+    {
+      "name": "Danyka Keebler",
+      "email": "DanykaKeebler@outlook.com",
+      "address": {
+        "cep": "22775-055",
+        "state": "RJ",
+        "city": "Rio de Janeiro",
+        "neighborhood": "Barra da Tijuca",
+        "street": "Avenida Luís Carlos Prestes",
+        "complement": "AP 10"
+      },
+      "points": 0,
+      "updated_at": 1778088253,
+      "id": "069fb793-d9b9-725b-8000-597c91f9a534",
+      "phone": "1-274-705-2264 x964",
+      "password_hash": "$5$rounds=1000$Ydnx7U24QRW8Z/T6$wbVjQkzc1GnLkdDp7...",
+      "orders": [],
+      "created_at": 1778088253,
+      "deleted_at": null
+    }
+  ],
+  "total": 2,
+  "page": 1,
+  "page_size": 10,
+  "total_pages": 1
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{GET /api/v1/customers/:customer\_id}
+
+\noindent\textbf{Finalidade}: Obter detalhes de um cliente específico
+
+\noindent\textbf{Permissão}: JWT | Perfil: Admin
+
+\noindent\textbf{Body}: Nenhum campo é necessário
+
+\noindent\textbf{Status Codes}: 200, 401, 403, 404
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+{
+  "name": "Cory Balistreri",
+  "email": "CoryBalistreri@gmail.com",
+  "address": {
+      "cep": "22775-055",
+      "state": "RJ",
+      "city": "Rio de Janeiro",
+      "neighborhood": "Barra da Tijuca",
+      "street": "Avenida Luís Carlos Prestes",
+      "complement": "AP 42"
+  },
+  "points": 0,
+  "updated_at": 1778088064,
+  "id": "069fb788-0940-7431-8000-c1d2a353b3f0",
+  "phone": "737-209-4403 x53519",
+  "password_hash": "$5$rounds=1000$kHW63hGpr9eoOvm4$Ev1Y.hJ0S9ZN9QQ8abL9I...",
+  "orders": [],
+  "created_at": 1778088064,
+  "deleted_at": null
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{PATCH /api/v1/customers/:customer\_id}
+
+\noindent\textbf{Finalidade}: Atualizar informações de um cliente específico
+
+\noindent\textbf{Permissão}: JWT | Perfil: Cliente
+
+\noindent\textbf{Body}: Todos os campos são opcionais
+
+\begin{minted}{json}
+{
+  "name": "{{ _.firstName }} {{ _.lastName }}",
+  "email": "{{ _.firstName }}{{ _.lastName }}@gmail.com"
+}
+\end{minted}
+
+\noindent\textbf{Status Codes}: 200, 401, 403, 404, 422
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+Para fins de visualização breve, alguns campos foram truncados.
+\begin{minted}{json}
+{
+  "name": "Reed Schoen",
+  "email": "ReedSchoen@gmail.com",
+  "updated_at": 1778090958,
+  "id": "069fb788-0940-7431-8000-c1d2a353b3f0",
+  "..."
+}
+\end{minted}
+\end{tcolorbox}

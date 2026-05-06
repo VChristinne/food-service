@@ -59,5 +59,5 @@ async def update_costumer(
         current_user: dict = Depends(get_current_user),
         service: CostumerService = Depends(get_costumer_service)
 ) -> CostumerModel:
-    updated_costumer = await service.update_by_id(costumer_id, costumer_data)
+    updated_costumer = await service.update_costumer(costumer_id, costumer_data)
     return updated_costumer

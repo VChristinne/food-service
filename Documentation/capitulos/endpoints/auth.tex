@@ -20,7 +20,7 @@
 \noindent\textbf{Status Codes}: 200, 401, 422
 
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
-Para fins de documentação, o token é truncado na visualização.
+Para fins de formatar a resposta, o token foi truncado.
 \begin{minted}{json}
 {
   "id": "069d510e-a565-7add-8000-65391d41016c",
@@ -28,16 +28,6 @@ Para fins de documentação, o token é truncado na visualização.
   "token_type": "Bearer"
 }
 \end{minted}
-\end{tcolorbox}
-
-\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{401 Unauthorized}]
-Credenciais inválidas \\
-\small{\textit{Para mais detalhes, consulte o \ref{itm:401-response} na \ref{sec:respostas-erro-padrao}}}
-\end{tcolorbox}
-
-\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{422 Unprocessable Entity}]
-Formato de requisição inválido \\
-\small{\textit{Para mais detalhes, consulte o \ref{itm:422-response} na \ref{sec:respostas-erro-padrao}}}
 \end{tcolorbox}
 
 \subsection{\texttt{POST /api/v1/auth/logout}}
@@ -51,17 +41,10 @@ Formato de requisição inválido \\
 \noindent\textbf{Status Codes}: 200, 401
 
 \begin{tcolorbox}[colback=green!10, colframe=black, title=\textbf{200 OK}]
-Logout simulado, pois o JWT é stateless e não pode ser invalidado pelo servidor. \\
+Logout simulado, num cenário real seria necessário uma blacklist de tokens. \\
 Todos os tokens expiram em 1 hora.
 
 \begin{minted}{json}
-{
-  "message": "Logout successful"
-}
+{ "message": "Logout successful" }
 \end{minted}
-\end{tcolorbox}
-
-\begin{tcolorbox}[colback=red!10, colframe=black, title=\textbf{401 Unauthorized}]
-Token de autenticação inválido ou ausente \\
-\small{\textit{Para mais detalhes, consulte o \ref{itm:401-response} na \ref{sec:respostas-erro-padrao}}}
 \end{tcolorbox}

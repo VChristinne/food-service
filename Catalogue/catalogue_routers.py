@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends, status, Request
-from typing import Sequence
+from fastapi import APIRouter, Depends, status, Request, Query
 from sqlmodel import Session
 
-from Catalogue.catalogue import CatalogueSchema, CatalogueModel, CatalogueUpdateSchema
+from Catalogue.catalogue import CatalogueSchema, CatalogueModel, CatalogueUpdateSchema, PaginatedCatalogueResponse
 from Catalogue.catalogue_service import CatalogueService
+from Employee.employee_routers import is_admin
 from Utils.ownership_decorator import require_roles
 from Auth.auth import get_current_user
 from main import save_log
@@ -16,15 +16,21 @@ def get_catalogue_service(session: Session = Depends(db.get_session)) -> Catalog
     return CatalogueService(session)
 
 
-@router.get("/", status_code=status.HTTP_200_OK)
+@router.get("/", status_code=status.HTTP_200_OK, response_model=PaginatedCatalogueResponse)
 @save_log(AuditActionEnum.READ, CatalogueModel)
 async def get_catalogue(
     request: Request,
+    page: int = Query(1, ge=1, description="Page number"),
+    page_size: int = Query(10, ge=1, le=100, description="Number of items per page"),
     current_user: dict = Depends(get_current_user),
     service: CatalogueService = Depends(get_catalogue_service)
-) -> Sequence[CatalogueModel]:
+) -> PaginatedCatalogueResponse:
     store_id = request.state.store_id
-    return await service.get_all_by_store(store_id)
+
+    if is_admin(current_user):
+        return await service.get_all_paginated(page, page_size)
+    else:
+        return await service.get_all_by_store(store_id, page, page_size)
 
 @router.get("/{dish_id}", status_code=status.HTTP_200_OK)
 async def get_dish(

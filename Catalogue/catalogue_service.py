@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlmodel import Session
 from time import time
 
-from Catalogue.catalogue import CatalogueModel, CatalogueSchema, CatalogueUpdateSchema
+from Catalogue.catalogue import CatalogueModel, CatalogueSchema, CatalogueUpdateSchema, PaginatedCatalogueResponse
 from Catalogue.catalogue_repository import CatalogueRepository
 from Utils.base_service import BaseService
 from Audit.audit_service import AuditService
@@ -56,6 +56,30 @@ class CatalogueService(BaseService[CatalogueModel, CatalogueSchema, CatalogueUpd
     async def delete_by_store(self, dish_id: str, store_id: str) -> None:
         await self.get_by_id_and_store(dish_id, store_id)
         self.repository.delete(dish_id)
+
+    async def get_all_paginated(self, page: int, page_size: int) -> PaginatedCatalogueResponse:
+        """Get paginated dishes for all stores."""
+        result = await self.get_paginated(page, page_size)
+
+        return PaginatedCatalogueResponse(
+            data=result["data"],
+            total=result["total"],
+            page=result["page"],
+            page_size=result["page_size"],
+            total_pages=result["total_pages"]
+        )
+
+    async def get_all_by_store(self, store_id: str, page: int, page_size: int) -> PaginatedCatalogueResponse:
+        """Get paginated dishes for a specific store."""
+        result = await self.get_paginated_by_store(store_id, page, page_size)
+
+        return PaginatedCatalogueResponse(
+            data=result["data"],
+            total=result["total"],
+            page=result["page"],
+            page_size=result["page_size"],
+            total_pages=result["total_pages"]
+        )
 
     async def mark_unavailable_if_out_of_stock(self, dish_id: str, store_id: str) -> CatalogueModel:
         dish = await self.get_by_id_and_store(dish_id, store_id)

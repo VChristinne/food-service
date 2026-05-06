@@ -25,7 +25,6 @@ class InventoryService(BaseService[InventoryModel, InventorySchema, InventoryUpd
         }
         return self.create_from_schema(schema, field_transformers=field_transformers)
 
-
     async def get_by_id_and_store(self, inventory_id: str, store_id: str) -> InventoryModel:
         inventory = self.repository.get_by_id(inventory_id)
         if not inventory:

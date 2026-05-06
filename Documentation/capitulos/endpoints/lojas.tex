@@ -2,10 +2,11 @@
 
 \subsection{\texttt{POST /api/v1/stores}}
 
-\noindent
-\textbf{Finalidade}: Criar uma nova loja \\
-\textbf{Permissão}: JWT | Perfil: Admin \\
-\textbf{Body}\footnote{Para fins de teste, é usado a biblioteca Faker para gerar dados aleatórios.}:
+\noindent\textbf{Finalidade}: Criar uma nova loja
+
+\noindent\textbf{Permissão}: JWT | Perfil: Admin
+
+\noindent\textbf{Body}\footnote{Para fins de teste, é usado a biblioteca Faker para gerar dados aleatórios.}:
 Todos os campos são obrigatórios exceto \texttt{complement}
 
 \vspace{-0.2cm}
@@ -40,16 +41,6 @@ Todos os campos são obrigatórios exceto \texttt{complement}
 \end{minted}
 \end{tcolorbox}
 
-\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{403 Forbidden}]
-Permissão insuficiente para acessar o recurso \\
-\small{\textit{Para mais detalhes, consulte o \ref{itm:403-response} na \ref{sec:respostas-erro-padrao}}}
-\end{tcolorbox}
-
-\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{422 Unprocessable Entity}]
-Formato de requisição inválido \\
-\small{\textit{Para mais detalhes, consulte o \ref{itm:422-response} na \ref{sec:respostas-erro-padrao}}}
-\end{tcolorbox}
-
 \subsection{\texttt{GET /api/v1/stores}}
 
 \noindent\textbf{Finalidade}: Listar todas as lojas
@@ -58,50 +49,40 @@ Formato de requisição inválido \\
 
 \noindent\textbf{Body}: Nenhum campo é necessário
 
-\noindent\textbf{Query Parameters}\footnote{Para fins de documentação, a resposta é paginada com um item por página.}:
-\begin{itemize}[topsep=1pt, itemsep=0pt]
-  \item\texttt{page} (integer, opcional, mínimo 1, padrão 1)
-  \item\texttt{page\_size} (integer, opcional, mínimo 1, máximo 100, padrão 10)
-\end{itemize}
+\noindent\textbf{Query Parameters}: \texttt{page} e \texttt{page\_size}
 
 \noindent\textbf{Status Codes}: 200, 403, 422
 
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+Para fins de visualização breve, a loja criada anteriormente está listada truncada.
 \begin{minted}{json}
 {
   "data": [
     {
-      "phone": "477-487-1816 x452",
-      "created_at": 1777558516,
+      "phone": "985.337.0634",
+      "created_at": 1777558542,
       "deleted_at": null,
-      "updated_at": 1777558516,
-      "id": "069f363f-4619-75bb-8000-db08e1b84c0e",
+      "id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+      "updated_at": 1777912800,
       "address": {
-        "cep": "22775-058",
+        "cep": "22775-053",
         "state": "RJ",
         "city": "Rio de Janeiro",
-        "neighborhood": "Jacarepaguá",
-        "street": "Rua Imperatriz Leopoldina",
-        "complement": "103"
+        "neighborhood": "Barra Olímpica",
+        "street": "Rua Amilcar de Castro",
+        "complement": "255"
       }
+    },
+    {
+      "..."
     }
   ],
-  "total": 3,
+  "total": 2,
   "page": 1,
-  "page_size": 1,
-  "total_pages": 3
+  "page_size": 2,
+  "total_pages": 1
 }
 \end{minted}
-\end{tcolorbox}
-
-\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{403 Forbidden}]
-Permissão insuficiente para acessar o recurso \\
-\small{\textit{Para mais detalhes, consulte o \ref{itm:403-response} na \ref{sec:respostas-erro-padrao}}}
-\end{tcolorbox}
-
-\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{422 Unprocessable Entity}]
-Numero de página ou tamanho de página inválido \\
-\small{\textit{Para mais detalhes, consulte o \ref{itm:422-response} na \ref{sec:respostas-erro-padrao}}}
 \end{tcolorbox}
 
 \subsection{\texttt{GET /api/v1/stores/:store\_id}}
@@ -136,16 +117,6 @@ Numero de página ou tamanho de página inválido \\
 \end{minted}
 \end{tcolorbox}
 
-\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{403 Forbidden}]
-Permissão insuficiente para acessar o recurso \\
-\small{\textit{Para mais detalhes, consulte o \ref{itm:403-response} na \ref{sec:respostas-erro-padrao}}}
-\end{tcolorbox}
-
-\begin{tcolorbox}[colback=red!5, colframe=black, title=\textbf{404 Not Found}]
-Loja com o ID especificado não encontrada \\
-\small{\textit{Para mais detalhes, consulte o \ref{itm:404-response} na \ref{sec:respostas-erro-padrao}}}
-\end{tcolorbox}
-
 \subsection{\texttt{PATCH /api/v1/stores/:store\_id}}
 
 \noindent\textbf{Finalidade}: Atualizar os detalhes de uma loja específica
@@ -153,6 +124,8 @@ Loja com o ID especificado não encontrada \\
 \noindent\textbf{Permissão}: JWT | Perfil: Admin
 
 \noindent\textbf{Body}: Todos os campos são opcionais
+
+\vspace{-0.2cm}
 
 \begin{minted}{json}
 {
@@ -164,42 +137,33 @@ Loja com o ID especificado não encontrada \\
 
 \noindent\textbf{Status Codes}: 200, 403, 404, 422
 
-\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{Dados Antes da Atualização}]
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+Para fins de visualização breve, o address é truncado. \\
+O phone era 985.337.0634 antes da atualização.
 \begin{minted}{json}
 {
-  "phone": "318.310.2954 x92290",
+  "phone": "(678) 312-5573",
   "created_at": 1777558542,
   "deleted_at": null,
-  "id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "updated_at": 1777912650,
-  "address": {
-    "cep": "22775-053",
-    "state": "RJ",
-    "city": "Rio de Janeiro",
-    "neighborhood": "Barra Olímpica",
-    "street": "Rua Amilcar de Castro",
-    "complement": "255"
-  }
+  "...",
+  "updated_at": 1777972705,
+  "id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a"
 }
 \end{minted}
 \end{tcolorbox}
 
-\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
-\begin{minted}{json}
-{
-  "phone": "985.337.0634",
-  "created_at": 1777558542,
-  "deleted_at": null,
-  "id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "updated_at": 1777912800,
-  "address": {
-    "cep": "22775-053",
-    "state": "RJ",
-    "city": "Rio de Janeiro",
-    "neighborhood": "Barra Olímpica",
-    "street": "Rua Amilcar de Castro",
-    "complement": "255"
-  }
-}
-\end{minted}
+\subsection{\texttt{DELETE /api/v1/stores/:store\_id}}
+
+\noindent\textbf{Finalidade}: Excluir uma loja por ID
+
+\noindent\textbf{Permissão}: JWT | Perfil: Admin
+
+\noindent\textbf{Body}: Nenhum campo é necessário
+
+\noindent\textbf{Path Parameters}: \texttt{store\_id} (string, obrigatório)
+
+\noindent\textbf{Status Codes}: 204, 403, 404
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{204 No Content}]
+Loja excluída com sucesso. Nenhum conteúdo é retornado.
 \end{tcolorbox}

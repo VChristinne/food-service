@@ -2,7 +2,7 @@ from decimal import Decimal
 from typing import Optional
 from time import time
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 from uuid_extensions import uuid7
 
@@ -36,3 +36,12 @@ class CatalogueModel(SQLModel, table=True):
     created_at: int = Field(default_factory=lambda: int(time()))
     updated_at: int = Field(default_factory=lambda: int(time()))
     deleted_at: Optional[int] = None
+
+
+class PaginatedCatalogueResponse(BaseModel):
+    data: list[CatalogueModel]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+    model_config = ConfigDict(from_attributes=True)

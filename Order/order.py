@@ -47,7 +47,6 @@ class OrderSchema(BaseModel):
     payment_method: PaymentMethodEnum
     table_number: Optional[int] = None
     delivery_address: Optional[dict] = None
-    status: StatusEnum
 
 
 class OrderUpdateSchema(BaseModel):

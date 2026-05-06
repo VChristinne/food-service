@@ -1,0 +1,104 @@
+\section{Pedidos}
+
+\subsection{POST /api/v1/orders}
+
+\noindent\textbf{Finalidade}: Criar um novo pedido
+
+\noindent\textbf{Permissão}: JWT | Perfil: Cliente
+
+\noindent\textbf{Body}: Todos os campos são obrigatórios exceto \texttt{notes}, \texttt{table\_number} e \texttt{delivery\_address}
+
+\vspace{-0.2cm}
+
+\begin{minted}{json}
+{
+  "channel": "app",
+  "type": "delivery",
+  "items": [
+    {
+        "name": "Hambúrguer com Batata Frita",
+        "quantity": 2
+    },
+    {
+        "name": "Brigadeiro (6un)",
+        "quantity": 1
+    }
+  ],
+  "notes": "Sem cebola no hambúrguer",
+  "payment_method": "pix"
+}
+\end{minted}
+
+\noindent\textbf{Status Codes}: 201, 422
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{201 Created}]
+\begin{minted}{json}
+{
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "type": "delivery",
+  "costumer_id": "069fb788-0940-7431-8000-c1d2a353b3f0",
+  "notes": "Sem cebola no hambúrguer",
+  "price": "0.00",
+  "table_number": null,
+  "delivery_address": null,
+  "created_at": 1778094050,
+  "id": "069fb8fe-23f4-7e22-8000-c5e509ad1ef9",
+  "channel": "app",
+  "items": [
+    {
+        "name": "Hambúrguer com Batata Frita",
+        "quantity": 2
+    },
+    {
+        "name": "Brigadeiro (6un)",
+        "quantity": 1
+    }
+  ],
+  "payment_method": "pix",
+  "pointsEarned": 0,
+  "status": "pending",
+  "updated_at": 1778094050
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{GET /api/v1/orders}
+
+\noindent\textbf{Finalidade}: Listar todos os pedidos realizados por um cliente
+
+\noindent\textbf{Permissão}: JWT | Perfil: Cliente
+
+\noindent\textbf{Status Codes}: 200, 401, 403
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+[
+  {
+    "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+    "type": "delivery",
+    "costumer_id": "069fb788-0940-7431-8000-c1d2a353b3f0",
+    "notes": "Sem cebola no hambúrguer",
+    "price": "0.00",
+    "table_number": null,
+    "delivery_address": null,
+    "created_at": 1778094050,
+    "id": "069fb8fe-23f4-7e22-8000-c5e509ad1ef9",
+    "channel": "app",
+    "items": [
+      {
+        "name": "Hambúrguer com Batata Frita",
+        "quantity": 2
+      },
+      {
+        "name": "Brigadeiro (6un)",
+        "quantity": 1
+    }
+    ],
+    "payment_method": "pix",
+    "pointsEarned": 0,
+    "status": "pending",
+    "updated_at": 1778094050
+  }
+]
+\end{minted}
+\end{tcolorbox}

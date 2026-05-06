@@ -3,6 +3,7 @@ from sqlmodel import Session
 from uuid_extensions import uuid7
 from decimal import Decimal
 from time import time
+from typing import Sequence
 
 from Order.order import OrderModel, OrderSchema, OrderUpdateSchema, StatusEnum
 from Order.order_repository import OrderRepository
@@ -48,6 +49,9 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
         self.inventory_service = InventoryService(session)
         self.costumer_service = CostumerService(session)
 
+    async def get_by_costumer(self, costumer_id: str) -> Sequence[OrderModel]:
+        return self.repository.get_all_by_costumer(costumer_id)
+
     async def get_by_id_and_store(self, order_id: str, store_id: str) -> OrderModel:
         order = self.repository.get_by_id(order_id)
         if not order:
@@ -85,7 +89,7 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
         order.updated_at = int(time())
         return self.repository.update(order)
 
-    async def create_for_costumer(self, costumer_id: str, store_id: str) -> OrderModel:
+    async def create_for_costumer(self, costumer_id: str, store_id: str, order_data: OrderSchema) -> OrderModel:
         costumer = await self.costumer_service.get_by_id(costumer_id)
         if not costumer:
             raise HTTPException(
@@ -93,15 +97,23 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
                 detail="Cliente não encontrado"
             )
 
+        subtotal = Decimal("0.00")
+        total_price, points_earned = _calculate_totals(subtotal)
+
         order_id = str(uuid7())
         new_order = OrderModel(
             id=order_id,
             costumer_id=costumer_id,
             store_id=store_id,
-            status=StatusEnum.PENDING,
-            subtotal=Decimal("0.00"),
-            tax=Decimal("0.00"),
-            total_price=Decimal("0.00"),
-            points_earned=0
+            channel=order_data.channel,
+            type=order_data.type,
+            items=order_data.items,
+            notes=order_data.notes,
+            payment_method=order_data.payment_method,
+            price=total_price,
+            pointsEarned=points_earned,
+            table_number=order_data.table_number,
+            delivery_address=order_data.delivery_address,
+            status=StatusEnum.PENDING
         )
         return self.repository.create(new_order)

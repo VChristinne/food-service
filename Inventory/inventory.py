@@ -24,10 +24,10 @@ class InventorySchema(BaseModel):
 
 
 class InventoryUpdateSchema(BaseModel):
-    name: Optional[str]
-    quantity: Optional[Decimal] = Field(max_digits=10, decimal_places=3)
-    unit: Optional[UnitEnum]
-    min_quantity: Optional[Decimal] = Field(max_digits=10, decimal_places=3)
+    name: Optional[str] = None
+    quantity: Optional[Decimal] = Field(default=None, max_digits=10, decimal_places=3)
+    unit: Optional[UnitEnum] = None
+    min_quantity: Optional[Decimal] = Field(default=None, max_digits=10, decimal_places=3)
 
 
 class InventoryModel(SQLModel, table=True):
