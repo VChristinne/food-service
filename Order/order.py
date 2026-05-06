@@ -36,7 +36,6 @@ class StatusEnum(str, Enum):
     TRANSIT = "transit"
     DELIVERED = "delivered"
     FAILED = "failed"
-    CANCELED = "canceled"
 
 
 class OrderSchema(BaseModel):

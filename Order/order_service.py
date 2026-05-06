@@ -26,12 +26,11 @@ def _calculate_totals(subtotal: Decimal) -> tuple[Decimal, int]:
 
 def _validate_status_transition(current: StatusEnum, new: StatusEnum) -> None:
     valid_transitions = {
-        StatusEnum.PENDING: [StatusEnum.PREPARING, StatusEnum.CANCELED],
-        StatusEnum.PREPARING: [StatusEnum.TRANSIT, StatusEnum.CANCELED],
+        StatusEnum.PENDING: [StatusEnum.PREPARING, StatusEnum.FAILED],
+        StatusEnum.PREPARING: [StatusEnum.TRANSIT, StatusEnum.FAILED],
         StatusEnum.TRANSIT: [StatusEnum.DELIVERED, StatusEnum.FAILED],
         StatusEnum.DELIVERED: [],
         StatusEnum.FAILED: [],
-        StatusEnum.CANCELED: [],
     }
 
     if new not in valid_transitions.get(current, []):
@@ -75,20 +74,6 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
         order.updated_at = int(time())
         return self.repository.update(order)
 
-    async def cancel_order(self, order_id: str, store_id: str) -> OrderModel:
-        order = await self.get_by_id_and_store(order_id, store_id)
-
-        if order.status not in [StatusEnum.PENDING, StatusEnum.PREPARING]:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Pedido com status '{order.status.value}' não pode ser cancelado. "
-                       f"Cancelamento permitido apenas em 'pendente' ou 'preparando'."
-            )
-
-        order.status = StatusEnum.CANCELED
-        order.updated_at = int(time())
-        return self.repository.update(order)
-
     async def create_for_costumer(self, costumer_id: str, store_id: str, order_data: OrderSchema) -> OrderModel:
         costumer = await self.costumer_service.get_by_id(costumer_id)
         if not costumer:
@@ -98,6 +83,21 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
             )
 
         subtotal = Decimal("0.00")
+
+        for item in order_data.items:
+            dish_name = item.get("name")
+            item_quantity = Decimal(str(item.get("quantity", 1)))
+
+            # Buscar prato pelo nome
+            dish = self.catalogue_service.repository.get_by_name(dish_name, store_id)
+            if not dish:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Prato '{dish_name}' não encontrado no catálogo"
+                )
+
+            subtotal += dish.price * item_quantity
+
         total_price, points_earned = _calculate_totals(subtotal)
 
         order_id = str(uuid7())
@@ -116,4 +116,26 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
             delivery_address=order_data.delivery_address,
             status=StatusEnum.PENDING
         )
+
+        # Reduzir inventário para cada item do pedido
+        for item in order_data.items:
+            dish_name = item.get("name")
+            item_quantity = Decimal(str(item.get("quantity", 1)))
+
+            # Buscar prato pelo nome
+            dish = self.catalogue_service.repository.get_by_name(dish_name, store_id)
+            if not dish:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Prato '{dish_name}' não encontrado no catálogo"
+                )
+
+            # Obter ingredientes do prato com suas quantidades
+            ingredients = self.catalogue_service.repository.get_ingredients_for_dish(dish.id)
+
+            # Reduzir quantidade de cada ingrediente
+            for ingredient, dish_ingredient in ingredients:
+                quantity_to_reduce = dish_ingredient.quantity * item_quantity
+                self.inventory_service.reduce_quantity(ingredient.id, quantity_to_reduce)
+
         return self.repository.create(new_order)

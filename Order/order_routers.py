@@ -28,7 +28,7 @@ async def get_orders(
     return await service.get_all_by_store(store_id)
 
 @router.get("/{order_id}", status_code=status.HTTP_200_OK)
-@require_roles(["manager", "waiter", "delivery", "owner"])
+@require_roles(["manager", "waiter", "delivery"])
 @save_log(AuditActionEnum.READ, OrderModel)
 async def get_order(
     request: Request,

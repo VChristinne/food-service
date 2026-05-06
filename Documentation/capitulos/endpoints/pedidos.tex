@@ -17,14 +17,14 @@
   "items": [
     {
         "name": "Hambúrguer com Batata Frita",
-        "quantity": 2
+        "quantity": 1
     },
     {
         "name": "Brigadeiro (6un)",
         "quantity": 1
     }
   ],
-  "notes": "Sem cebola no hambúrguer",
+  "notes": "",
   "payment_method": "pix"
 }
 \end{minted}
@@ -34,39 +34,39 @@
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{201 Created}]
 \begin{minted}{json}
 {
-  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "type": "delivery",
-  "costumer_id": "069fb788-0940-7431-8000-c1d2a353b3f0",
-  "notes": "Sem cebola no hambúrguer",
-  "price": "0.00",
-  "table_number": null,
-  "delivery_address": null,
-  "created_at": 1778094050,
-  "id": "069fb8fe-23f4-7e22-8000-c5e509ad1ef9",
   "channel": "app",
+  "id": "069fbafd-9f9d-77fd-8000-f9429e2381b0",
   "items": [
     {
-        "name": "Hambúrguer com Batata Frita",
-        "quantity": 2
+      "name": "Hambúrguer com Batata Frita",
+      "quantity": 1
     },
     {
-        "name": "Brigadeiro (6un)",
-        "quantity": 1
+      "name": "Brigadeiro (6un)",
+      "quantity": 1
     }
   ],
   "payment_method": "pix",
-  "pointsEarned": 0,
+  "pointsEarned": 38,
+  "delivery_address": null,
   "status": "pending",
-  "updated_at": 1778094050
+  "updated_at": 1778102233,
+  "type": "delivery",
+  "costumer_id": "069fb788-0940-7431-8000-c1d2a353b3f0",
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "notes": "",
+  "price": "38.94",
+  "table_number": null,
+  "created_at": 1778102233
 }
 \end{minted}
 \end{tcolorbox}
 
 \subsection{GET /api/v1/orders}
 
-\noindent\textbf{Finalidade}: Listar todos os pedidos realizados por um cliente
+\noindent\textbf{Finalidade}: Listar todos os pedidos realizados na loja administrada pelo manager autenticado
 
-\noindent\textbf{Permissão}: JWT | Perfil: Cliente
+\noindent\textbf{Permissão}: JWT | Perfil: Manager, Waiter, Delivery
 
 \noindent\textbf{Status Codes}: 200, 401, 403
 
@@ -74,31 +74,111 @@
 \begin{minted}{json}
 [
   {
-    "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-    "type": "delivery",
-    "costumer_id": "069fb788-0940-7431-8000-c1d2a353b3f0",
-    "notes": "Sem cebola no hambúrguer",
-    "price": "0.00",
-    "table_number": null,
-    "delivery_address": null,
-    "created_at": 1778094050,
-    "id": "069fb8fe-23f4-7e22-8000-c5e509ad1ef9",
     "channel": "app",
+    "id": "069fbafd-9f9d-77fd-8000-f9429e2381b0",
     "items": [
       {
         "name": "Hambúrguer com Batata Frita",
-        "quantity": 2
+        "quantity": 1
       },
       {
         "name": "Brigadeiro (6un)",
         "quantity": 1
-    }
+      }
     ],
     "payment_method": "pix",
-    "pointsEarned": 0,
+    "pointsEarned": 38,
+    "delivery_address": null,
     "status": "pending",
-    "updated_at": 1778094050
+    "updated_at": 1778102233,
+    "type": "delivery",
+    "costumer_id": "069fb788-0940-7431-8000-c1d2a353b3f0",
+    "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+    "notes": "",
+    "price": "38.94",
+    "table_number": null,
+    "created_at": 1778102233
   }
 ]
+\end{minted}
+\end{tcolorbox}
+
+\subsection{GET /api/v1/orders/me/:customer\_id}
+
+\noindent\textbf{Finalidade}: Lista todos os pedidos realizados pelo cliente
+
+\noindent\textbf{Permissão}: JWT | Perfil: Cliente
+
+\noindent\textbf{Status Codes}: 200, 401, 403, 404
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+[
+  {
+    "channel": "app",
+    "id": "069fbafd-9f9d-77fd-8000-f9429e2381b0",
+    "items": [
+      {
+        "name": "Hambúrguer com Batata Frita",
+        "quantity": 1
+      },
+      {
+        "name": "Brigadeiro (6un)",
+        "quantity": 1
+      }
+    ],
+    "payment_method": "pix",
+    "pointsEarned": 38,
+    "delivery_address": null,
+    "status": "pending",
+    "updated_at": 1778102233,
+    "type": "delivery",
+    "costumer_id": "069fb788-0940-7431-8000-c1d2a353b3f0",
+    "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+    "notes": "",
+    "price": "38.94",
+    "table_number": null,
+    "created_at": 1778102233
+  }
+]
+\end{minted}
+\end{tcolorbox}
+
+\subsection{GET /api/v1/orders/:order\_id}
+
+\noindent\textbf{Finalidade}: Obter detalhes de um pedido específico
+
+\noindent\textbf{Permissão}: JWT | Perfil: Manager, Waiter, Delivery
+
+\noindent\textbf{Status Codes}: 200, 401, 403, 404
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+{
+  "channel": "app",
+  "id": "069fbafd-9f9d-77fd-8000-f9429e2381b0",
+  "items": [
+    {
+      "name": "Hambúrguer com Batata Frita",
+      "quantity": 1
+    },
+    {
+      "name": "Brigadeiro (6un)",
+      "quantity": 1
+    }
+  ],
+  "payment_method": "pix",
+  "pointsEarned": 38,
+  "delivery_address": null,
+  "status": "pending",
+  "updated_at": 1778102233,
+  "type": "delivery",
+  "costumer_id": "069fb788-0940-7431-8000-c1d2a353b3f0",
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "notes": "",
+  "price": "38.94",
+  "table_number": null,
+  "created_at": 1778102233
+}
 \end{minted}
 \end{tcolorbox}

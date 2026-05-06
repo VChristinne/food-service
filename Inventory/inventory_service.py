@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status
 from sqlmodel import Session
 from time import time
+from decimal import Decimal
 
 from Inventory.inventory import InventoryModel, InventorySchema, InventoryUpdateSchema
 from Inventory.inventory_repository import InventoryRepository
@@ -55,3 +56,16 @@ class InventoryService(BaseService[InventoryModel, InventorySchema, InventoryUpd
     async def delete_by_store(self, inventory_id: str, store_id: str) -> None:
         await self.get_by_id_and_store(inventory_id, store_id)
         self.repository.delete(inventory_id)
+
+    def reduce_quantity(self, inventory_id: str, quantity: Decimal) -> InventoryModel:
+        """Reduz a quantidade de um item de inventário."""
+        inventory = self.repository.get_by_id(inventory_id)
+        if not inventory:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Item de inventário não encontrado"
+            )
+
+        inventory.quantity -= quantity
+        inventory.updated_at = int(time())
+        return self.repository.update(inventory)

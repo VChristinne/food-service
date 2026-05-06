@@ -9,13 +9,11 @@
 \input{capitulos/endpoints/pedidos}
 
 \section{Respostas de Erro Padrão}
-\label{sec:respostas-erro-padrao}
 
 Os seguintes status codes são utilizados em múltiplos endpoints e possuem formato de resposta padronizado:
 
 \begin{enumerate}
   \item \textbf{401 Unauthorized}: Retornado quando o token de autenticação é inválido ou ausente, ou quando as credenciais fornecidas para login são incorretas.
-  \label{itm:401-response}
   \begin{minted}{json}
   { "detail": "Email or password is invalid" }
   \end{minted}
@@ -25,19 +23,16 @@ Os seguintes status codes são utilizados em múltiplos endpoints e possuem form
   \end{minted}
 
   \item \textbf{403 Forbidden}: Retornado quando o usuário autenticado não possui permissão para acessar o recurso solicitado.
-  \label{itm:403-response}
   \begin{minted}{json}
   { "detail": "Acesso Negado" }
   \end{minted}
 
   \item \textbf{404 Not Found}: Retornado quando o recurso solicitado não existe.
-  \label{itm:404-response}
   \begin{minted}{json}
   { "detail": "Resource not found" }
   \end{minted}
 
   \item \textbf{422 Unprocessable Entity}: Retornado quando os dados enviados na requisição não atendem aos requisitos de validação definidos pelo servidor.
-  \label{itm:422-response}
   \begin{minted}{json}
   {
     "detail": [

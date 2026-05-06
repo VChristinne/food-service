@@ -79,3 +79,16 @@ async def delete_dish(
 ) -> None:
     store_id = request.state.store_id
     await service.delete_by_store(dish_id, store_id)
+
+@router.get("/{dish_id}/ingredients", status_code=status.HTTP_200_OK)
+@require_roles(["manager", "chef"])
+@save_log(AuditActionEnum.CREATE, CatalogueModel)
+async def get_dish_ingredients(
+    request: Request,
+    dish_id: str,
+    current_user: dict = Depends(get_current_user),
+    service: CatalogueService = Depends(get_catalogue_service)
+) -> list:
+    store_id = request.state.store_id
+    await service.validate_store_access(dish_id, store_id)
+    return service.repository.get_ingredients_for_dish(dish_id)
