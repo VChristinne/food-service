@@ -47,7 +47,7 @@ A API estará disponível em `http://localhost:8000`
 
 A API utiliza JWT para autenticação. A maioria dos endpoints requer um token válido.
 
-Caso haja dúvidas sobre os quais tokens utilizar, consulte os arquivos `*_routers.py` ou o Relatório do Trabalho Multidisciplinar.
+Caso haja dúvidas sobre quais tokens utilizar, consulte os arquivos `*_routers.py` ou o Relatório do Trabalho Multidisciplinar.
 
 ## 🧪 Testes
 

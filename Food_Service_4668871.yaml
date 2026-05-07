@@ -20,7 +20,7 @@ collection:
         meta:
           id: req_6f081e1ce87a4ca38ee3c964a68ce424
           created: 1777888209998
-          modified: 1777905945723
+          modified: 1778171597885
           isPrivate: false
           description: ""
           sortKey: -1777888385167
@@ -29,8 +29,8 @@ collection:
           mimeType: application/json
           text: |-
             {
-              "phone": "string",
-              "cep": "string",
+              "phone": "{% faker 'randomPhoneNumber' %}",
+              "cep": "22775052",
               "complement": "string"
             }
         headers:
@@ -138,31 +138,6 @@ collection:
         pathParameters:
           - name: store_id
             value: 069f3640-e1bc-7fa2-8000-a6059a7ab69a
-      - url: "{{ _.base_url }}/stores/:store_id"
-        name: Delete Store
-        meta:
-          id: req_b074ed71d58f44f8bd5e9897fcf24898
-          created: 1777888209999
-          modified: 1777930952547
-          isPrivate: false
-          description: ""
-          sortKey: -1777888384767
-        method: DELETE
-        authentication:
-          type: bearer
-          token: "{{ _.bearerToken }}"
-          prefix: ""
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-        pathParameters:
-          - name: store_id
-            value: 069f3641-c09e-7731-8000-b04e75d39158
   - name: Employee
     meta:
       id: fld_725b5f6049fd4790a2dcc6257a8bd858
@@ -449,7 +424,7 @@ collection:
         meta:
           id: req_19614666ef40469c9ad5591d7774f027
           created: 1777888209996
-          modified: 1778170109569
+          modified: 1778171557641
           isPrivate: false
           description: |-
             Cria o primeiro admin do sistema.
@@ -458,10 +433,10 @@ collection:
         method: POST
         body:
           mimeType: application/json
-          text: >-
+          text: |-
             {
-              "name": "{{ _.firstName }} {{ _.lastName }}",
-              "email": "{{ _.firstName }}.{{ _.lastName }}@{{ _.companyEmail }}",
+              "name": "chris",
+              "email": "chris@{{ _.companyEmail }}",
               "password": "12345678!A",
               "phone": "{% faker 'randomPhoneNumber' %}",
               "cep": "22775053",
@@ -484,7 +459,7 @@ collection:
         meta:
           id: req_2b174601f1db458aa6d6f7b5d8a7a40f
           created: 1777888209996
-          modified: 1778102664773
+          modified: 1778171569995
           isPrivate: false
           description: ""
           sortKey: -1777888421383
@@ -493,8 +468,8 @@ collection:
           mimeType: application/json
           text: |-
             {
-              "email": "ida.kozey@{{ _.companyEmail }}",
-              "password": "12345678!M"
+              "email": "chris@{{ _.companyEmail }}",
+              "password": "12345678!A"
             }
         headers:
           - name: Content-Type
@@ -504,28 +479,6 @@ collection:
           afterResponse: |-
             const body = insomnia.response.json();
             insomnia.environment.set("bearerToken", body.access_token);
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-      - url: "{{ _.base_url }}/api/v1/auth/logout"
-        name: Logout
-        meta:
-          id: req_734fdcf1089945fbbab32e33d440f7f9
-          created: 1777888209997
-          modified: 1777888424611
-          isPrivate: false
-          description: ""
-          sortKey: -1777888421283
-        method: POST
-        authentication:
-          type: bearer
-          token: "{{ _.bearerToken }}"
-          prefix: ""
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -659,31 +612,6 @@ collection:
         pathParameters:
           - name: dish_id
             value: 069fb715-30c8-7a37-8000-0f19c23558b4
-      - url: "{{ _.base_url }}/catalogue/:dish_id"
-        name: Delete Dish
-        meta:
-          id: req_12762aeb6fc949d2a99417c9534872c8
-          created: 1777888209996
-          modified: 1778086551832
-          isPrivate: false
-          description: ""
-          sortKey: -1777888543965
-        method: DELETE
-        authentication:
-          type: bearer
-          token: "{{ _.bearerToken }}"
-          prefix: ""
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-        pathParameters:
-          - name: dish_id
-            value: 069fb728-c18d-7d0d-8000-07d98cda4fc2
   - name: Inventory
     meta:
       id: fld_7da82b66ec9d4df4ad8aa76519d2c7f1
@@ -719,7 +647,7 @@ collection:
         meta:
           id: req_287ffebe812c4b20a34d9d5776a2cfeb
           created: 1777888209992
-          modified: 1778084375542
+          modified: 1778171625099
           isPrivate: false
           description: ""
           sortKey: -1777888533216
@@ -728,7 +656,7 @@ collection:
           mimeType: application/json
           text: |-
             {
-              "name": "Teste",
+              "name": "Batata Frita",
               "quantity": 5000,
               "unit": "g",
               "min_quantity": 2000,
@@ -755,7 +683,7 @@ collection:
         meta:
           id: req_6c623827548e48c894542f06552b6f40
           created: 1777888209993
-          modified: 1778084189659
+          modified: 1778171653463
           isPrivate: false
           description: ""
           sortKey: -1777888532916
@@ -764,7 +692,7 @@ collection:
           mimeType: application/json
           text: |-
             {
-              "name": "Pão de Forma Tradicional"
+              "quantity": "3000"
             }
         headers:
           - name: Content-Type
@@ -810,31 +738,6 @@ collection:
         pathParameters:
           - name: item_id
             value: 069fb465-548f-7cf8-8000-984bc84a85e6
-      - url: "{{ _.base_url }}/inventory/:item_id"
-        name: Delete Item
-        meta:
-          id: req_e0b0c8b3670b4a959aa987b47cd0cd23
-          created: 1777888209994
-          modified: 1778084403980
-          isPrivate: false
-          description: ""
-          sortKey: -1777888532816
-        method: DELETE
-        authentication:
-          type: bearer
-          token: "{{ _.bearerToken }}"
-          prefix: ""
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-        pathParameters:
-          - name: item_id
-            value: 069fb6a1-9547-7724-8000-b4daf8810116
   - name: Order
     meta:
       id: fld_ee7e8cd9a19042edb14ed0efc4b95750
@@ -895,7 +798,7 @@ collection:
         meta:
           id: req_bfcfab7d564445f58528beaec270d836
           created: 1777888209998
-          modified: 1778102826141
+          modified: 1778171815604
           isPrivate: false
           description: ""
           sortKey: -1777888621997
@@ -908,12 +811,8 @@ collection:
                 "type": "delivery",
                 "items": [
                     {
-                        "name": "Hambúrguer com Batata Frita",
-                        "quantity": 1
-                    },
-                    {
-                        "name": "Brigadeiro (6un)",
-                        "quantity": 1
+                        "name": "Batata Frita",
+                        "quantity": 2
                     }
                 ],
                 "notes": "",
@@ -968,6 +867,111 @@ collection:
         pathParameters:
           - name: costumer_id
             value: 069fb788-0940-7431-8000-c1d2a353b3f0
+  - name: DELETE - APENAS NO FINAL
+    meta:
+      id: fld_c8987b15454047e78fda7c22886ec434
+      created: 1778171696510
+      modified: 1778171723187
+      sortKey: -1778171696510
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/inventory/:item_id"
+        name: Delete Item
+        meta:
+          id: req_e0b0c8b3670b4a959aa987b47cd0cd23
+          created: 1777888209994
+          modified: 1778171730680
+          isPrivate: false
+          description: ""
+          sortKey: -1778171712934
+        method: DELETE
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: item_id
+            value: 069fb6a1-9547-7724-8000-b4daf8810116
+      - url: "{{ _.base_url }}/catalogue/:dish_id"
+        name: Delete Dish
+        meta:
+          id: req_12762aeb6fc949d2a99417c9534872c8
+          created: 1777888209996
+          modified: 1778171737595
+          isPrivate: false
+          description: ""
+          sortKey: -1778171713034
+        method: DELETE
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: dish_id
+            value: 069fb728-c18d-7d0d-8000-07d98cda4fc2
+      - url: "{{ _.base_url }}/auth/logout"
+        name: Logout
+        meta:
+          id: req_734fdcf1089945fbbab32e33d440f7f9
+          created: 1777888209997
+          modified: 1778171760700
+          isPrivate: false
+          description: ""
+          sortKey: -1778171712734
+        method: POST
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/stores/:store_id"
+        name: Delete Store
+        meta:
+          id: req_b074ed71d58f44f8bd5e9897fcf24898
+          created: 1777888209999
+          modified: 1778171712875
+          isPrivate: false
+          description: ""
+          sortKey: -1778171712834
+        method: DELETE
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: store_id
+            value: 069f3641-c09e-7731-8000-b04e75d39158
 cookieJar:
   name: Default Jar
   meta:
