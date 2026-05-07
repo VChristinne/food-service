@@ -83,7 +83,7 @@ collection:
         meta:
           id: req_48c01dbe6af047bf89fcc6c3b8798a01
           created: 1777888209999
-          modified: 1778076777844
+          modified: 1778180287235
           isPrivate: false
           description: ""
           sortKey: -1777888384967
@@ -102,7 +102,7 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: store_id
-            value: 069f3640-e1bc-7fa2-8000-a6059a7ab69a
+            value: ""
       - url: "{{ _.base_url }}/stores/:store_id"
         name: Update Store
         meta:
@@ -180,7 +180,7 @@ collection:
         meta:
           id: req_1711a596455349a4b40985eee47bfe13
           created: 1777888209988
-          modified: 1778076311006
+          modified: 1778180264906
           isPrivate: false
           description: ""
           sortKey: -1777888609315
@@ -190,13 +190,13 @@ collection:
           text: >-
             {
             	"name": "{{ _.firstName }} {{ _.lastName }}",
-            	"password": "12345678!D",
+            	"password": "12345678!M",
             	"email": "{{ _.firstName | lower }}.{{ _.lastName | lower }}@{{ _.companyEmail }}",
             	"phone": "{% faker 'randomPhoneNumber' %}",
             	"cep": "22775046",
             	"complement": "AP 10",
             	"store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-            	"role": "waiter"
+            	"role": "manager"
             }
         headers:
           - name: Content-Type
@@ -219,7 +219,7 @@ collection:
         meta:
           id: req_6241c928fe0d40149ad6e198e59fb5d4
           created: 1777888209988
-          modified: 1778076331785
+          modified: 1778180284018
           isPrivate: false
           description: ""
           sortKey: -1777888609015
@@ -250,13 +250,13 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: employee_id
-            value: 069f9c52-8d7b-7949-8000-56f1c07bd145
+            value: ""
       - url: "{{ _.base_url }}/employees/:employee_id"
         name: Get Employee
         meta:
           id: req_ff506f6c92484324b925f1b014872b5f
           created: 1777888209988
-          modified: 1778057376060
+          modified: 1778180276670
           isPrivate: false
           description: ""
           sortKey: -1777888609115
@@ -275,7 +275,7 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: employee_id
-            value: 069fafec-7f01-741e-8000-08bd7a855107
+            value: ""
   - name: Costumer
     meta:
       id: fld_01ea33a9f1cd4a858f5877d69461b23a
@@ -318,7 +318,7 @@ collection:
         meta:
           id: req_25316716de3241ddabca62d7fa1047fd
           created: 1777888209989
-          modified: 1778090243273
+          modified: 1778180375676
           isPrivate: false
           description: ""
           sortKey: -1777888594002
@@ -337,7 +337,7 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: costumer_id
-            value: 069fb788-0940-7431-8000-c1d2a353b3f0
+            value: ""
       - url: "{{ _.base_url }}/costumers/"
         name: Create Costumer
         meta:
@@ -380,7 +380,7 @@ collection:
         meta:
           id: req_c6ecf0777e4c4f819d92ef1029401598
           created: 1777888209990
-          modified: 1778090954728
+          modified: 1778180379103
           isPrivate: false
           description: ""
           sortKey: -1777888593902
@@ -410,12 +410,12 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: costumer_id
-            value: 069fb788-0940-7431-8000-c1d2a353b3f0
+            value: ""
   - name: Auth
     meta:
       id: fld_a1bb609442f947d799acd89588e05d98
       created: 1777888359717
-      modified: 1778102666083
+      modified: 1778180253436
       sortKey: -1777888402863
       description: ""
     children:
@@ -459,7 +459,7 @@ collection:
         meta:
           id: req_2b174601f1db458aa6d6f7b5d8a7a40f
           created: 1777888209996
-          modified: 1778171569995
+          modified: 1778180229460
           isPrivate: false
           description: ""
           sortKey: -1777888421383
@@ -557,19 +557,22 @@ collection:
         meta:
           id: req_864e740483cc4a989dd3ef1dd04615d4
           created: 1777888209995
-          modified: 1778086536772
+          modified: 1778180356208
           isPrivate: false
           description: ""
           sortKey: -1777888544465
         method: POST
         body:
           mimeType: application/json
-          text: |-
+          text: >
             {
-              "name": "Teste (6un)",
-              "price": 10.00,
-              "available": true,
-              "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a"
+                "name": "Picanha",
+                "price": 49.90,
+                "available": true,
+                "store_id": "ADICIONAR ID DA LOJA",
+                "items": [
+                    {"ingredient_id": "ADICIONAR ID DA CARNE BOVINA", "quantity": 200.0}
+                ]
             }
         headers:
           - name: Content-Type
@@ -592,7 +595,7 @@ collection:
         meta:
           id: req_b0d03e7623934c83882ac688f211d627
           created: 1777888209995
-          modified: 1778086381492
+          modified: 1778177899528
           isPrivate: false
           description: ""
           sortKey: -1777888544165
@@ -611,7 +614,7 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: dish_id
-            value: 069fb715-30c8-7a37-8000-0f19c23558b4
+            value: 069fb728-c18d-7d0d-8000-07d98cda4fc2
   - name: Inventory
     meta:
       id: fld_7da82b66ec9d4df4ad8aa76519d2c7f1
@@ -647,7 +650,7 @@ collection:
         meta:
           id: req_287ffebe812c4b20a34d9d5776a2cfeb
           created: 1777888209992
-          modified: 1778171625099
+          modified: 1778180314549
           isPrivate: false
           description: ""
           sortKey: -1777888533216
@@ -656,11 +659,11 @@ collection:
           mimeType: application/json
           text: |-
             {
-              "name": "Batata Frita",
+              "name": "Carne Bovina",
               "quantity": 5000,
               "unit": "g",
               "min_quantity": 2000,
-              "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a"
+              "store_id": "ADICIONAR ID DA LOJA"
             }
         headers:
           - name: Content-Type
@@ -683,7 +686,7 @@ collection:
         meta:
           id: req_6c623827548e48c894542f06552b6f40
           created: 1777888209993
-          modified: 1778171653463
+          modified: 1778180330709
           isPrivate: false
           description: ""
           sortKey: -1777888532916
@@ -712,13 +715,13 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: item_id
-            value: 069fb465-548f-7cf8-8000-984bc84a85e6
+            value: ""
       - url: "{{ _.base_url }}/inventory/:item_id"
         name: Get Item
         meta:
           id: req_c3e741b70255457c8ffd8066cd1bb351
           created: 1777888209993
-          modified: 1778077114866
+          modified: 1778180327927
           isPrivate: false
           description: ""
           sortKey: -1777888533016
@@ -737,7 +740,7 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: item_id
-            value: 069fb465-548f-7cf8-8000-984bc84a85e6
+            value: ""
   - name: Order
     meta:
       id: fld_ee7e8cd9a19042edb14ed0efc4b95750
@@ -751,7 +754,7 @@ collection:
         meta:
           id: req_893cc94d4cc64ec29e23a126fcceec83
           created: 1777888209997
-          modified: 1778102813033
+          modified: 1778180395240
           isPrivate: false
           description: ""
           sortKey: -1777888621884.5
@@ -770,7 +773,7 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: order_id
-            value: 069fbafd-9f9d-77fd-8000-f9429e2381b0
+            value: ""
       - url: "{{ _.base_url }}/orders/"
         name: Get Orders
         meta:
@@ -798,7 +801,7 @@ collection:
         meta:
           id: req_bfcfab7d564445f58528beaec270d836
           created: 1777888209998
-          modified: 1778171815604
+          modified: 1778180383873
           isPrivate: false
           description: ""
           sortKey: -1777888621997
@@ -811,7 +814,7 @@ collection:
                 "type": "delivery",
                 "items": [
                     {
-                        "name": "Batata Frita",
+                        "name": "Picanha",
                         "quantity": 2
                     }
                 ],
@@ -835,15 +838,15 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: store_id
-            value: 069f3640-e1bc-7fa2-8000-a6059a7ab69a
+            value: ""
           - name: costumer_id
-            value: 069fb788-0940-7431-8000-c1d2a353b3f0
+            value: ""
       - url: "{{ _.base_url }}/orders/me/:costumer_id"
         name: Get my orders
         meta:
           id: req_5d1ded9e55ba4a1891eb8caaf2c8562b
           created: 1778094921706
-          modified: 1778102693608
+          modified: 1778180398099
           isPrivate: false
           description: ""
           sortKey: -1777888621872
@@ -866,7 +869,7 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: costumer_id
-            value: 069fb788-0940-7431-8000-c1d2a353b3f0
+            value: ""
   - name: DELETE - APENAS NO FINAL
     meta:
       id: fld_c8987b15454047e78fda7c22886ec434
@@ -880,7 +883,7 @@ collection:
         meta:
           id: req_e0b0c8b3670b4a959aa987b47cd0cd23
           created: 1777888209994
-          modified: 1778171730680
+          modified: 1778178038372
           isPrivate: false
           description: ""
           sortKey: -1778171712934
@@ -899,7 +902,7 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: item_id
-            value: 069fb6a1-9547-7724-8000-b4daf8810116
+            value: 069fcd6e-18ce-7097-8000-7f96da2091e4
       - url: "{{ _.base_url }}/catalogue/:dish_id"
         name: Delete Dish
         meta:
@@ -977,13 +980,13 @@ cookieJar:
   meta:
     id: jar_692e58879add5578aff12ab5859a9162173190bc
     created: 1777888210099
-    modified: 1778102666082
+    modified: 1778180253433
 environments:
   name: Base environment
   meta:
     id: env_a40721a1df6048e7bde50be6db3ed4f1
     created: 1777888209986
-    modified: 1778102666083
+    modified: 1778180253436
     isPrivate: false
   data:
     base_url: "{{ _.scheme }}://{{ _.host }}{{ _.base_path }}"
@@ -992,14 +995,14 @@ environments:
       meta:
         id: env_ac5d64e6ac8243e583a60fceb06eadaa
         created: 1777888209986
-        modified: 1778102666082
+        modified: 1778180253434
         isPrivate: false
         sortKey: 1777888209986
       data:
         scheme: http
         base_path: /api/v1
         host: localhost:8000
-        bearerToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmOWM1Mi04ZDdiLTc5NDktODAwMC01NmYxYzA3YmQxNDUiLCJlbWFpbCI6ImlkYS5rb3pleUByYWl6ZXNub3JkZXN0ZS5jb20iLCJyb2xlIjoibWFuYWdlciIsInN0b3JlX2lkIjoiMDY5ZjM2NDAtZTFiYy03ZmEyLTgwMDAtYTYwNTlhN2FiNjlhIiwiZXhwIjoxNzc4MTA2MjY2fQ.SBNWcGIzv6endHrtXXb5pk9uSy5dnNdj0zrCoGu7TVE
+        bearerToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmY2Q2OC1kNGYzLTdiZDktODAwMC0yNTMxODMwNTYzMTYiLCJlbWFpbCI6ImNocmlzQHJhaXplc25vcmRlc3RlLmNvbSIsInJvbGUiOiJhZG1pbiIsInN0b3JlX2lkIjpudWxsLCJleHAiOjE3NzgxODM4NTN9.if8cOIwv0YDBZ2iCTj-D7Vjbr1_tusqo4MuZ3Qb8FyU
         firstName: "{% faker 'randomFirstName' %}"
         lastName: "{% faker 'randomLastName' %}"
         companyEmail: raizesnordeste.com
