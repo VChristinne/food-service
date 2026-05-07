@@ -1,0 +1,2561 @@
+type: spec.insomnia.rest/5.0
+schema_version: "5.1"
+name: Food Service API v1
+meta:
+  id: wrk_7192c56c552f4360914a635621054653
+  created: 1777888209983
+  modified: 1777888209983
+  description: ""
+collection:
+  - name: Store
+    meta:
+      id: fld_7f884e78cae448f89cfc862ca1db3559
+      created: 1777888344691
+      modified: 1777888414941
+      sortKey: -1777888402763
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/stores/"
+        name: Create Store
+        meta:
+          id: req_6f081e1ce87a4ca38ee3c964a68ce424
+          created: 1777888209998
+          modified: 1777905945723
+          isPrivate: false
+          description: ""
+          sortKey: -1777888385167
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "phone": "string",
+              "cep": "string",
+              "complement": "string"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/stores/"
+        name: Get Stores
+        meta:
+          id: req_bf4d91905e574b50a258f738be173893
+          created: 1777888209998
+          modified: 1777930909565
+          isPrivate: false
+          description: ""
+          sortKey: -1777888385067
+        method: GET
+        parameters:
+          - name: page
+            value: "1"
+            disabled: false
+          - name: page_size
+            value: "2"
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/stores/:store_id"
+        name: Get Store
+        meta:
+          id: req_48c01dbe6af047bf89fcc6c3b8798a01
+          created: 1777888209999
+          modified: 1778076777844
+          isPrivate: false
+          description: ""
+          sortKey: -1777888384967
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: store_id
+            value: 069f3640-e1bc-7fa2-8000-a6059a7ab69a
+      - url: "{{ _.base_url }}/stores/:store_id"
+        name: Update Store
+        meta:
+          id: req_871c46263ef84629af2b7518814ba938
+          created: 1777888209999
+          modified: 1777972699280
+          isPrivate: false
+          description: ""
+          sortKey: -1777888384867
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "phone": "{% faker 'randomPhoneNumber' %}"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: store_id
+            value: 069f3640-e1bc-7fa2-8000-a6059a7ab69a
+      - url: "{{ _.base_url }}/stores/:store_id"
+        name: Delete Store
+        meta:
+          id: req_b074ed71d58f44f8bd5e9897fcf24898
+          created: 1777888209999
+          modified: 1777930952547
+          isPrivate: false
+          description: ""
+          sortKey: -1777888384767
+        method: DELETE
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: store_id
+            value: 069f3641-c09e-7731-8000-b04e75d39158
+  - name: Employee
+    meta:
+      id: fld_725b5f6049fd4790a2dcc6257a8bd858
+      created: 1777888349911
+      modified: 1777889025011
+      sortKey: -1777888390838
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/employees/"
+        name: Get Employees
+        meta:
+          id: req_542712b7f5784e0485b4fba2201c118e
+          created: 1777888209987
+          modified: 1778100555885
+          isPrivate: false
+          description: ""
+          sortKey: -1777888609215
+        method: GET
+        parameters:
+          - name: page
+            value: "1"
+            disabled: true
+          - name: page_size
+            value: "10"
+            disabled: true
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/employees/"
+        name: Create Employee
+        meta:
+          id: req_1711a596455349a4b40985eee47bfe13
+          created: 1777888209988
+          modified: 1778076311006
+          isPrivate: false
+          description: ""
+          sortKey: -1777888609315
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            {
+            	"name": "{{ _.firstName }} {{ _.lastName }}",
+            	"password": "12345678!D",
+            	"email": "{{ _.firstName | lower }}.{{ _.lastName | lower }}@{{ _.companyEmail }}",
+            	"phone": "{% faker 'randomPhoneNumber' %}",
+            	"cep": "22775046",
+            	"complement": "AP 10",
+            	"store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+            	"role": "waiter"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/employees/:employee_id"
+        name: Update Employee
+        meta:
+          id: req_6241c928fe0d40149ad6e198e59fb5d4
+          created: 1777888209988
+          modified: 1778076331785
+          isPrivate: false
+          description: ""
+          sortKey: -1777888609015
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: >-
+            {
+                "name": "{{ _.firstName }} {{ _.lastName }}",
+                "email": "{{ _.firstName | lower }}.{{ _.lastName | lower }}@{{ _.companyEmail }}",
+                "phone": "{% faker 'randomPhoneNumber' %}"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: employee_id
+            value: 069f9c52-8d7b-7949-8000-56f1c07bd145
+      - url: "{{ _.base_url }}/employees/:employee_id"
+        name: Get Employee
+        meta:
+          id: req_ff506f6c92484324b925f1b014872b5f
+          created: 1777888209988
+          modified: 1778057376060
+          isPrivate: false
+          description: ""
+          sortKey: -1777888609115
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: employee_id
+            value: 069fafec-7f01-741e-8000-08bd7a855107
+  - name: Costumer
+    meta:
+      id: fld_01ea33a9f1cd4a858f5877d69461b23a
+      created: 1777888354321
+      modified: 1777889032015
+      sortKey: -1777888368936.125
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/costumers/"
+        name: Get Costumers
+        meta:
+          id: req_04aff231e29b4d4f91a56290dbbf9fc2
+          created: 1777888209989
+          modified: 1778088979634
+          isPrivate: false
+          description: ""
+          sortKey: -1777888594102
+        method: GET
+        parameters:
+          - name: page
+            value: "1"
+            disabled: true
+          - name: page_size
+            value: "10"
+            disabled: true
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/costumers/:costumer_id"
+        name: Get Costumer
+        meta:
+          id: req_25316716de3241ddabca62d7fa1047fd
+          created: 1777888209989
+          modified: 1778090243273
+          isPrivate: false
+          description: ""
+          sortKey: -1777888594002
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: costumer_id
+            value: 069fb788-0940-7431-8000-c1d2a353b3f0
+      - url: "{{ _.base_url }}/costumers/"
+        name: Create Costumer
+        meta:
+          id: req_560c7c22ab9f496e8a841393f831e78a
+          created: 1777888209989
+          modified: 1778088248664
+          isPrivate: false
+          description: ""
+          sortKey: -1777888594202
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "{{ _.firstName }} {{ _.lastName }}",
+              "password": "12345678!C",
+              "email": "{{ _.firstName }}{{ _.lastName }}@outlook.com",
+              "phone": "{% faker 'randomPhoneNumber' %}",
+              "cep": "22775055",
+              "complement": "AP 10",
+              "orders": [
+                null
+              ],
+              "points": 0
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/costumers/:costumer_id"
+        name: Update Costumer
+        meta:
+          id: req_c6ecf0777e4c4f819d92ef1029401598
+          created: 1777888209990
+          modified: 1778090954728
+          isPrivate: false
+          description: ""
+          sortKey: -1777888593902
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+                "name": "{{ _.firstName }} {{ _.lastName }}",
+                "email": "{{ _.firstName }}{{ _.lastName }}@gmail.com"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: costumer_id
+            value: 069fb788-0940-7431-8000-c1d2a353b3f0
+  - name: Auth
+    meta:
+      id: fld_a1bb609442f947d799acd89588e05d98
+      created: 1777888359717
+      modified: 1778102666083
+      sortKey: -1777888402863
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/api/v1/auth/bootstrap-admin"
+        name: Bootstrap Admin
+        meta:
+          id: req_19614666ef40469c9ad5591d7774f027
+          created: 1777888209996
+          modified: 1777888428804
+          isPrivate: false
+          description: |-
+            Cria o primeiro admin do sistema.
+            Só funciona se não houver nenhum admin criado ainda.
+          sortKey: -1777888421483
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "string",
+              "email": "string",
+              "password": "string",
+              "phone": "string",
+              "cep": "string",
+              "complement": "string"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/auth/login"
+        name: Login
+        meta:
+          id: req_2b174601f1db458aa6d6f7b5d8a7a40f
+          created: 1777888209996
+          modified: 1778102664773
+          isPrivate: false
+          description: ""
+          sortKey: -1777888421383
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "ida.kozey@{{ _.companyEmail }}",
+              "password": "12345678!M"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        scripts:
+          afterResponse: |-
+            const body = insomnia.response.json();
+            insomnia.environment.set("bearerToken", body.access_token);
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/v1/auth/logout"
+        name: Logout
+        meta:
+          id: req_734fdcf1089945fbbab32e33d440f7f9
+          created: 1777888209997
+          modified: 1777888424611
+          isPrivate: false
+          description: ""
+          sortKey: -1777888421283
+        method: POST
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Catalogue
+    meta:
+      id: fld_ac87e4c9127746fa87a03512b01ac409
+      created: 1777888371068
+      modified: 1777888371068
+      sortKey: -1777888371068
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/catalogue/"
+        name: Get Catalogue
+        meta:
+          id: req_34728eff83934ddb8ab51075fc97db78
+          created: 1777888209994
+          modified: 1778100593474
+          isPrivate: false
+          description: ""
+          sortKey: -1777888544365
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/catalogue/:dish_id"
+        name: Update Dish
+        meta:
+          id: req_2a714b1b979e410ba565a787823de6a9
+          created: 1777888209995
+          modified: 1778086440130
+          isPrivate: false
+          description: ""
+          sortKey: -1777888544065
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "price": 9.50
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: dish_id
+            value: 069fb715-30c8-7a37-8000-0f19c23558b4
+      - url: "{{ _.base_url }}/catalogue/"
+        name: Create Dish
+        meta:
+          id: req_864e740483cc4a989dd3ef1dd04615d4
+          created: 1777888209995
+          modified: 1778086536772
+          isPrivate: false
+          description: ""
+          sortKey: -1777888544465
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Teste (6un)",
+              "price": 10.00,
+              "available": true,
+              "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/catalogue/:dish_id"
+        name: Get Dish
+        meta:
+          id: req_b0d03e7623934c83882ac688f211d627
+          created: 1777888209995
+          modified: 1778086381492
+          isPrivate: false
+          description: ""
+          sortKey: -1777888544165
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: dish_id
+            value: 069fb715-30c8-7a37-8000-0f19c23558b4
+      - url: "{{ _.base_url }}/catalogue/:dish_id"
+        name: Delete Dish
+        meta:
+          id: req_12762aeb6fc949d2a99417c9534872c8
+          created: 1777888209996
+          modified: 1778086551832
+          isPrivate: false
+          description: ""
+          sortKey: -1777888543965
+        method: DELETE
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: dish_id
+            value: 069fb728-c18d-7d0d-8000-07d98cda4fc2
+  - name: Inventory
+    meta:
+      id: fld_7da82b66ec9d4df4ad8aa76519d2c7f1
+      created: 1777888378913
+      modified: 1777888378913
+      sortKey: -1777888378913
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/inventory/"
+        name: Get Inventory
+        meta:
+          id: req_107add630b0e47269b7a9df0f0244ec6
+          created: 1777888209991
+          modified: 1778077102118
+          isPrivate: false
+          description: ""
+          sortKey: -1777888533116
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/inventory/"
+        name: Create Item
+        meta:
+          id: req_287ffebe812c4b20a34d9d5776a2cfeb
+          created: 1777888209992
+          modified: 1778084375542
+          isPrivate: false
+          description: ""
+          sortKey: -1777888533216
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Teste",
+              "quantity": 5000,
+              "unit": "g",
+              "min_quantity": 2000,
+              "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/inventory/:item_id"
+        name: Update Item
+        meta:
+          id: req_6c623827548e48c894542f06552b6f40
+          created: 1777888209993
+          modified: 1778084189659
+          isPrivate: false
+          description: ""
+          sortKey: -1777888532916
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Pão de Forma Tradicional"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: item_id
+            value: 069fb465-548f-7cf8-8000-984bc84a85e6
+      - url: "{{ _.base_url }}/inventory/:item_id"
+        name: Get Item
+        meta:
+          id: req_c3e741b70255457c8ffd8066cd1bb351
+          created: 1777888209993
+          modified: 1778077114866
+          isPrivate: false
+          description: ""
+          sortKey: -1777888533016
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: item_id
+            value: 069fb465-548f-7cf8-8000-984bc84a85e6
+      - url: "{{ _.base_url }}/inventory/:item_id"
+        name: Delete Item
+        meta:
+          id: req_e0b0c8b3670b4a959aa987b47cd0cd23
+          created: 1777888209994
+          modified: 1778084403980
+          isPrivate: false
+          description: ""
+          sortKey: -1777888532816
+        method: DELETE
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: item_id
+            value: 069fb6a1-9547-7724-8000-b4daf8810116
+  - name: Order
+    meta:
+      id: fld_ee7e8cd9a19042edb14ed0efc4b95750
+      created: 1777888402663
+      modified: 1777889033948
+      sortKey: -1777888367870.1875
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/orders/:order_id"
+        name: Get Order
+        meta:
+          id: req_893cc94d4cc64ec29e23a126fcceec83
+          created: 1777888209997
+          modified: 1778102813033
+          isPrivate: false
+          description: ""
+          sortKey: -1777888621884.5
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: order_id
+            value: 069fbafd-9f9d-77fd-8000-f9429e2381b0
+      - url: "{{ _.base_url }}/orders/"
+        name: Get Orders
+        meta:
+          id: req_ea00d2d50d004f038778a0f1e35b4894
+          created: 1777888209997
+          modified: 1778102612965
+          isPrivate: false
+          description: ""
+          sortKey: -1777888621897
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/orders/:store_id/:costumer_id"
+        name: Create Order
+        meta:
+          id: req_bfcfab7d564445f58528beaec270d836
+          created: 1777888209998
+          modified: 1778102826141
+          isPrivate: false
+          description: ""
+          sortKey: -1777888621997
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+                "channel": "app",
+                "type": "delivery",
+                "items": [
+                    {
+                        "name": "Hambúrguer com Batata Frita",
+                        "quantity": 1
+                    },
+                    {
+                        "name": "Brigadeiro (6un)",
+                        "quantity": 1
+                    }
+                ],
+                "notes": "",
+                "payment_method": "pix"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: store_id
+            value: 069f3640-e1bc-7fa2-8000-a6059a7ab69a
+          - name: costumer_id
+            value: 069fb788-0940-7431-8000-c1d2a353b3f0
+      - url: "{{ _.base_url }}/orders/me/:costumer_id"
+        name: Get my orders
+        meta:
+          id: req_5d1ded9e55ba4a1891eb8caaf2c8562b
+          created: 1778094921706
+          modified: 1778102693608
+          isPrivate: false
+          description: ""
+          sortKey: -1777888621872
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.bearerToken }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: costumer_id
+            value: 069fb788-0940-7431-8000-c1d2a353b3f0
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_692e58879add5578aff12ab5859a9162173190bc
+    created: 1777888210099
+    modified: 1778102666082
+environments:
+  name: Base environment
+  meta:
+    id: env_a40721a1df6048e7bde50be6db3ed4f1
+    created: 1777888209986
+    modified: 1778102666083
+    isPrivate: false
+  data:
+    base_url: "{{ _.scheme }}://{{ _.host }}{{ _.base_path }}"
+  subEnvironments:
+    - name: OpenAPI env
+      meta:
+        id: env_ac5d64e6ac8243e583a60fceb06eadaa
+        created: 1777888209986
+        modified: 1778102666082
+        isPrivate: false
+        sortKey: 1777888209986
+      data:
+        scheme: http
+        base_path: /api/v1
+        host: localhost:8000
+        bearerToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmOWM1Mi04ZDdiLTc5NDktODAwMC01NmYxYzA3YmQxNDUiLCJlbWFpbCI6ImlkYS5rb3pleUByYWl6ZXNub3JkZXN0ZS5jb20iLCJyb2xlIjoibWFuYWdlciIsInN0b3JlX2lkIjoiMDY5ZjM2NDAtZTFiYy03ZmEyLTgwMDAtYTYwNTlhN2FiNjlhIiwiZXhwIjoxNzc4MTA2MjY2fQ.SBNWcGIzv6endHrtXXb5pk9uSy5dnNdj0zrCoGu7TVE
+        firstName: "{% faker 'randomFirstName' %}"
+        lastName: "{% faker 'randomLastName' %}"
+        companyEmail: raizesnordeste.com
+spec:
+  contents:
+    openapi: 3.1.0
+    info:
+      title: Food Service API
+      description: A RESTful API for managing a food service application.
+      version: v1
+    paths:
+      /api/v1/employees/:
+        get:
+          tags:
+            - employees
+          summary: Get Employees
+          operationId: get_employees_api_v1_employees__get
+          parameters:
+            - name: page
+              in: query
+              required: false
+              schema:
+                type: integer
+                minimum: 1
+                description: Page number
+                default: 1
+                title: Page
+              description: Page number
+            - name: page_size
+              in: query
+              required: false
+              schema:
+                type: integer
+                maximum: 100
+                minimum: 1
+                description: Number of items per page
+                default: 10
+                title: Page Size
+              description: Number of items per page
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/PaginatedEmployeeResponse"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+        post:
+          tags:
+            - employees
+          summary: Create Employee
+          operationId: create_employee_api_v1_employees__post
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/EmployeeSchema"
+          responses:
+            "201":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/EmployeeModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/employees/{employee_id}:
+        get:
+          tags:
+            - employees
+          summary: Get Employee
+          operationId: get_employee_api_v1_employees__employee_id__get
+          parameters:
+            - name: employee_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Employee Id
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/EmployeeModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+        patch:
+          tags:
+            - employees
+          summary: Update Employee
+          operationId: update_employee_api_v1_employees__employee_id__patch
+          parameters:
+            - name: employee_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Employee Id
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/EmployeeUpdateSchema"
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/EmployeeModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/costumers/:
+        get:
+          tags:
+            - costumers
+          summary: Get Costumers
+          operationId: get_costumers_api_v1_costumers__get
+          parameters:
+            - name: page
+              in: query
+              required: false
+              schema:
+                type: integer
+                minimum: 1
+                description: Page number
+                default: 1
+                title: Page
+              description: Page number
+            - name: page_size
+              in: query
+              required: false
+              schema:
+                type: integer
+                minimum: 1
+                description: Number of items per page
+                default: 10
+                title: Page Size
+              description: Number of items per page
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/PaginatedCostumerResponse"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+        post:
+          tags:
+            - costumers
+          summary: Create Costumer
+          operationId: create_costumer_api_v1_costumers__post
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/CostumerSchema"
+          responses:
+            "201":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/CostumerModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/costumers/{costumer_id}:
+        get:
+          tags:
+            - costumers
+          summary: Get Costumer
+          operationId: get_costumer_api_v1_costumers__costumer_id__get
+          parameters:
+            - name: costumer_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Costumer Id
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/CostumerModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+        patch:
+          tags:
+            - costumers
+          summary: Update Costumer
+          operationId: update_costumer_api_v1_costumers__costumer_id__patch
+          parameters:
+            - name: costumer_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Costumer Id
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/CostumerUpdateSchema"
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/CostumerModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/inventory/:
+        get:
+          tags:
+            - inventory
+          summary: Get Inventory
+          operationId: get_inventory_api_v1_inventory__get
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    items:
+                      $ref: "#/components/schemas/InventoryModel"
+                    type: array
+                    title: Response Get Inventory Api V1 Inventory  Get
+        post:
+          tags:
+            - inventory
+          summary: Create Item
+          operationId: create_item_api_v1_inventory__post
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InventorySchema"
+            required: true
+          responses:
+            "201":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/InventoryModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/inventory/{item_id}:
+        get:
+          tags:
+            - inventory
+          summary: Get Item
+          operationId: get_item_api_v1_inventory__item_id__get
+          parameters:
+            - name: item_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Item Id
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/InventoryModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+        patch:
+          tags:
+            - inventory
+          summary: Update Item
+          operationId: update_item_api_v1_inventory__item_id__patch
+          parameters:
+            - name: item_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Item Id
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InventoryUpdateSchema"
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/InventoryModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+        delete:
+          tags:
+            - inventory
+          summary: Delete Item
+          operationId: delete_item_api_v1_inventory__item_id__delete
+          parameters:
+            - name: item_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Item Id
+          responses:
+            "204":
+              description: Successful Response
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/catalogue/:
+        get:
+          tags:
+            - catalogue
+          summary: Get Catalogue
+          operationId: get_catalogue_api_v1_catalogue__get
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    items:
+                      $ref: "#/components/schemas/CatalogueModel"
+                    type: array
+                    title: Response Get Catalogue Api V1 Catalogue  Get
+        post:
+          tags:
+            - catalogue
+          summary: Create Dish
+          operationId: create_dish_api_v1_catalogue__post
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/CatalogueSchema"
+            required: true
+          responses:
+            "201":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/CatalogueModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/catalogue/{dish_id}:
+        get:
+          tags:
+            - catalogue
+          summary: Get Dish
+          operationId: get_dish_api_v1_catalogue__dish_id__get
+          parameters:
+            - name: dish_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Dish Id
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/CatalogueModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+        patch:
+          tags:
+            - catalogue
+          summary: Update Dish
+          operationId: update_dish_api_v1_catalogue__dish_id__patch
+          parameters:
+            - name: dish_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Dish Id
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/CatalogueUpdateSchema"
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/CatalogueModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+        delete:
+          tags:
+            - catalogue
+          summary: Delete Dish
+          operationId: delete_dish_api_v1_catalogue__dish_id__delete
+          parameters:
+            - name: dish_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Dish Id
+          responses:
+            "204":
+              description: Successful Response
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/auth/bootstrap-admin:
+        post:
+          tags:
+            - auth
+          summary: Bootstrap Admin
+          description: |-
+            Cria o primeiro admin do sistema.
+            Só funciona se não houver nenhum admin criado ainda.
+          operationId: bootstrap_admin_api_v1_auth_bootstrap_admin_post
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BootstrapAdminSchema"
+            required: true
+          responses:
+            "201":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    additionalProperties: true
+                    type: object
+                    title: Response Bootstrap Admin Api V1 Auth Bootstrap Admin Post
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/auth/login:
+        post:
+          tags:
+            - auth
+          summary: Login
+          operationId: login_api_v1_auth_login_post
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/LoginSchema"
+            required: true
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    additionalProperties: true
+                    type: object
+                    title: Response Login Api V1 Auth Login Post
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/auth/logout:
+        post:
+          tags:
+            - auth
+          summary: Logout
+          operationId: logout_api_v1_auth_logout_post
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    additionalProperties: true
+                    type: object
+                    title: Response Logout Api V1 Auth Logout Post
+      /api/v1/orders/:
+        get:
+          tags:
+            - orders
+          summary: Get Orders
+          operationId: get_orders_api_v1_orders__get
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    items:
+                      $ref: "#/components/schemas/OrderModel"
+                    type: array
+                    title: Response Get Orders Api V1 Orders  Get
+      /api/v1/orders/{order_id}:
+        get:
+          tags:
+            - orders
+          summary: Get Order
+          operationId: get_order_api_v1_orders__order_id__get
+          parameters:
+            - name: order_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Order Id
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/OrderModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/orders/{costumer_id}:
+        post:
+          tags:
+            - orders
+          summary: Create Order
+          operationId: create_order_api_v1_orders__costumer_id__post
+          parameters:
+            - name: costumer_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Costumer Id
+          responses:
+            "201":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/OrderModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/stores/:
+        get:
+          tags:
+            - stores
+          summary: Get Stores
+          operationId: get_stores_api_v1_stores__get
+          parameters:
+            - name: page
+              in: query
+              required: false
+              schema:
+                type: integer
+                minimum: 1
+                description: Page number
+                default: 0
+                title: Page
+              description: Page number
+            - name: page_size
+              in: query
+              required: false
+              schema:
+                type: integer
+                minimum: 1
+                description: Number of items per page
+                default: 10
+                title: Page Size
+              description: Number of items per page
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/PaginatedStoreResponse"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+        post:
+          tags:
+            - stores
+          summary: Create Store
+          operationId: create_store_api_v1_stores__post
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/StoreSchema"
+          responses:
+            "201":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/StoreModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+      /api/v1/stores/{store_id}:
+        get:
+          tags:
+            - stores
+          summary: Get Store
+          operationId: get_store_api_v1_stores__store_id__get
+          parameters:
+            - name: store_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Store Id
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/StoreModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+        patch:
+          tags:
+            - stores
+          summary: Update Store
+          operationId: update_store_api_v1_stores__store_id__patch
+          parameters:
+            - name: store_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Store Id
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/StoreUpdateSchema"
+          responses:
+            "200":
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/StoreModel"
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+        delete:
+          tags:
+            - stores
+          summary: Delete Store
+          operationId: delete_store_api_v1_stores__store_id__delete
+          parameters:
+            - name: store_id
+              in: path
+              required: true
+              schema:
+                type: string
+                title: Store Id
+          responses:
+            "204":
+              description: Successful Response
+            "422":
+              description: Validation Error
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/HTTPValidationError"
+    components:
+      schemas:
+        BootstrapAdminSchema:
+          properties:
+            name:
+              type: string
+              title: Name
+            email:
+              type: string
+              title: Email
+            password:
+              type: string
+              title: Password
+            phone:
+              type: string
+              title: Phone
+            cep:
+              type: string
+              title: Cep
+            complement:
+              type: string
+              title: Complement
+          type: object
+          required:
+            - name
+            - email
+            - password
+            - phone
+            - cep
+          title: BootstrapAdminSchema
+        CatalogueModel:
+          properties:
+            id:
+              type: string
+              title: Id
+            name:
+              type: string
+              title: Name
+            price:
+              type: string
+              pattern: ^(?!^[-+.]*$)[+-]?0*(?:\d{0,8}|(?=[\d.]{1,11}0*$)\d{0,8}\.\d{0,2}0*$)
+              title: Price
+            available:
+              type: boolean
+              title: Available
+              default: true
+            store_id:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Store Id
+            created_at:
+              type: integer
+              title: Created At
+            updated_at:
+              type: integer
+              title: Updated At
+            deleted_at:
+              anyOf:
+                - type: integer
+                - type: "null"
+              title: Deleted At
+          type: object
+          required:
+            - name
+            - price
+          title: CatalogueModel
+        CatalogueSchema:
+          properties:
+            name:
+              type: string
+              title: Name
+            price:
+              anyOf:
+                - type: number
+                - type: string
+                  pattern: ^(?!^[-+.]*$)[+-]?0*(?:\d{0,8}|(?=[\d.]{1,11}0*$)\d{0,8}\.\d{0,2}0*$)
+              title: Price
+            available:
+              type: boolean
+              title: Available
+              default: true
+            store_id:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Store Id
+          type: object
+          required:
+            - name
+            - price
+          title: CatalogueSchema
+        CatalogueUpdateSchema:
+          properties:
+            name:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Name
+            price:
+              anyOf:
+                - type: number
+                - type: string
+                  pattern: ^(?!^[-+.]*$)[+-]?0*(?:\d{0,8}|(?=[\d.]{1,11}0*$)\d{0,8}\.\d{0,2}0*$)
+                - type: "null"
+              title: Price
+            available:
+              anyOf:
+                - type: boolean
+                - type: "null"
+              title: Available
+              default: true
+          type: object
+          required:
+            - price
+          title: CatalogueUpdateSchema
+        ChannelEnum:
+          type: string
+          enum:
+            - app
+            - totem
+            - counter
+            - web
+          title: ChannelEnum
+          description: Onde o cliente faz o pedido.
+        CostumerModel:
+          properties:
+            id:
+              type: string
+              title: Id
+            name:
+              type: string
+              title: Name
+            password_hash:
+              type: string
+              title: Password Hash
+            email:
+              type: string
+              title: Email
+            phone:
+              type: string
+              title: Phone
+            address:
+              additionalProperties: true
+              type: object
+              title: Address
+            orders:
+              type: array
+              title: Orders
+            points:
+              type: integer
+              title: Points
+              default: 0
+            created_at:
+              type: integer
+              title: Created At
+            updated_at:
+              type: integer
+              title: Updated At
+            deleted_at:
+              anyOf:
+                - type: integer
+                - type: "null"
+              title: Deleted At
+          type: object
+          required:
+            - name
+            - password_hash
+            - email
+            - phone
+            - address
+          title: CostumerModel
+        CostumerSchema:
+          properties:
+            name:
+              type: string
+              title: Name
+            password:
+              type: string
+              title: Password
+            email:
+              type: string
+              title: Email
+            phone:
+              type: string
+              title: Phone
+            cep:
+              type: string
+              title: Cep
+            complement:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Complement
+            orders:
+              type: array
+              title: Orders
+            points:
+              type: integer
+              title: Points
+              default: 0
+          type: object
+          required:
+            - name
+            - password
+            - email
+            - phone
+            - cep
+          title: CostumerSchema
+        CostumerUpdateSchema:
+          properties:
+            name:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Name
+            password:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Password
+            email:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Email
+            phone:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Phone
+            cep:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Cep
+            complement:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Complement
+            orders:
+              anyOf:
+                - type: array
+                - type: "null"
+              title: Orders
+            points:
+              anyOf:
+                - type: integer
+                - type: "null"
+              title: Points
+          type: object
+          title: CostumerUpdateSchema
+        EmployeeModel:
+          properties:
+            id:
+              type: string
+              title: Id
+            name:
+              type: string
+              title: Name
+            password_hash:
+              type: string
+              title: Password Hash
+            email:
+              type: string
+              title: Email
+            phone:
+              type: string
+              title: Phone
+            address:
+              additionalProperties: true
+              type: object
+              title: Address
+            store_id:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Store Id
+            role:
+              $ref: "#/components/schemas/RoleEnum"
+            created_at:
+              type: integer
+              title: Created At
+            updated_at:
+              type: integer
+              title: Updated At
+            deleted_at:
+              anyOf:
+                - type: integer
+                - type: "null"
+              title: Deleted At
+          type: object
+          required:
+            - name
+            - password_hash
+            - email
+            - phone
+            - address
+            - role
+          title: EmployeeModel
+        EmployeeSchema:
+          properties:
+            name:
+              type: string
+              title: Name
+            password:
+              type: string
+              title: Password
+            email:
+              type: string
+              title: Email
+            phone:
+              type: string
+              title: Phone
+            cep:
+              type: string
+              title: Cep
+            complement:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Complement
+            store_id:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Store Id
+            role:
+              $ref: "#/components/schemas/RoleEnum"
+          type: object
+          required:
+            - name
+            - password
+            - email
+            - phone
+            - cep
+            - role
+          title: EmployeeSchema
+        EmployeeUpdateSchema:
+          properties:
+            name:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Name
+            password:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Password
+            email:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Email
+            phone:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Phone
+            cep:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Cep
+            complement:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Complement
+            role:
+              anyOf:
+                - $ref: "#/components/schemas/RoleEnum"
+                - type: "null"
+          type: object
+          title: EmployeeUpdateSchema
+        HTTPValidationError:
+          properties:
+            detail:
+              items:
+                $ref: "#/components/schemas/ValidationError"
+              type: array
+              title: Detail
+          type: object
+          title: HTTPValidationError
+        InventoryModel:
+          properties:
+            id:
+              type: string
+              title: Id
+            name:
+              type: string
+              title: Name
+            quantity:
+              type: string
+              pattern: ^(?!^[-+.]*$)[+-]?0*(?:\d{0,7}|(?=[\d.]{1,11}0*$)\d{0,7}\.\d{0,3}0*$)
+              title: Quantity
+            unit:
+              $ref: "#/components/schemas/UnitEnum"
+            min_quantity:
+              type: string
+              pattern: ^(?!^[-+.]*$)[+-]?0*(?:\d{0,7}|(?=[\d.]{1,11}0*$)\d{0,7}\.\d{0,3}0*$)
+              title: Min Quantity
+            store_id:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Store Id
+            created_at:
+              type: integer
+              title: Created At
+            updated_at:
+              type: integer
+              title: Updated At
+            deleted_at:
+              anyOf:
+                - type: integer
+                - type: "null"
+              title: Deleted At
+          type: object
+          required:
+            - name
+            - quantity
+            - unit
+            - min_quantity
+          title: InventoryModel
+        InventorySchema:
+          properties:
+            name:
+              type: string
+              title: Name
+            quantity:
+              anyOf:
+                - type: number
+                - type: string
+                  pattern: ^(?!^[-+.]*$)[+-]?0*\d*\.?\d{0,3}0*$
+              title: Quantity
+            unit:
+              $ref: "#/components/schemas/UnitEnum"
+            min_quantity:
+              anyOf:
+                - type: number
+                - type: string
+                  pattern: ^(?!^[-+.]*$)[+-]?0*\d*\.?\d{0,3}0*$
+              title: Min Quantity
+            store_id:
+              type: string
+              title: Store Id
+          type: object
+          required:
+            - name
+            - quantity
+            - unit
+            - min_quantity
+            - store_id
+          title: InventorySchema
+        InventoryUpdateSchema:
+          properties:
+            name:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Name
+            quantity:
+              anyOf:
+                - type: number
+                - type: string
+                  pattern: ^(?!^[-+.]*$)[+-]?0*(?:\d{0,7}|(?=[\d.]{1,11}0*$)\d{0,7}\.\d{0,3}0*$)
+                - type: "null"
+              title: Quantity
+            unit:
+              anyOf:
+                - $ref: "#/components/schemas/UnitEnum"
+                - type: "null"
+            min_quantity:
+              anyOf:
+                - type: number
+                - type: string
+                  pattern: ^(?!^[-+.]*$)[+-]?0*(?:\d{0,7}|(?=[\d.]{1,11}0*$)\d{0,7}\.\d{0,3}0*$)
+                - type: "null"
+              title: Min Quantity
+          type: object
+          required:
+            - name
+            - quantity
+            - unit
+            - min_quantity
+          title: InventoryUpdateSchema
+        LoginSchema:
+          properties:
+            email:
+              type: string
+              title: Email
+            password:
+              type: string
+              title: Password
+          type: object
+          required:
+            - email
+            - password
+          title: LoginSchema
+        OrderModel:
+          properties:
+            id:
+              type: string
+              title: Id
+            costumer_id:
+              type: string
+              title: Costumer Id
+            store_id:
+              type: string
+              title: Store Id
+            channel:
+              $ref: "#/components/schemas/ChannelEnum"
+            type:
+              $ref: "#/components/schemas/OrderTypeEnum"
+            items:
+              items:
+                additionalProperties: true
+                type: object
+              type: array
+              title: Items
+            notes:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Notes
+            payment_method:
+              $ref: "#/components/schemas/PaymentMethodEnum"
+            price:
+              type: string
+              pattern: ^(?!^[-+.]*$)[+-]?0*(?:\d{0,8}|(?=[\d.]{1,11}0*$)\d{0,8}\.\d{0,2}0*$)
+              title: Price
+            pointsEarned:
+              type: integer
+              title: Pointsearned
+            table_number:
+              anyOf:
+                - type: integer
+                - type: "null"
+              title: Table Number
+            delivery_address:
+              anyOf:
+                - additionalProperties: true
+                  type: object
+                - type: "null"
+              title: Delivery Address
+            status:
+              $ref: "#/components/schemas/StatusEnum"
+            created_at:
+              type: integer
+              title: Created At
+            updated_at:
+              type: integer
+              title: Updated At
+          type: object
+          required:
+            - costumer_id
+            - store_id
+            - channel
+            - type
+            - items
+            - payment_method
+            - price
+            - pointsEarned
+            - delivery_address
+            - status
+          title: OrderModel
+        OrderTypeEnum:
+          type: string
+          enum:
+            - dine_in
+            - takeaway
+            - delivery
+          title: OrderTypeEnum
+          description: Como o pedido será cumprido.
+        PaginatedCostumerResponse:
+          properties:
+            data:
+              items:
+                $ref: "#/components/schemas/CostumerModel"
+              type: array
+              title: Data
+            total:
+              type: integer
+              title: Total
+            page:
+              type: integer
+              title: Page
+            page_size:
+              type: integer
+              title: Page Size
+            total_pages:
+              type: integer
+              title: Total Pages
+          type: object
+          required:
+            - data
+            - total
+            - page
+            - page_size
+            - total_pages
+          title: PaginatedCostumerResponse
+        PaginatedEmployeeResponse:
+          properties:
+            data:
+              items:
+                $ref: "#/components/schemas/EmployeeModel"
+              type: array
+              title: Data
+            total:
+              type: integer
+              title: Total
+            page:
+              type: integer
+              title: Page
+            page_size:
+              type: integer
+              title: Page Size
+            total_pages:
+              type: integer
+              title: Total Pages
+          type: object
+          required:
+            - data
+            - total
+            - page
+            - page_size
+            - total_pages
+          title: PaginatedEmployeeResponse
+        PaginatedStoreResponse:
+          properties:
+            data:
+              items:
+                $ref: "#/components/schemas/StoreModel"
+              type: array
+              title: Data
+            total:
+              type: integer
+              title: Total
+            page:
+              type: integer
+              title: Page
+            page_size:
+              type: integer
+              title: Page Size
+            total_pages:
+              type: integer
+              title: Total Pages
+          type: object
+          required:
+            - data
+            - total
+            - page
+            - page_size
+            - total_pages
+          title: PaginatedStoreResponse
+        PaymentMethodEnum:
+          type: string
+          enum:
+            - cash
+            - credit_card
+            - pix
+            - vale_alimentacao
+          title: PaymentMethodEnum
+        RoleEnum:
+          type: string
+          enum:
+            - admin
+            - manager
+            - chef
+            - waiter
+            - delivery
+          title: RoleEnum
+        StatusEnum:
+          type: string
+          enum:
+            - pending
+            - preparing
+            - transit
+            - delivered
+            - failed
+            - canceled
+          title: StatusEnum
+        StoreModel:
+          properties:
+            id:
+              type: string
+              title: Id
+            phone:
+              type: string
+              title: Phone
+            address:
+              additionalProperties: true
+              type: object
+              title: Address
+            created_at:
+              type: integer
+              title: Created At
+            updated_at:
+              type: integer
+              title: Updated At
+            deleted_at:
+              anyOf:
+                - type: integer
+                - type: "null"
+              title: Deleted At
+          type: object
+          required:
+            - phone
+            - address
+          title: StoreModel
+        StoreSchema:
+          properties:
+            phone:
+              type: string
+              title: Phone
+            cep:
+              type: string
+              title: Cep
+            complement:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Complement
+          type: object
+          required:
+            - phone
+            - cep
+          title: StoreSchema
+        StoreUpdateSchema:
+          properties:
+            phone:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Phone
+            cep:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Cep
+            complement:
+              anyOf:
+                - type: string
+                - type: "null"
+              title: Complement
+          type: object
+          title: StoreUpdateSchema
+        UnitEnum:
+          type: string
+          enum:
+            - g
+            - ml
+            - un
+          title: UnitEnum
+        ValidationError:
+          properties:
+            loc:
+              items:
+                anyOf:
+                  - type: string
+                  - type: integer
+              type: array
+              title: Location
+            msg:
+              type: string
+              title: Message
+            type:
+              type: string
+              title: Error Type
+            input:
+              title: Input
+            ctx:
+              type: object
+              title: Context
+          type: object
+          required:
+            - loc
+            - msg
+            - type
+          title: ValidationError
+      securitySchemes:
+        HTTPBearer:
+          type: http
+          scheme: bearer
+  meta:
+    id: spc_4962b8a11de4471c979c564b4eff5335
+    created: 1777888209984
+    modified: 1777888209985
