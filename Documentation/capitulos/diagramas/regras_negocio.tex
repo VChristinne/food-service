@@ -1,25 +1,23 @@
 \section{Regras de Negócio}
 
 \hspace{0.5cm} As regras de negócio definem as diretrizes e restrições que governam o funcionamento do sistema.
-Elas são essenciais para garantir a integridade dos dados, a segurança, a conformidade legal e a experiência do usuário.
+São essenciais para garantir que o sistema atenda aos requisitos do negócio e opere de maneira eficiente e segura.
 
-A seguir, estão listadas as principais regras de negócio para cada módulo do sistema.
+A seguir, estão descritas as principais regras de negócio para cada área do sistema.
 
 \subsection{Autenticação e Autorização}
 \label{subsec:auth}
 
-\begin{enumerate}
+\begin{enumerate}[topsep=1pt, itemsep=0pt]
   \item JWT Token com validade de 24 horas
   \item Papéis: admin, gerente, chef, garçom, entregador
-  \item Restrição de acesso por loja
-  \item Restrição de acesso por papel
+  \item Restrição de acesso por loja e papel
 \end{enumerate}
 
 \subsection{Gestão de Clientes}
 \label{subsec:client}
 
-\begin{enumerate}
-  \item Email e telefone únicos
+\begin{enumerate}[topsep=1pt, itemsep=0pt]
   \item Aceite obrigatório de LGPD
   \item Exclusão de dados com soft delete
   \item Pontos de fidelidade: 1 ponto por real gasto
@@ -28,39 +26,35 @@ A seguir, estão listadas as principais regras de negócio para cada módulo do 
 \subsection{Gestão de Funcionários}
 \label{subsec:employee}
 
-\begin{enumerate}
+\begin{enumerate}[topsep=1pt, itemsep=0pt]
   \item Apenas admin cria funcionários
-  \item Email e telefone únicos
   \item Associação obrigatória a loja (exceto admin)
-  \item Soft delete de funcionário
+  \item Exclusão de dados com soft delete
 \end{enumerate}
 
 \subsection{Gestão de Lojas}
 \label{subsec:store}
 
-\begin{enumerate}
+\begin{enumerate}[topsep=1pt, itemsep=0pt]
   \item Apenas admin cria lojas
-  \item Associação de manager
-  \item Manager adiciona funcionários à loja
+  \item Associação de gerente obrigatório
+  \item Gerente adiciona funcionários à loja
 \end{enumerate}
 
 \subsection{Catálogo de Pratos}
 \label{subsec:catalogue}
 
-\begin{enumerate}
-  \item Apenas manager gerencia
+\begin{enumerate}[topsep=1pt, itemsep=0pt]
+  \item Apenas gerente cria e gerencia pratos
   \item Preço obrigatório e positivo
   \item Gestão de ingredientes via inventário
-  \item Remoção remove também associações
 \end{enumerate}
 
 \subsection{Gestão de Inventário}
 \label{subsec:inventory}
 
-\begin{enumerate}
-  \item Apenas manager gerencia
-  \item Quantidade e mínimo não negativos
-  \item Unidades válidas: g, ml, un
+\begin{enumerate}[topsep=1pt, itemsep=0pt]
+  \item Apenas gerente gerencia inventário
   \item Redução automática ao criar pedido
   \item Associação com múltiplos pratos
 \end{enumerate}
@@ -68,23 +62,20 @@ A seguir, estão listadas as principais regras de negócio para cada módulo do 
 \subsection{Pedidos}
 \label{subsec:order}
 
-\begin{enumerate}
+\begin{enumerate}[topsep=1pt, itemsep=0pt]
   \item Apenas clientes autenticados
-  \item Validação de existência de pratos
-  \item Validação de ingredientes
+  \item Validação de existência de pratos e ingredientes
   \item Cálculo de preço com taxa de 10\%
   \item Cálculo de pontos: (total com taxa) x 1
-  \item Redução automática de inventário
   \item Tipos: dine\_in, takeaway, delivery
   \item Canais: app, totem, counter, web
   \item Métodos de pagamento: cash, credit\_card, pix, vale\_alimentacao
-  \item Status: pending, preparing, transit, delivered, failed, canceled
 \end{enumerate}
 
 \subsection{Auditoria}
 
-\begin{enumerate}
-  \item Todas ações registradas (CREATE, READ, UPDATE, DELETE, LOGIN, LOGOUT)
+\begin{enumerate}[topsep=1pt, itemsep=0pt]
+  \item Todas ações registradas (create, read, update, delete, login, logout, password\_change)
   \item Informações: action, entity\_type, entity\_id, user\_id, timestamp, details, ip\_address
   \item Não apagável (append-only)
   \item Acesso restrito a admin

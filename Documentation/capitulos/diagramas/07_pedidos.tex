@@ -18,7 +18,7 @@
   \textbf{Pós-condições}:
   \begin{enumerate}
     \item Pedido criado com status "pendente";
-    \item Preço total calculado com taxa de 10\%;
+    \item Preço total calculado;
     \item Pontos de fidelidade atribuídos ao cliente;
     \item Quantidade de ingredientes reduzida no inventário;
     \item Auditoria registra a criação do pedido.
@@ -26,23 +26,16 @@
 
   \textbf{Fluxo Principal}:
   \begin{enumerate}
-    \item Cliente acessa o catálogo de pratos disponíveis;
-    \item Cliente seleciona um ou mais pratos e define as quantidades;
-    \item Cliente escolhe o tipo de pedido (entrega, retirada ou comer na loja);
-    \item Cliente seleciona o método de pagamento (dinheiro, cartão, PIX ou vale refeição);
-    \item Cliente adiciona notas opcionais (alergias, preferências);
+    \item Cliente acessa o catálogo de pratos disponíveis e escolhe os itens para o pedido;
+    \item Cliente escolhe o método de pagamento e se deseja retirada ou entrega;
     \item Sistema valida se todos os pratos existem no catálogo;
-    \item Sistema valida se cada prato possui ingredientes definidos;
-    \item Sistema calcula o subtotal multiplicando preço de cada prato pela quantidade;
-    \item Sistema aplica taxa de 10\% sobre o subtotal;
-    \item Sistema calcula pontos de fidelidade (1 ponto por real gasto);
-    \item Sistema reduz a quantidade de cada ingrediente conforme necessário;
+    \item Sistema calcula o preço total e envia os pontos de fidelidade correspondentes;
     \item Pedido é criado com status "pendente";
     \item Sistema retorna os detalhes do pedido ao cliente;
     \item Ação é registrada na auditoria.
   \end{enumerate}
 
   \textbf{Regras de Negócio}:
-  Consulte seção \ref{subsec:order} para regras de negócio relacionadas a pedidos e seção \ref{subsec:inventory} para redução de inventário.
+  Consulte \ref{subsec:order} para regras de negócio relacionadas a pedidos e \ref{subsec:inventory} para redução de inventário.
 
 \end{itemize}

@@ -1,11 +1,13 @@
-\subsection{UC-06: Cadastro de Cliente}
+\subsection{UC-06: Gestão de Cliente}
 
 \begin{itemize}[topsep=1pt, itemsep=0pt]
   \item[]\textbf{Descrição}: Cadastro de cliente no sistema.
 
-  \item[]\textbf{Ator Principal}: Cliente
+  \item[]\textbf{Ator Principal}: Cliente.
 
-  \item[]\textbf{Sistema Externo}: API ViaCEP (validação de CEP)
+  \item[]\textbf{Ator Secundário}: Administrador.
+
+  \item[]\textbf{Sistema Externo}: API ViaCEP.
 
   \textbf{Pré-condições}:
   \begin{enumerate}
@@ -20,16 +22,41 @@
     \item Cliente pode acessar o sistema com email e senha.
   \end{enumerate}
 
-  \textbf{Fluxo Principal}:
+  \textbf{Fluxo Principal - Cadastro de Cliente}:
   \begin{enumerate}
-    \item Cliente acessa a página de cadastro;
-    \item Cliente preenche o formulário com nome, email, senha, telefone, CEP e complemento opcional;
-    \item Sistema valida os dados, criptografa a senha e salva o cliente no banco.
-    \item Antes de confirmar, o cliente deve aceitar a LGPD, com consentimento registrado (data, hora, versão, IP);
+    \item Cliente acessa a página de cadastro e preenche o formulário;
+    \item Sistema valida os dados;
+    \item Antes de confirmar, o cliente deve aceitar a LGPD, com consentimento registrado (data, hora, versão, IP)\footnote{Apenas documentado, não houve criação de documento de políticas, mas o sistema deve estar preparado para isso.};
     \item Ao concluir, o sistema exibe mensagem de sucesso e redireciona para login.
   \end{enumerate}
 
+  \textbf{Fluxo Alternativo - Listar Clientes}:
+  \begin{enumerate}
+    \item Administrador acessa a lista de clientes;
+    \item Sistema retorna lista paginada de todos os clientes;
+  \end{enumerate}
+
+  \textbf{Fluxo Alternativo - Visualizar Detalhes}
+  \begin{enumerate}
+    \item Administrador seleciona um cliente;
+    \item Sistema retorna todas as informações.
+  \end{enumerate}
+
+  \textbf{Fluxo Alternativo - Atualizar Cliente}
+  \begin{enumerate}
+    \item Cliente pode atualizar seus dados pessoais;
+    \item Sistema salva as alterações no banco de dados.
+  \end{enumerate}
+
+  \textbf{Fluxo Alternativo - Deletar Cliente}\footnote{Apenas documentado, não há endpoint pois é recomendado usar soft delete para auditoria.}:
+  \begin{enumerate}
+    \item Cliente pode solicitar exclusão de sua conta;
+    \item Sistema confirma a solicitação e processa a exclusão;
+    \item Sistema remove ou anonimiza os dados pessoais do cliente para cumprir a LGPD;
+    \item Sistema marca a conta como inativa (soft delete) para manter histórico e auditoria.
+  \end{enumerate}
+
   \textbf{Regras de Negócio}:
-  Consulte \ref{subsec:client} relacionado às regras de negócio para gestão de clientes.
+  Consulte \ref{subsec:client}.
 
 \end{itemize}

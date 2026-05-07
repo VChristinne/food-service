@@ -3,7 +3,7 @@
 \begin{itemize}[topsep=1pt, itemsep=0pt]
   \item[]\textbf{Descrição}: Gerente de loja adiciona, visualiza, atualiza e remove itens do inventário.
 
-  \item[]\textbf{Ator Principal}: Gerente
+  \item[]\textbf{Ator Principal}: Gerente.
 
   \textbf{Pré-condições}:
   \begin{enumerate}
@@ -22,11 +22,8 @@
 
   \textbf{Fluxo Principal - Adicionar Item}:
   \begin{enumerate}
-    \item Gerente acessa a interface de gerenciamento de inventário;
-    \item Gerente clica em "Adicionar Novo Item";
-    \item Gerente preenche: nome do ingrediente, quantidade inicial, unidade (g, ml, un), quantidade mínima;
-    \item Sistema valida os dados (nome não vazio, quantidades positivas);
-    \item Sistema verifica se o ingrediente já existe para a loja;
+    \item Gerente acessa a página de inventário e preenche o formulário para adicionar um novo item;
+    \item Sistema valida os dados;
     \item Item é criado no inventário;
     \item Sistema retorna os detalhes do item criado;
     \item Ação é registrada na auditoria.
@@ -35,20 +32,18 @@
   \textbf{Fluxo Alternativo - Listar Itens}:
   \begin{enumerate}
     \item Gerente acessa o inventário;
-    \item Sistema retorna lista de todos os itens do inventário da loja;
-    \item Para cada item: nome, quantidade atual, unidade, quantidade mínima, datas.
+    \item Sistema retorna lista de todos os itens do inventário da loja.
   \end{enumerate}
 
   \textbf{Fluxo Alternativo - Visualizar Detalhes}:
   \begin{enumerate}
     \item Gerente seleciona um item específico;
-    \item Sistema retorna todas as informações: ID, nome, quantidade, unidade, mínimo, criação/atualização.
+    \item Sistema retorna todas as informações.
   \end{enumerate}
 
   \textbf{Fluxo Alternativo - Atualizar Item}:
   \begin{enumerate}
     \item Gerente seleciona um item para atualizar;
-    \item Gerente modifica: nome, quantidade ou quantidade mínima;
     \item Sistema valida os novos dados;
     \item Item é atualizado no banco de dados;
     \item Sistema retorna os dados atualizados;
@@ -72,6 +67,6 @@
   \end{enumerate}
 
   \textbf{Regras de Negócio}:
-  Consulte seção \ref{subsec:inventory} para regras de negócio relacionadas à gestão de inventário.
+  Consulte \ref{subsec:inventory}.
 
 \end{itemize}

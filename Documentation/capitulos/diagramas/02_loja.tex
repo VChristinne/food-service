@@ -3,10 +3,10 @@
 \begin{itemize}[topsep=1pt, itemsep=0pt]
   \item[]\textbf{Descrição}: Cadastro de loja no sistema.
 
-  \item[]\textbf{Ator Principal}: Administrador
-  \item[]\textbf{Ator Secundário}: Gerente
+  \item[]\textbf{Ator Principal}: Administrador.
+  \item[]\textbf{Ator Secundário}: Gerente.
 
-  \item[]\textbf{Sistema Externo}: API ViaCEP (validação de CEP)
+  \item[]\textbf{Sistema Externo}: API ViaCEP.
 
   \textbf{Pré-condições}:
   \begin{enumerate}
@@ -23,14 +23,12 @@
 
   \textbf{Fluxo Principal}:
   \begin{enumerate}
-    \item Administrador acessa painel administrativo, seção "Lojas" e "Cadastrar Nova Loja";
-    \item Administrador preenche o formulário com telefone, cep e complemento opcional;
+    \item Administrador acessa a página de cadastro de loja e preenche o formulário;
     \item Sistema valida os dados e salva a loja no banco;
-    \item Sistema exibe mensagem "Loja cadastrada com sucesso!";
-    \item Gerente pode acessar a loja para associar funcionários e gerenciar operações.
+    \item Sistema exibe mensagem de sucesso e redireciona para a lista de lojas.
   \end{enumerate}
 
   \textbf{Regras de Negócio}:
-  Consulte seção \ref{subsec:store} para regras de negócio relacionadas ao cadastro e gerenciamento de lojas.
+  Consulte \ref{subsec:store}.
 
 \end{itemize}

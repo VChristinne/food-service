@@ -3,14 +3,16 @@
 \begin{itemize}[topsep=1pt, itemsep=0pt]
   \item[]\textbf{Descrição}: Administrador adiciona, visualiza, atualiza e remove funcionários do sistema.
 
-  \item[]\textbf{Ator Principal}: Administrador
+  \item[]\textbf{Ator Principal}: Administrador.
 
-  \item[]\textbf{Atores Secundários}: Gerente e Funcionário
+  \item[]\textbf{Atores Secundários}: Gerente e Funcionário.
+
+  \item[]\textbf{Sistema Externo}: API ViaCEP.
 
   \textbf{Pré-condições}:
   \begin{enumerate}
     \item Administrador autenticado;
-    \item Loja existe no sistema (para managers e funcionários);
+    \item Loja existe no sistema;
     \item Sistema está disponível.
   \end{enumerate}
 
@@ -25,44 +27,40 @@
 
   \textbf{Fluxo Principal - Criar Funcionário}:
   \begin{enumerate}
-    \item Administrador acessa a interface de gerenciamento de funcionários;
-    \item Administrador clica em "Adicionar Novo Funcionário";
-    \item Administrador preenche os dados: nome, email, senha, telefone, CEP, complemento, loja, papel;
+    \item Administrador acessa a página de cadastro de funcionário e preenche o formulário;
     \item Sistema valida os dados;
     \item Funcionário é criado no banco de dados;
-    \item Sistema associa o funcionário à loja especificada;
     \item Ação é registrada na auditoria.
   \end{enumerate}
 
   \textbf{Fluxo Alternativo - Listar Funcionários}:
   \begin{enumerate}
-    \item Administrador acessa a lista de funcionários;
-    \item Sistema retorna lista paginada de todos os funcionários;
-    \item Manager vê apenas funcionários de sua loja;
-    \item Admin vê todos os funcionários.
+    \item Administrador ou Gerente acessa a lista de funcionários;
+    \item Gerente vê apenas funcionários de sua loja;
+    \item Administrador vê todos os funcionários.
   \end{enumerate}
 
   \textbf{Fluxo Alternativo - Visualizar Detalhes}:
   \begin{enumerate}
-    \item Administrador ou Manager seleciona um funcionário;
-    \item Sistema retorna todas as informações: ID, nome, email, telefone, papel, endereço completo, loja, datas;
+    \item Administrador ou Gerente seleciona um funcionário;
+    \item Sistema retorna todas as informações.
   \end{enumerate}
 
   \textbf{Fluxo Alternativo - Atualizar Funcionário}:
   \begin{enumerate}
-    \item Administrador ou Manager seleciona um funcionário para atualizar;
+    \item Administrador ou Gerente seleciona um funcionário para atualizar;
     \item Sistema valida os novos dados;
     \item Sistema verifica permissões:
     \begin{enumerate}
-      \item Manager só pode atualizar funcionários da sua loja;
-      \item Admin pode alterar qualquer coisa.
+      \item Gerente só pode atualizar funcionários da sua loja;
+      \item Administrador pode alterar qualquer funcionário.
     \end{enumerate}
     \item Funcionário é atualizado no banco de dados;
     \item Sistema retorna os dados atualizados;
     \item Ação é registrada na auditoria com o que foi alterado.
   \end{enumerate}
 
-  \textbf{Fluxo Alternativo - Remover Funcionário}:
+  \textbf{Fluxo Alternativo - Remover Funcionário}\footnote{Apenas documentado, não há endpoint pois é recomendado usar soft delete para auditoria.}:
   \begin{enumerate}
     \item Administrador seleciona um funcionário para remover;
     \item Administrador confirma a exclusão;
@@ -72,5 +70,5 @@
   \end{enumerate}
 
   \textbf{Regras de Negócio}:
-  Consulte seção \ref{subsec:employee} para regras de negócio relacionadas à gestão de funcionários.
+  Consulte \ref{subsec:employee}.
 \end{itemize}
