@@ -1,0 +1,36 @@
+\subsection{UC-02: Cadastro de Loja}
+
+\begin{itemize}[topsep=1pt, itemsep=0pt]
+  \item[]\textbf{Descrição}: Cadastro de loja no sistema.
+
+  \item[]\textbf{Ator Principal}: Administrador
+  \item[]\textbf{Ator Secundário}: Gerente
+
+  \item[]\textbf{Sistema Externo}: API ViaCEP (validação de CEP)
+
+  \textbf{Pré-condições}:
+  \begin{enumerate}
+    \item Administrador autenticado no sistema;
+    \item Loja não possui cadastro no sistema;
+    \item Sistema está disponível.
+  \end{enumerate}
+
+  \textbf{Pós-condições}:
+  \begin{enumerate}
+    \item Loja registrada no sistema com dados válidos;
+    \item Loja pode ser gerenciada e associada a funcionários pelo Gerente;
+  \end{enumerate}
+
+  \textbf{Fluxo Principal}:
+  \begin{enumerate}
+    \item Administrador acessa painel administrativo, seção "Lojas" e "Cadastrar Nova Loja";
+    \item Administrador preenche o formulário com telefone, cep e complemento opcional;
+    \item Sistema valida os dados e salva a loja no banco;
+    \item Sistema exibe mensagem "Loja cadastrada com sucesso!";
+    \item Gerente pode acessar a loja para associar funcionários e gerenciar operações.
+  \end{enumerate}
+
+  \textbf{Regras de Negócio}:
+  Consulte seção \ref{subsec:store} para regras de negócio relacionadas ao cadastro e gerenciamento de lojas.
+
+\end{itemize}

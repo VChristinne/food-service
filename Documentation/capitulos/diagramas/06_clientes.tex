@@ -1,4 +1,4 @@
-\subsection{UC-01: Cadastro de Cliente}
+\subsection{UC-06: Cadastro de Cliente}
 
 \begin{itemize}[topsep=1pt, itemsep=0pt]
   \item[]\textbf{Descrição}: Cadastro de cliente no sistema.
@@ -29,22 +29,7 @@
     \item Ao concluir, o sistema exibe mensagem de sucesso e redireciona para login.
   \end{enumerate}
 
-  \textbf{Fluxos de Exceção}:
-  \begin{enumerate}
-    \item Duplicidade de email: retorna 409 Conflict com mensagem "Email já cadastrado";
-    \item Duplicidade de telefone: retorna 409 Conflict com mensagem "Telefone já cadastrado";
-    \item Nome inválido: retorna 400 Bad Request com mensagem "Nome inválido";
-    \item CEP inválido: retorna 400 Bad Request com mensagem "CEP inválido";
-    \item LGPD não aceito: retorna 400 Bad Request com mensagem "É obrigatório a aceitação da LGPD".
-  \end{enumerate}
-
   \textbf{Regras de Negócio}:
-  \begin{enumerate}
-    \item RN01: Email e telefone devem ser únicos no sistema;
-    \item RN02: Nome deve conter apenas letras, espaços, hífens e apóstrofos;
-    \item RN03: CEP deve existir na base do ViaCEP;
-    \item RN04: Aceite obrigatório de política de privacidade (LGPD);
-    \item RN05: Sistema deve registrar todas as ações administrativas para auditoria;
-    \item RN06: Cliente pode solicitar exclusão de dados futuramente.
-  \end{enumerate}
+  Consulte \ref{subsec:client} relacionado às regras de negócio para gestão de clientes.
+
 \end{itemize}

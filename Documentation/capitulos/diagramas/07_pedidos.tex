@@ -1,0 +1,48 @@
+\subsection{UC-07: Criar Pedido}
+
+\begin{itemize}[topsep=1pt, itemsep=0pt]
+  \item[]\textbf{Descrição}: Cliente realiza um pedido através do sistema.
+
+  \item[]\textbf{Ator Principal}: Cliente
+
+  \item[]\textbf{Atores Secundários}: Gerente, Garçom, Entregador
+
+  \textbf{Pré-condições}:
+  \begin{enumerate}
+    \item Cliente autenticado no sistema;
+    \item Cliente possui conta ativa;
+    \item Loja está aberta e disponível;
+    \item Catálogo contém pratos disponíveis;
+  \end{enumerate}
+
+  \textbf{Pós-condições}:
+  \begin{enumerate}
+    \item Pedido criado com status "pendente";
+    \item Preço total calculado com taxa de 10\%;
+    \item Pontos de fidelidade atribuídos ao cliente;
+    \item Quantidade de ingredientes reduzida no inventário;
+    \item Auditoria registra a criação do pedido.
+  \end{enumerate}
+
+  \textbf{Fluxo Principal}:
+  \begin{enumerate}
+    \item Cliente acessa o catálogo de pratos disponíveis;
+    \item Cliente seleciona um ou mais pratos e define as quantidades;
+    \item Cliente escolhe o tipo de pedido (entrega, retirada ou comer na loja);
+    \item Cliente seleciona o método de pagamento (dinheiro, cartão, PIX ou vale refeição);
+    \item Cliente adiciona notas opcionais (alergias, preferências);
+    \item Sistema valida se todos os pratos existem no catálogo;
+    \item Sistema valida se cada prato possui ingredientes definidos;
+    \item Sistema calcula o subtotal multiplicando preço de cada prato pela quantidade;
+    \item Sistema aplica taxa de 10\% sobre o subtotal;
+    \item Sistema calcula pontos de fidelidade (1 ponto por real gasto);
+    \item Sistema reduz a quantidade de cada ingrediente conforme necessário;
+    \item Pedido é criado com status "pendente";
+    \item Sistema retorna os detalhes do pedido ao cliente;
+    \item Ação é registrada na auditoria.
+  \end{enumerate}
+
+  \textbf{Regras de Negócio}:
+  Consulte seção \ref{subsec:order} para regras de negócio relacionadas a pedidos e seção \ref{subsec:inventory} para redução de inventário.
+
+\end{itemize}

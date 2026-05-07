@@ -1,0 +1,72 @@
+\subsection{UC-05: Gestão do Catálogo}
+
+\begin{itemize}[topsep=1pt, itemsep=0pt]
+  \item[]\textbf{Descrição}: Gerente da loja adiciona, visualiza, atualiza e remove pratos do catálogo.
+
+  \item[]\textbf{Ator Principal}: Gerente
+
+  \item[]\textbf{Atores Secundários}: Cliente (visualização do catálogo)
+
+  \textbf{Pré-condições}:
+  \begin{enumerate}
+    \item Gerente autenticado;
+    \item Loja gerenciada pelo Gerente existe;
+    \item Sistema está disponível.
+  \end{enumerate}
+
+  \textbf{Pós-condições}:
+  \begin{enumerate}
+    \item Prato adicionado, atualizado ou removido do catálogo;
+    \item Catálogo reflete as mudanças imediatamente;
+    \item Auditoria registra todas as operações;
+    \item Clientes veem o catálogo atualizado.
+  \end{enumerate}
+
+  \textbf{Fluxo Principal - Adicionar Prato}:
+  \begin{enumerate}
+    \item Gerente acessa a interface de gerenciamento de catálogo;
+    \item Gerente clica em "Adicionar Novo Prato";
+    \item Gerente preenche os dados: nome, preço, disponibilidade;
+    \item Sistema valida os dados (nome não vazio, preço válido);
+    \item Sistema verifica se o prato já existe para a loja;
+    \item Prato é criado no catálogo com status "disponível";
+    \item Sistema retorna os detalhes do prato criado;
+    \item Ação é registrada na auditoria.
+  \end{enumerate}
+
+  \textbf{Fluxo Alternativo - Listar Pratos}:
+  \begin{enumerate}
+    \item Gerente ou cliente acessa o catálogo;
+    \item Sistema retorna lista paginada de pratos disponíveis;
+    \item Para cada prato: nome, preço e disponibilidade;
+  \end{enumerate}
+
+  \textbf{Fluxo Alternativo - Visualizar Detalhes do Prato}:
+  \begin{enumerate}
+    \item Usuário seleciona um prato específico;
+    \item Sistema retorna todas as informações do prato;
+    \item Se Gerente: pode ver ingredientes associados.
+  \end{enumerate}
+
+  \textbf{Fluxo Alternativo - Atualizar Prato}:
+  \begin{enumerate}
+    \item Gerente seleciona um prato existente;
+    \item Gerente modifica um ou mais campos;
+    \item Sistema valida os novos dados;
+    \item Prato é atualizado no banco de dados;
+    \item Sistema retorna os dados atualizados;
+    \item Ação é registrada na auditoria com o que foi alterado.
+  \end{enumerate}
+
+  \textbf{Fluxo Alternativo - Remover Prato}:
+  \begin{enumerate}
+    \item Gerente seleciona um prato para remover;
+    \item Gerenciador confirma a exclusão;
+    \item Sistema remove o prato do catálogo;
+    \item Sistema remove as associações de ingredientes (dish\_ingredient);
+    \item Ação é registrada na auditoria.
+  \end{enumerate}
+
+  \textbf{Regras de Negócio}:
+  Consulte seção \ref{subsec:catalogue} para regras de negócio relacionadas ao catálogo de pratos.
+\end{itemize}

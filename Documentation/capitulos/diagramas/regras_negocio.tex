@@ -1,0 +1,91 @@
+\section{Regras de Negócio}
+
+\hspace{0.5cm} As regras de negócio definem as diretrizes e restrições que governam o funcionamento do sistema.
+Elas são essenciais para garantir a integridade dos dados, a segurança, a conformidade legal e a experiência do usuário.
+
+A seguir, estão listadas as principais regras de negócio para cada módulo do sistema.
+
+\subsection{Autenticação e Autorização}
+\label{subsec:auth}
+
+\begin{enumerate}
+  \item JWT Token com validade de 24 horas
+  \item Papéis: admin, gerente, chef, garçom, entregador
+  \item Restrição de acesso por loja
+  \item Restrição de acesso por papel
+\end{enumerate}
+
+\subsection{Gestão de Clientes}
+\label{subsec:client}
+
+\begin{enumerate}
+  \item Email e telefone únicos
+  \item Aceite obrigatório de LGPD
+  \item Exclusão de dados com soft delete
+  \item Pontos de fidelidade: 1 ponto por real gasto
+\end{enumerate}
+
+\subsection{Gestão de Funcionários}
+\label{subsec:employee}
+
+\begin{enumerate}
+  \item Apenas admin cria funcionários
+  \item Email e telefone únicos
+  \item Associação obrigatória a loja (exceto admin)
+  \item Soft delete de funcionário
+\end{enumerate}
+
+\subsection{Gestão de Lojas}
+\label{subsec:store}
+
+\begin{enumerate}
+  \item Apenas admin cria lojas
+  \item Associação de manager
+  \item Manager adiciona funcionários à loja
+\end{enumerate}
+
+\subsection{Catálogo de Pratos}
+\label{subsec:catalogue}
+
+\begin{enumerate}
+  \item Apenas manager gerencia
+  \item Preço obrigatório e positivo
+  \item Gestão de ingredientes via inventário
+  \item Remoção remove também associações
+\end{enumerate}
+
+\subsection{Gestão de Inventário}
+\label{subsec:inventory}
+
+\begin{enumerate}
+  \item Apenas manager gerencia
+  \item Quantidade e mínimo não negativos
+  \item Unidades válidas: g, ml, un
+  \item Redução automática ao criar pedido
+  \item Associação com múltiplos pratos
+\end{enumerate}
+
+\subsection{Pedidos}
+\label{subsec:order}
+
+\begin{enumerate}
+  \item Apenas clientes autenticados
+  \item Validação de existência de pratos
+  \item Validação de ingredientes
+  \item Cálculo de preço com taxa de 10\%
+  \item Cálculo de pontos: (total com taxa) x 1
+  \item Redução automática de inventário
+  \item Tipos: dine\_in, takeaway, delivery
+  \item Canais: app, totem, counter, web
+  \item Métodos de pagamento: cash, credit\_card, pix, vale\_alimentacao
+  \item Status: pending, preparing, transit, delivered, failed, canceled
+\end{enumerate}
+
+\subsection{Auditoria}
+
+\begin{enumerate}
+  \item Todas ações registradas (CREATE, READ, UPDATE, DELETE, LOGIN, LOGOUT)
+  \item Informações: action, entity\_type, entity\_id, user\_id, timestamp, details, ip\_address
+  \item Não apagável (append-only)
+  \item Acesso restrito a admin
+\end{enumerate}
