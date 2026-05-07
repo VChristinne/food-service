@@ -22,7 +22,7 @@ class CatalogueRepository(BaseRepository[CatalogueModel]):
         """Retorna lista de ingredientes e suas quantidades para um prato."""
         statement = (
             select(InventoryModel, DishIngredient)
-            .join(DishIngredient)
+            .join(DishIngredient, InventoryModel.id == DishIngredient.ingredient_id)
             .where(DishIngredient.dish_id == dish_id)
         )
         results = self.session.exec(statement).all()

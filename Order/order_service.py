@@ -117,7 +117,6 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
             status=StatusEnum.PENDING
         )
 
-        # Reduzir inventário para cada item do pedido
         for item in order_data.items:
             dish_name = item.get("name")
             item_quantity = Decimal(str(item.get("quantity", 1)))
@@ -136,6 +135,6 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
             # Reduzir quantidade de cada ingrediente
             for ingredient, dish_ingredient in ingredients:
                 quantity_to_reduce = dish_ingredient.quantity * item_quantity
-                self.inventory_service.reduce_quantity(ingredient.id, quantity_to_reduce)
+                await self.inventory_service.reduce_quantity(ingredient.id, quantity_to_reduce)
 
         return self.repository.create(new_order)

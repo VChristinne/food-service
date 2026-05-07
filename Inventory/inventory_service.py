@@ -57,13 +57,19 @@ class InventoryService(BaseService[InventoryModel, InventorySchema, InventoryUpd
         await self.get_by_id_and_store(inventory_id, store_id)
         self.repository.delete(inventory_id)
 
-    def reduce_quantity(self, inventory_id: str, quantity: Decimal) -> InventoryModel:
+    async def reduce_quantity(self, inventory_id: str, quantity: Decimal) -> InventoryModel:
         """Reduz a quantidade de um item de inventário."""
         inventory = self.repository.get_by_id(inventory_id)
         if not inventory:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Item de inventário não encontrado"
+            )
+
+        if inventory.quantity < quantity:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Quantidade insuficiente em estoque. Disponível: {inventory.quantity}, Solicitado: {quantity}"
             )
 
         inventory.quantity -= quantity

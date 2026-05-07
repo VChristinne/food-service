@@ -1,8 +1,10 @@
 from fastapi import HTTPException, status
 from sqlmodel import Session
 from time import time
+from decimal import Decimal
 
 from Catalogue.catalogue import CatalogueModel, CatalogueSchema, CatalogueUpdateSchema, PaginatedCatalogueResponse
+from Catalogue.dish_ingredient import DishIngredient
 from Catalogue.catalogue_repository import CatalogueRepository
 from Utils.base_service import BaseService
 from Audit.audit_service import AuditService
@@ -23,8 +25,28 @@ class CatalogueService(BaseService[CatalogueModel, CatalogueSchema, CatalogueUpd
         field_transformers = {
             "store_id": lambda _: store_id
         }
-        return self.create_from_schema(schema, field_transformers=field_transformers)
+        dish = self.create_from_schema(schema, field_transformers=field_transformers)
 
+        # Criar associações de ingredientes se foram fornecidos
+        if schema.items:
+            self._create_dish_ingredients(dish.id, schema.items)
+
+        return dish
+
+    def _create_dish_ingredients(self, dish_id: str, items: list[dict]) -> None:
+        """Cria as associações entre prato e ingredientes."""
+        for item in items:
+            ingredient_id = item.get("ingredient_id")
+            quantity = Decimal(str(item.get("quantity", 0)))
+
+            dish_ingredient = DishIngredient(
+                dish_id=dish_id,
+                ingredient_id=ingredient_id,
+                quantity=quantity
+            )
+            self.repository.session.add(dish_ingredient)
+
+        self.repository.session.commit()
 
     async def get_by_id_and_store(self, dish_id: str, store_id: str) -> CatalogueModel:
         dish = self.repository.get_by_id(dish_id)

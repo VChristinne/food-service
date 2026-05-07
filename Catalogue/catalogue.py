@@ -14,6 +14,7 @@ class CatalogueSchema(BaseModel):
     price: Decimal = Field(max_digits=10, decimal_places=2)
     available: bool = Field(default=True)
     store_id: Optional[str] = None
+    items: Optional[list[dict]] = None
 
 
 class CatalogueUpdateSchema(BaseModel):
