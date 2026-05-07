@@ -24,7 +24,7 @@ uv sync
 ### Configuração
 
 ```bash
-# Copiar arquivo de exemplo
+# Copiar arquivo de exemplo e gerar seu token
 cp .env.example .env
 ```
 
