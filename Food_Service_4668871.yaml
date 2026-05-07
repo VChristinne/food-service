@@ -444,12 +444,12 @@ collection:
       sortKey: -1777888402863
       description: ""
     children:
-      - url: "{{ _.base_url }}/api/v1/auth/bootstrap-admin"
+      - url: "{{ _.base_url }}/auth/bootstrap-admin"
         name: Bootstrap Admin
         meta:
           id: req_19614666ef40469c9ad5591d7774f027
           created: 1777888209996
-          modified: 1777888428804
+          modified: 1778170109569
           isPrivate: false
           description: |-
             Cria o primeiro admin do sistema.
@@ -458,14 +458,14 @@ collection:
         method: POST
         body:
           mimeType: application/json
-          text: |-
+          text: >-
             {
-              "name": "string",
-              "email": "string",
-              "password": "string",
-              "phone": "string",
-              "cep": "string",
-              "complement": "string"
+              "name": "{{ _.firstName }} {{ _.lastName }}",
+              "email": "{{ _.firstName }}.{{ _.lastName }}@{{ _.companyEmail }}",
+              "password": "12345678!A",
+              "phone": "{% faker 'randomPhoneNumber' %}",
+              "cep": "22775053",
+              "complement": ""
             }
         headers:
           - name: Content-Type
