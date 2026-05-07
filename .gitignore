@@ -5,5 +5,4 @@ __pycache__/
 .idea/
 Documentation/build
 migrations/
-pyproject.toml
 .python-version
