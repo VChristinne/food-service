@@ -20,9 +20,9 @@ collection:
         meta:
           id: req_6f081e1ce87a4ca38ee3c964a68ce424
           created: 1777888209998
-          modified: 1778171597885
+          modified: 1778257041025
           isPrivate: false
-          description: ""
+          description: Somente Admin
           sortKey: -1777888385167
         method: POST
         body:
@@ -31,7 +31,7 @@ collection:
             {
               "phone": "{% faker 'randomPhoneNumber' %}",
               "cep": "22775052",
-              "complement": "string"
+              "complement": "255"
             }
         headers:
           - name: Content-Type
@@ -39,8 +39,12 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.adminToken }}"
           prefix: ""
+        scripts:
+          afterResponse: |-
+            const body = insomnia.response.json();
+            insomnia.environment.set("storeID", body.id);
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -54,21 +58,21 @@ collection:
         meta:
           id: req_bf4d91905e574b50a258f738be173893
           created: 1777888209998
-          modified: 1777930909565
+          modified: 1778243271112
           isPrivate: false
-          description: ""
+          description: Somente Admin
           sortKey: -1777888385067
         method: GET
         parameters:
           - name: page
             value: "1"
-            disabled: false
+            disabled: true
           - name: page_size
             value: "2"
-            disabled: false
+            disabled: true
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.adminToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -83,14 +87,14 @@ collection:
         meta:
           id: req_48c01dbe6af047bf89fcc6c3b8798a01
           created: 1777888209999
-          modified: 1778180287235
+          modified: 1778243285449
           isPrivate: false
-          description: ""
+          description: Somente Admin
           sortKey: -1777888384967
         method: GET
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.adminToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -102,15 +106,15 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: store_id
-            value: ""
+            value: "{{ _.storeID }}"
       - url: "{{ _.base_url }}/stores/:store_id"
         name: Update Store
         meta:
           id: req_871c46263ef84629af2b7518814ba938
           created: 1777888209999
-          modified: 1777972699280
+          modified: 1778243332444
           isPrivate: false
-          description: ""
+          description: Somente Admin
           sortKey: -1777888384867
         method: PATCH
         body:
@@ -125,7 +129,7 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.adminToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -137,7 +141,7 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: store_id
-            value: 069f3640-e1bc-7fa2-8000-a6059a7ab69a
+            value: "{{ _.storeID }}"
   - name: Employee
     meta:
       id: fld_725b5f6049fd4790a2dcc6257a8bd858
@@ -151,21 +155,23 @@ collection:
         meta:
           id: req_542712b7f5784e0485b4fba2201c118e
           created: 1777888209987
-          modified: 1778100555885
+          modified: 1778254084165
           isPrivate: false
-          description: ""
+          description: |-
+            - Token Admin: Retorna todos os funcionários
+            - Token Manager: Retorna os funcionários da loja associada a ele
           sortKey: -1777888609215
         method: GET
         parameters:
           - name: page
             value: "1"
-            disabled: true
+            disabled: false
           - name: page_size
-            value: "10"
-            disabled: true
+            value: "1"
+            disabled: false
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.adminToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -180,9 +186,19 @@ collection:
         meta:
           id: req_1711a596455349a4b40985eee47bfe13
           created: 1777888209988
-          modified: 1778180264906
+          modified: 1778243354311
           isPrivate: false
-          description: ""
+          description: >-
+            Está pré-criado um funcionário com cada role com todos associados a
+            mesma loja
+
+            - manager
+
+            - chef
+
+            - waiter
+
+            - delivery
           sortKey: -1777888609315
         method: POST
         body:
@@ -190,13 +206,13 @@ collection:
           text: >-
             {
             	"name": "{{ _.firstName }} {{ _.lastName }}",
-            	"password": "12345678!M",
+            	"password": "12345678!Ch",
             	"email": "{{ _.firstName | lower }}.{{ _.lastName | lower }}@{{ _.companyEmail }}",
             	"phone": "{% faker 'randomPhoneNumber' %}",
             	"cep": "22775046",
             	"complement": "AP 10",
-            	"store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-            	"role": "manager"
+            	"store_id": "{{ _.storeID }}",
+            	"role": "chef"
             }
         headers:
           - name: Content-Type
@@ -204,7 +220,7 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.adminToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -219,18 +235,22 @@ collection:
         meta:
           id: req_6241c928fe0d40149ad6e198e59fb5d4
           created: 1777888209988
-          modified: 1778180284018
+          modified: 1778254224377
           isPrivate: false
-          description: ""
+          description: >-
+            - Token Admin: Pode atualizar qualquer funcionário
+
+            - Token Manager: Pode atualizar os funcionários da loja associada a
+            ele
           sortKey: -1777888609015
         method: PATCH
         body:
           mimeType: application/json
           text: >-
             {
-                "name": "{{ _.firstName }} {{ _.lastName }}",
-                "email": "{{ _.firstName | lower }}.{{ _.lastName | lower }}@{{ _.companyEmail }}",
-                "phone": "{% faker 'randomPhoneNumber' %}"
+              "name": "{{ _.firstName }} {{ _.lastName }}",
+              "email": "{{ _.firstName | lower }}.{{ _.lastName | lower }}@{{ _.companyEmail }}",
+              "phone": "{% faker 'randomPhoneNumber' %}"
             }
         headers:
           - name: Content-Type
@@ -238,7 +258,7 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.adminToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -250,20 +270,22 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: employee_id
-            value: ""
+            value: 069fdb6b-a312-7bb2-8000-34d9118dd566
       - url: "{{ _.base_url }}/employees/:employee_id"
         name: Get Employee
         meta:
           id: req_ff506f6c92484324b925f1b014872b5f
           created: 1777888209988
-          modified: 1778180276670
+          modified: 1778243947085
           isPrivate: false
-          description: ""
+          description: |-
+            - Token Admin: Pode buscar por qualquer funcionário
+            - Token Manager: Pode buscar os funcionários da loja associada a ele
           sortKey: -1777888609115
         method: GET
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.managerToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -275,8 +297,8 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: employee_id
-            value: ""
-  - name: Customer
+            value: 069fdb6b-a312-7bb2-8000-34d9118dd566
+  - name: Costumer
     meta:
       id: fld_01ea33a9f1cd4a858f5877d69461b23a
       created: 1777888354321
@@ -284,26 +306,26 @@ collection:
       sortKey: -1777888368936.125
       description: ""
     children:
-      - url: "{{ _.base_url }}/costumers/"
+      - url: "{{ _.base_url }}/customers/"
         name: Get Costumers
         meta:
           id: req_04aff231e29b4d4f91a56290dbbf9fc2
           created: 1777888209989
-          modified: 1778088979634
+          modified: 1778255550256
           isPrivate: false
-          description: ""
+          description: Somente Admin
           sortKey: -1777888594102
         method: GET
         parameters:
           - name: page
             value: "1"
-            disabled: true
+            disabled: false
           - name: page_size
-            value: "10"
-            disabled: true
+            value: "1"
+            disabled: false
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.adminToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -313,19 +335,19 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/costumers/:costumer_id"
-        name: Get Customer
+      - url: "{{ _.base_url }}/customers/:customer_id"
+        name: Get Costumer
         meta:
           id: req_25316716de3241ddabca62d7fa1047fd
           created: 1777888209989
-          modified: 1778180375676
+          modified: 1778256327257
           isPrivate: false
-          description: ""
+          description: Somente Admin
           sortKey: -1777888594002
         method: GET
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.adminToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -336,16 +358,16 @@ collection:
             store: true
           rebuildPath: true
         pathParameters:
-          - name: costumer_id
-            value: ""
-      - url: "{{ _.base_url }}/costumers/"
-        name: Create Customer
+          - name: customer_id
+            value: 069fdd1e-30e8-7145-8000-622d09ef189d
+      - url: "{{ _.base_url }}/customers/"
+        name: Create Costumer
         meta:
           id: req_560c7c22ab9f496e8a841393f831e78a
           created: 1777888209989
-          modified: 1778088248664
+          modified: 1778247624777
           isPrivate: false
-          description: ""
+          description: Público
           sortKey: -1777888594202
         method: POST
         body:
@@ -357,11 +379,7 @@ collection:
               "email": "{{ _.firstName }}{{ _.lastName }}@outlook.com",
               "phone": "{% faker 'randomPhoneNumber' %}",
               "cep": "22775055",
-              "complement": "AP 10",
-              "orders": [
-                null
-              ],
-              "points": 0
+              "complement": "AP 10"
             }
         headers:
           - name: Content-Type
@@ -375,14 +393,14 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/costumers/:costumer_id"
-        name: Update Customer
+      - url: "{{ _.base_url }}/customers/:customer_id"
+        name: Update Costumer
         meta:
           id: req_c6ecf0777e4c4f819d92ef1029401598
           created: 1777888209990
-          modified: 1778180379103
+          modified: 1778247706081
           isPrivate: false
-          description: ""
+          description: Somente o próprio cliente pode atualizar o perfil
           sortKey: -1777888593902
         method: PATCH
         body:
@@ -398,7 +416,7 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.costumerToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -409,13 +427,13 @@ collection:
             store: true
           rebuildPath: true
         pathParameters:
-          - name: costumer_id
-            value: ""
+          - name: customer_id
+            value: 069fdd1e-30e8-7145-8000-622d09ef189d
   - name: Auth
     meta:
       id: fld_a1bb609442f947d799acd89588e05d98
       created: 1777888359717
-      modified: 1778180253436
+      modified: 1778256522418
       sortKey: -1777888402863
       description: ""
     children:
@@ -455,11 +473,11 @@ collection:
             store: true
           rebuildPath: true
       - url: "{{ _.base_url }}/auth/login"
-        name: Login
+        name: Login Admin
         meta:
           id: req_2b174601f1db458aa6d6f7b5d8a7a40f
           created: 1777888209996
-          modified: 1778180229460
+          modified: 1778247743056
           isPrivate: false
           description: ""
           sortKey: -1777888421383
@@ -478,7 +496,172 @@ collection:
         scripts:
           afterResponse: |-
             const body = insomnia.response.json();
-            insomnia.environment.set("bearerToken", body.access_token);
+            insomnia.environment.set("adminToken", body.access_token);
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/auth/login"
+        name: Login Costumer
+        meta:
+          id: req_acfc9654c7c8438586aa4c7bf430e6af
+          created: 1778242088768
+          modified: 1778256336678
+          isPrivate: false
+          description: ""
+          sortKey: -1777888421333
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "JoaquinMraz@gmail.com",
+              "password": "12345678!C"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        scripts:
+          afterResponse: |-
+            const body = insomnia.response.json();
+            insomnia.environment.set("costumerToken", body.access_token);
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/auth/login"
+        name: Login Manager
+        meta:
+          id: req_09704836f9ad457fb7697509b5eefa3f
+          created: 1778242136950
+          modified: 1778242899627
+          isPrivate: false
+          description: ""
+          sortKey: -1777888421358
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "ben.luettgen@{{ _.companyEmail }}",
+              "password": "12345678!M"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        scripts:
+          afterResponse: |-
+            const body = insomnia.response.json();
+            insomnia.environment.set("managerToken", body.access_token);
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/auth/login"
+        name: Login Waiter
+        meta:
+          id: req_232f875351f148408b2a222e42ddec33
+          created: 1778242155538
+          modified: 1778256521187
+          isPrivate: false
+          description: ""
+          sortKey: -1777888421345.5
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "emmet.swift@{{ _.companyEmail }}",
+              "password": "12345678!W"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        scripts:
+          afterResponse: |-
+            const body = insomnia.response.json();
+            insomnia.environment.set("waiterToken", body.access_token);
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/auth/login"
+        name: Login Delivery
+        meta:
+          id: req_5f09009c491145fca111f028a8b682d0
+          created: 1778242163605
+          modified: 1778243021674
+          isPrivate: false
+          description: ""
+          sortKey: -1777888421339.25
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "america.grady@{{ _.companyEmail }}",
+              "password": "12345678!D"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        scripts:
+          afterResponse: |-
+            const body = insomnia.response.json();
+            insomnia.environment.set("deliveryToken", body.access_token);
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/auth/login"
+        name: Login Chef
+        meta:
+          id: req_822deddc80d844e594c9fb840a5160d6
+          created: 1778242195049
+          modified: 1778242999284
+          isPrivate: false
+          description: ""
+          sortKey: -1777888421351.75
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "kristina.schaefer@{{ _.companyEmail }}",
+              "password": "12345678!Ch"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            disabled: false
+        scripts:
+          afterResponse: |-
+            const body = insomnia.response.json();
+            insomnia.environment.set("chefToken", body.access_token);
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -491,24 +674,31 @@ collection:
     meta:
       id: fld_ac87e4c9127746fa87a03512b01ac409
       created: 1777888371068
-      modified: 1777888371068
+      modified: 1778254773255
       sortKey: -1777888371068
       description: ""
     children:
-      - url: "{{ _.base_url }}/catalogue/"
+      - url: "{{ _.base_url }}/catalogue/:store_id"
         name: Get Catalogue
         meta:
           id: req_34728eff83934ddb8ab51075fc97db78
           created: 1777888209994
-          modified: 1778100593474
+          modified: 1778246002112
           isPrivate: false
-          description: ""
+          description: Público
           sortKey: -1777888544365
         method: GET
+        parameters:
+          - name: page
+            value: "1"
+            description: ""
+            disabled: true
+          - name: page_size
+            value: "10"
+            description: ""
+            disabled: true
         authentication:
-          type: bearer
-          token: "{{ _.bearerToken }}"
-          prefix: ""
+          type: none
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -517,21 +707,24 @@ collection:
             send: true
             store: true
           rebuildPath: true
+        pathParameters:
+          - name: store_id
+            value: "{{ _.storeID }}"
       - url: "{{ _.base_url }}/catalogue/:dish_id"
         name: Update Dish
         meta:
           id: req_2a714b1b979e410ba565a787823de6a9
           created: 1777888209995
-          modified: 1778086440130
+          modified: 1778256933059
           isPrivate: false
-          description: ""
+          description: Somente Manager e Chef
           sortKey: -1777888544065
         method: PATCH
         body:
           mimeType: application/json
           text: |-
             {
-              "price": 9.50
+              "price": 15.50
             }
         headers:
           - name: Content-Type
@@ -539,7 +732,7 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.chefToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -551,27 +744,26 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: dish_id
-            value: 069fb715-30c8-7a37-8000-0f19c23558b4
+            value: "{{ _.frangoassadoID }}"
       - url: "{{ _.base_url }}/catalogue/"
         name: Create Dish
         meta:
           id: req_864e740483cc4a989dd3ef1dd04615d4
           created: 1777888209995
-          modified: 1778180356208
+          modified: 1778252669250
           isPrivate: false
-          description: ""
+          description: Somente Manager e Chef
           sortKey: -1777888544465
         method: POST
         body:
           mimeType: application/json
-          text: >
+          text: |
             {
-                "name": "Picanha",
-                "price": 49.90,
+                "name": "Frango Assado",
+                "price": 15.90,
                 "available": true,
-                "store_id": "ADICIONAR ID DA LOJA",
                 "items": [
-                    {"ingredient_id": "ADICIONAR ID DA CARNE BOVINA", "quantity": 200.0}
+                    {"ingredient_id": "{{ _.frangoID }}", "quantity": 1000.0}
                 ]
             }
         headers:
@@ -580,8 +772,13 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.chefToken }}"
           prefix: ""
+        scripts:
+          afterResponse: |-
+            const body = insomnia.response.json();
+            const dishName = body.name.toLowerCase().trim().replace(/\s+/g, '');
+            insomnia.environment.set(dishName + "ID", body.id);
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -590,19 +787,52 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/catalogue/:dish_id"
+      - url: "{{ _.base_url }}/catalogue/:store_id/:dish_id"
         name: Get Dish
         meta:
           id: req_b0d03e7623934c83882ac688f211d627
           created: 1777888209995
-          modified: 1778177899528
+          modified: 1778251561611
           isPrivate: false
-          description: ""
+          description: Público
           sortKey: -1777888544165
         method: GET
         authentication:
+          type: none
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: store_id
+            value: "{{ _.storeID }}"
+          - name: dish_id
+            value: "{{ _.frangoassadoID }}"
+  - name: Inventory
+    meta:
+      id: fld_7da82b66ec9d4df4ad8aa76519d2c7f1
+      created: 1777888378913
+      modified: 1778254458998
+      sortKey: -1777888378913
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/inventory/:store_id"
+        name: Get Inventory
+        meta:
+          id: req_107add630b0e47269b7a9df0f0244ec6
+          created: 1777888209991
+          modified: 1778246183490
+          isPrivate: false
+          description: Somente Manager ou Chef
+          sortKey: -1777888533116
+        method: GET
+        authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.chefToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -613,57 +843,27 @@ collection:
             store: true
           rebuildPath: true
         pathParameters:
-          - name: dish_id
-            value: 069fb728-c18d-7d0d-8000-07d98cda4fc2
-  - name: Inventory
-    meta:
-      id: fld_7da82b66ec9d4df4ad8aa76519d2c7f1
-      created: 1777888378913
-      modified: 1777888378913
-      sortKey: -1777888378913
-      description: ""
-    children:
-      - url: "{{ _.base_url }}/inventory/"
-        name: Get Inventory
-        meta:
-          id: req_107add630b0e47269b7a9df0f0244ec6
-          created: 1777888209991
-          modified: 1778077102118
-          isPrivate: false
-          description: ""
-          sortKey: -1777888533116
-        method: GET
-        authentication:
-          type: bearer
-          token: "{{ _.bearerToken }}"
-          prefix: ""
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
+          - name: store_id
+            value: "{{ _.storeID }}"
       - url: "{{ _.base_url }}/inventory/"
         name: Create Item
         meta:
           id: req_287ffebe812c4b20a34d9d5776a2cfeb
           created: 1777888209992
-          modified: 1778180314549
+          modified: 1778244774750
           isPrivate: false
-          description: ""
+          description: Somente Manager
           sortKey: -1777888533216
         method: POST
         body:
           mimeType: application/json
           text: |-
             {
-              "name": "Carne Bovina",
+              "name": "Frango",
               "quantity": 5000,
               "unit": "g",
               "min_quantity": 2000,
-              "store_id": "ADICIONAR ID DA LOJA"
+              "store_id": "{{ _.storeID }}"
             }
         headers:
           - name: Content-Type
@@ -671,8 +871,13 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.managerToken }}"
           prefix: ""
+        scripts:
+          afterResponse: |-
+            const body = insomnia.response.json();
+            const itemName = body.name.toLowerCase().trim().replace(/\s+/g, '');
+            insomnia.environment.set(itemName + "ID", body.id);
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -686,16 +891,16 @@ collection:
         meta:
           id: req_6c623827548e48c894542f06552b6f40
           created: 1777888209993
-          modified: 1778180330709
+          modified: 1778255274333
           isPrivate: false
-          description: ""
+          description: Somente Manager
           sortKey: -1777888532916
         method: PATCH
         body:
           mimeType: application/json
           text: |-
             {
-              "quantity": "3000"
+              "quantity": "6000"
             }
         headers:
           - name: Content-Type
@@ -703,7 +908,7 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.managerToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -715,20 +920,20 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: item_id
-            value: ""
-      - url: "{{ _.base_url }}/inventory/:item_id"
+            value: "{{ _.frangoID }}"
+      - url: "{{ _.base_url }}/inventory/:store_id/:item_id"
         name: Get Item
         meta:
           id: req_c3e741b70255457c8ffd8066cd1bb351
           created: 1777888209993
-          modified: 1778180327927
+          modified: 1778255002786
           isPrivate: false
-          description: ""
+          description: Somente Manager e Chef
           sortKey: -1777888533016
         method: GET
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.chefToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -739,13 +944,15 @@ collection:
             store: true
           rebuildPath: true
         pathParameters:
+          - name: store_id
+            value: "{{ _.storeID }}"
           - name: item_id
-            value: ""
+            value: "{{ _.frangoID }}"
   - name: Order
     meta:
       id: fld_ee7e8cd9a19042edb14ed0efc4b95750
       created: 1777888402663
-      modified: 1777889033948
+      modified: 1778255947333
       sortKey: -1777888367870.1875
       description: ""
     children:
@@ -754,14 +961,14 @@ collection:
         meta:
           id: req_893cc94d4cc64ec29e23a126fcceec83
           created: 1777888209997
-          modified: 1778180395240
+          modified: 1778249698886
           isPrivate: false
-          description: ""
+          description: Somente Manager, Waiter e Delivery
           sortKey: -1777888621884.5
         method: GET
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.managerToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -773,20 +980,20 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: order_id
-            value: ""
+            value: "{{ _.orderID }}"
       - url: "{{ _.base_url }}/orders/"
         name: Get Orders
         meta:
           id: req_ea00d2d50d004f038778a0f1e35b4894
           created: 1777888209997
-          modified: 1778102612965
+          modified: 1778248139927
           isPrivate: false
-          description: ""
+          description: Somente Manager, Waiter e Delivery
           sortKey: -1777888621897
         method: GET
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.managerToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -801,9 +1008,9 @@ collection:
         meta:
           id: req_bfcfab7d564445f58528beaec270d836
           created: 1777888209998
-          modified: 1778180383873
+          modified: 1778255925647
           isPrivate: false
-          description: ""
+          description: Somente o cliente pode criar seus pedidos
           sortKey: -1777888621997
         method: POST
         body:
@@ -811,14 +1018,13 @@ collection:
           text: |-
             {
                 "channel": "app",
-                "type": "delivery",
+                "type": "takeaway",
                 "items": [
                     {
-                        "name": "Picanha",
-                        "quantity": 2
+                        "dish_id": "{{ _.frangoassadoID }}",
+                        "quantity": 1
                     }
                 ],
-                "notes": "",
                 "payment_method": "pix"
             }
         headers:
@@ -826,8 +1032,11 @@ collection:
             value: application/json
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
-          prefix: ""
+          token: "{{ _.costumerToken }}"
+        scripts:
+          afterResponse: |-
+            const body = insomnia.response.json();
+            insomnia.environment.set("orderID", body.id);
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -838,15 +1047,15 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: store_id
-            value: ""
+            value: "{{ _.storeID }}"
           - name: costumer_id
-            value: ""
+            value: 069fdd1e-30e8-7145-8000-622d09ef189d
       - url: "{{ _.base_url }}/orders/me/:costumer_id"
         name: Get my orders
         meta:
           id: req_5d1ded9e55ba4a1891eb8caaf2c8562b
           created: 1778094921706
-          modified: 1778180398099
+          modified: 1778256343980
           isPrivate: false
           description: ""
           sortKey: -1777888621872
@@ -858,7 +1067,7 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.costumerToken }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -869,7 +1078,91 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: costumer_id
-            value: ""
+            value: 069fdd1e-30e8-7145-8000-622d09ef189d
+      - url: "{{ _.base_url }}/orders/:order_id"
+        name: Update Order
+        meta:
+          id: req_1b30ac86a73841c48765e40580db9c12
+          created: 1778236080731
+          modified: 1778256481551
+          isPrivate: false
+          description: Somente Waiter
+          sortKey: -1777888621772
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "items": [
+                {
+                  "dish_id": "{{ _.frangoassadoID }}",
+                  "quantity": 1
+                }
+              ]
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.waiterToken }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: order_id
+            value: "{{ _.orderID }}"
+      - url: "{{ _.base_url }}/orders/:order_id/status"
+        name: Update Status
+        meta:
+          id: req_7e2d1c311e2b4a67b7a81cca47bfddd7
+          created: 1778236096979
+          modified: 1778256605577
+          isPrivate: false
+          description: |
+            Há uma ordem de status obrigatória:
+            1. pending (ou failed)
+            2. preparing (ou failed)
+            3. transit (ou failed)
+            4. delivered
+          sortKey: -1777888621672
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "status": "preparing"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.chefToken }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: order_id
+            value: "{{ _.orderID }}"
   - name: DELETE - APENAS NO FINAL
     meta:
       id: fld_c8987b15454047e78fda7c22886ec434
@@ -955,14 +1248,14 @@ collection:
         meta:
           id: req_b074ed71d58f44f8bd5e9897fcf24898
           created: 1777888209999
-          modified: 1778171712875
+          modified: 1778243213335
           isPrivate: false
-          description: ""
+          description: Somente Admin
           sortKey: -1778171712834
         method: DELETE
         authentication:
           type: bearer
-          token: "{{ _.bearerToken }}"
+          token: "{{ _.adminToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -974,19 +1267,19 @@ collection:
           rebuildPath: true
         pathParameters:
           - name: store_id
-            value: 069f3641-c09e-7731-8000-b04e75d39158
+            value: "{{ _.storeID }}"
 cookieJar:
   name: Default Jar
   meta:
     id: jar_692e58879add5578aff12ab5859a9162173190bc
     created: 1777888210099
-    modified: 1778180253433
+    modified: 1778256522416
 environments:
   name: Base environment
   meta:
     id: env_a40721a1df6048e7bde50be6db3ed4f1
     created: 1777888209986
-    modified: 1778180253436
+    modified: 1778256522418
     isPrivate: false
   data:
     base_url: "{{ _.scheme }}://{{ _.host }}{{ _.base_path }}"
@@ -995,17 +1288,29 @@ environments:
       meta:
         id: env_ac5d64e6ac8243e583a60fceb06eadaa
         created: 1777888209986
-        modified: 1778180253434
+        modified: 1778256522418
         isPrivate: false
         sortKey: 1777888209986
       data:
         scheme: http
         base_path: /api/v1
         host: localhost:8000
-        bearerToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmY2Q2OC1kNGYzLTdiZDktODAwMC0yNTMxODMwNTYzMTYiLCJlbWFpbCI6ImNocmlzQHJhaXplc25vcmRlc3RlLmNvbSIsInJvbGUiOiJhZG1pbiIsInN0b3JlX2lkIjpudWxsLCJleHAiOjE3NzgxODM4NTN9.if8cOIwv0YDBZ2iCTj-D7Vjbr1_tusqo4MuZ3Qb8FyU
         firstName: "{% faker 'randomFirstName' %}"
         lastName: "{% faker 'randomLastName' %}"
         companyEmail: raizesnordeste.com
+        storeID: 069f3640-e1bc-7fa2-8000-a6059a7ab69a
+        adminToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmY2Q2OC1kNGYzLTdiZDktODAwMC0yNTMxODMwNTYzMTYiLCJlbWFpbCI6ImNocmlzQHJhaXplc25vcmRlc3RlLmNvbSIsInJvbGUiOiJhZG1pbiIsInN0b3JlX2lkIjpudWxsLCJleHAiOjE3NzgyNTg5NTZ9.AH77bFVv-wZ6wSDPovZxp5yxXWZLbPqGcw0kv4usbjs
+        managerToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmY2Q2Yi0zYTc4LTc0YmEtODAwMC0yODIwZmU4YTA1MTEiLCJlbWFpbCI6ImJlbi5sdWV0dGdlbkByYWl6ZXNub3JkZXN0ZS5jb20iLCJyb2xlIjoibWFuYWdlciIsInN0b3JlX2lkIjoiMDY5ZjM2NDAtZTFiYy03ZmEyLTgwMDAtYTYwNTlhN2FiNjlhIiwiZXhwIjoxNzc4MjU5NTkzfQ.bzYo05gK3FaYyvXbBjAwE-_jXFl5Ec397UcrCritTnY
+        chefToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmZGQ0OS0yOGQzLTc1ODYtODAwMC0xMGRjZWJmZmFmNmEiLCJlbWFpbCI6ImtyaXN0aW5hLnNjaGFlZmVyQHJhaXplc25vcmRlc3RlLmNvbSIsInJvbGUiOiJjaGVmIiwic3RvcmVfaWQiOiIwNjlmMzY0MC1lMWJjLTdmYTItODAwMC1hNjA1OWE3YWI2OWEiLCJleHAiOjE3NzgyNTk1ODV9.9Yng5YP-SHQueRGkPuaLItvq9Recj2BFKmJyrQXfIlA
+        waiterToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmZGI2Yi1hMzEyLTdiYjItODAwMC0zNGQ5MTE4ZGQ1NjYiLCJlbWFpbCI6ImVtbWV0LnN3aWZ0QHJhaXplc25vcmRlc3RlLmNvbSIsInJvbGUiOiJ3YWl0ZXIiLCJzdG9yZV9pZCI6IjA2OWYzNjQwLWUxYmMtN2ZhMi04MDAwLWE2MDU5YTdhYjY5YSIsImV4cCI6MTc3ODI2MDEyMn0.7Bl_ZWJTFoF8QAdw3ZyK10putKTXFwwd39HKm0dtKTg
+        deliveryToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmZGQ0OC03ZGRiLTc1NTItODAwMC05ZjMyNDlhYjQ3YTYiLCJlbWFpbCI6ImFtZXJpY2EuZ3JhZHlAcmFpemVzbm9yZGVzdGUuY29tIiwicm9sZSI6ImRlbGl2ZXJ5Iiwic3RvcmVfaWQiOiIwNjlmMzY0MC1lMWJjLTdmYTItODAwMC1hNjA1OWE3YWI2OWEiLCJleHAiOjE3NzgyNTk1OTB9.e805T4ydD9C2Ghs6So7CD7C_h9E5dq7Jsje4I_vjhh0
+        costumerToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmZGQxZS0zMGU4LTcxNDUtODAwMC02MjJkMDllZjE4OWQiLCJlbWFpbCI6IkpvYXF1aW5NcmF6QGdtYWlsLmNvbSIsInJvbGUiOiJDVVNUT01FUiIsInN0b3JlX2lkIjpudWxsLCJleHAiOjE3NzgyNTk5Mzd9.66zsV2jyEkU4mcCF2kMrKTw0FlVWkwP4DWP5XNmsQhc
+        frangoID: 069fe027-af7c-7903-8000-79ad2b55d366
+        frangoassadoID: 069fe03b-5379-7884-8000-4b52ad6a431f
+        carnebovinaID: 069f3640-e1bc-7fa2-8000-a6059a7ab69a
+        batatafritaID: 069fdd03-0248-73ec-8000-92ca3cfa447f
+        bifecombatatafritaID: 069fde56-6a01-7ade-8000-8f4ceb662a8e
+        orderID: 069fe084-b4b9-7a38-8000-66c59d4bf7e7
 spec:
   contents:
     openapi: 3.1.0
@@ -1179,7 +1484,7 @@ spec:
         post:
           tags:
             - costumers
-          summary: Create Customer
+          summary: Create Costumer
           operationId: create_costumer_api_v1_costumers__post
           requestBody:
             required: true
@@ -1204,7 +1509,7 @@ spec:
         get:
           tags:
             - costumers
-          summary: Get Customer
+          summary: Get Costumer
           operationId: get_costumer_api_v1_costumers__costumer_id__get
           parameters:
             - name: costumer_id
@@ -1212,7 +1517,7 @@ spec:
               required: true
               schema:
                 type: string
-                title: Customer Id
+                title: Costumer Id
           responses:
             "200":
               description: Successful Response
@@ -1229,7 +1534,7 @@ spec:
         patch:
           tags:
             - costumers
-          summary: Update Customer
+          summary: Update Costumer
           operationId: update_costumer_api_v1_costumers__costumer_id__patch
           parameters:
             - name: costumer_id
@@ -1237,7 +1542,7 @@ spec:
               required: true
               schema:
                 type: string
-                title: Customer Id
+                title: Costumer Id
           requestBody:
             required: true
             content:
@@ -1619,7 +1924,7 @@ spec:
               required: true
               schema:
                 type: string
-                title: Customer Id
+                title: Costumer Id
           responses:
             "201":
               description: Successful Response
@@ -2284,7 +2589,7 @@ spec:
               title: Id
             costumer_id:
               type: string
-              title: Customer Id
+              title: Costumer Id
             store_id:
               type: string
               title: Store Id
