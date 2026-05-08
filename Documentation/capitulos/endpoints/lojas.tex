@@ -93,8 +93,6 @@ Para fins de visualização breve, a loja criada anteriormente está listada tru
 
 \noindent\textbf{Body}: Nenhum campo é necessário
 
-\noindent\textbf{Path Parameters}: \texttt{store\_id} (string, obrigatório)
-
 \noindent\textbf{Status Codes}: 200, 403, 404
 
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
@@ -133,17 +131,13 @@ Para fins de visualização breve, a loja criada anteriormente está listada tru
 }
 \end{minted}
 
-\noindent\textbf{Path Parameters}: \texttt{store\_id} (string, obrigatório)
-
 \noindent\textbf{Status Codes}: 200, 403, 404, 422
 
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+Para fins de visualização breve, é mostrada apenas os campos atualizados.
 \begin{minted}{json}
 {
   "phone": "+5521979251835",
-  "created_at": 1777558542,
-  "deleted_at": null,
-  "...",
   "updated_at": 1777972705,
   "id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a"
 }
@@ -157,8 +151,6 @@ Para fins de visualização breve, a loja criada anteriormente está listada tru
 \noindent\textbf{Permissão}: JWT | Perfil: Admin
 
 \noindent\textbf{Body}: Nenhum campo é necessário
-
-\noindent\textbf{Path Parameters}: \texttt{store\_id} (string, obrigatório)
 
 \noindent\textbf{Status Codes}: 204, 403, 404
 

@@ -14,13 +14,13 @@ Todos os campos são obrigatórios exceto \texttt{complement}
 \begin{minted}{json}
 {
   "name": "{{ _.firstName }} {{ _.lastName }}",
-  "password": "12345678!D",
+  "password": "12345678!Ch",
   "email": "{{ _.firstName | lower }}.{{ _.lastName | lower }}@{{ _.companyEmail }}",
   "phone": "{% faker 'randomPhoneNumber' %}",
-  "cep": "22775040",
-  "complement": "AP 21",
-  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "role": "manager"
+  "cep": "22775046",
+  "complement": "AP 10",
+  "store_id": "{{ _.storeID }}",
+  "role": "chef"
 }
 \end{minted}
 
@@ -29,24 +29,24 @@ Todos os campos são obrigatórios exceto \texttt{complement}
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{201 Created}]
 \begin{minted}{json}
 {
-    "phone": "+5521910272792",
-    "name": "Larry Larson",
-    "password_hash": "$5$rounds=1000$QG.hkdsv4bB5ox1t$c0Smfn/33pt7IHiMSP3...",
-    "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-    "created_at": 1777976616,
-    "deleted_at": null,
-    "id": "069f9c52-8d7b-7949-8000-56f1c07bd145",
-    "email": "larry.larson@raizesnordeste.com",
-    "address": {
-        "cep": "22775-040",
-        "state": "RJ",
-        "city": "Rio de Janeiro",
-        "neighborhood": "Barra Olímpica",
-        "street": "Avenida Embaixador Abelardo Bueno",
-        "complement": "AP 21"
-    },
-    "role": "manager",
-    "updated_at": 1777976616
+  "name": "Kristina Schaefer",
+  "password_hash": "$5$rounds=1000$llsbtGgAIAGEUe0e$ZWDltPxAlq4WiJZmgLt...",
+  "phone": "+5521939264926",
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "created_at": 1778242706,
+  "deleted_at": null,
+  "id": "069fdd49-28d3-7586-8000-10dcebffaf6a",
+  "email": "kristina.schaefer@raizesnordeste.com",
+  "address": {
+    "cep": "22775-046",
+    "state": "RJ",
+    "city": "Rio de Janeiro",
+    "neighborhood": "Barra Olímpica",
+    "street": "Rua Mário Agostinelli",
+    "complement": "AP 10"
+  },
+  "role": "chef",
+  "updated_at": 1778242706
 }
 \end{minted}
 \end{tcolorbox}
@@ -64,33 +64,34 @@ Todos os campos são obrigatórios exceto \texttt{complement}
 \noindent\textbf{Status Codes}: 200, 401, 403, 422
 
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
-Para fins de visualização breve, alguns funcionários estão listados truncados.
 \begin{minted}{json}
 {
   "data": [
     {
-      "name": "Christinne",
+      "name": "chris",
+      "password_hash": "$5$rounds=1000$f0u/j2ERE2stn4GP$3.szzeMEqzoADKBfN...",
+      "phone": "556.407.7921 x5955",
       "store_id": null,
-      "created_at": 1777555453,
-      "id": "069f357f-dc5e-7386-8000-543f9b640132",
+      "created_at": 1778177677,
+      "deleted_at": null,
+      "email": "chris@raizesnordeste.com",
+      "id": "069fcd68-d4f3-7bd9-8000-253183056316",
+      "address": {
+        "cep": "22775-053",
+        "state": "RJ",
+        "city": "Rio de Janeiro",
+        "neighborhood": "Barra Olímpica",
+        "street": "Rua Amilcar de Castro",
+        "complement": ""
+      },
       "role": "admin",
-      "..."
-    },
-    {
-      "created_at": 1777976616,
-      "id": "069f9c52-8d7b-7949-8000-56f1c07bd145",
-      "..."
-    },
-    {
-      "created_at": 1778056903,
-      "id": "069fafec-7f01-741e-8000-08bd7a855107",
-      "..."
+      "updated_at": 1778177677
     }
   ],
-  "total": 3,
+  "total": 5,
   "page": 1,
-  "page_size": 10,
-  "total_pages": 1
+  "page_size": 1,
+  "total_pages": 5
 }
 \end{minted}
 \end{tcolorbox}
@@ -103,21 +104,19 @@ Para fins de visualização breve, alguns funcionários estão listados truncado
 
 \noindent\textbf{Body}: Nenhum campo é necessário
 
-\noindent\textbf{Path Parameters}: \texttt{employee\_id} (string, obrigatório)
-
 \noindent\textbf{Status Codes}: 200, 401, 403, 404
 
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
 \begin{minted}{json}
 {
-  "name": "Jared Hackett",
-  "password_hash": "$5$rounds=1000$QG.hkdsv4bB5ox1t$c0Smfn/33pt7IHiMSP3uU...",
-  "phone": "+5521952622713",
+  "name": "Lisa Hills",
+  "password_hash": "$5$rounds=1000$ZtU7PxeFWjBSXaVJ$pmFiKsiNOZ14IAH2sc9lw...",
+  "phone": "+55990463947",
   "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "created_at": 1778056903,
+  "created_at": 1778235066,
   "deleted_at": null,
-  "email": "jared.hackett@raizesnordeste.com",
-  "id": "069fafec-7f01-741e-8000-08bd7a855107",
+  "email": "lisa.hills@raizesnordeste.com",
+  "id": "069fdb6b-a312-7bb2-8000-34d9118dd566",
   "address": {
     "cep": "22775-046",
     "state": "RJ",
@@ -127,7 +126,7 @@ Para fins de visualização breve, alguns funcionários estão listados truncado
     "complement": "AP 10"
   },
   "role": "waiter",
-  "updated_at": 1778056903
+  "updated_at": 1778235066
 }
 \end{minted}
 \end{tcolorbox}
@@ -150,31 +149,17 @@ Para fins de visualização breve, alguns funcionários estão listados truncado
 }
 \end{minted}
 
-\noindent\textbf{Path Parameters}: \texttt{employee\_id} (string, obrigatório)
-
 \noindent\textbf{Status Codes}: 200, 401, 403, 404, 422
 
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+Para fins de visualização breve, é mostrado apenas os campos atualizados.
 \begin{minted}{json}
 {
-  "phone": "+5521978527529",
-  "name": "Ida Kozey",
-  "password_hash": "$5$rounds=1000$QG.hkdsv4bB5ox1t$c0Smfn/33pt7IHiMSP3uU...",
-  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "created_at": 1777976616,
-  "deleted_at": null,
-  "id": "069f9c52-8d7b-7949-8000-56f1c07bd145",
-  "email": "ida.kozey@raizesnordeste.com",
-  "address": {
-    "cep": "22775-040",
-    "state": "RJ",
-    "city": "Rio de Janeiro",
-    "neighborhood": "Barra Olímpica",
-    "street": "Avenida Embaixador Abelardo Bueno",
-    "complement": "AP 21"
-  },
-  "role": "manager",
-  "updated_at": 1778076350
+  "name": "Emmet Swift",
+  "phone": "+5521969466295",
+  "email": "emmet.swift@raizesnordeste.com",
+  "id": "069fdb6b-a312-7bb2-8000-34d9118dd566",
+  "updated_at": 1778254228
 }
 \end{minted}
 \end{tcolorbox}

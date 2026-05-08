@@ -1,6 +1,6 @@
 \section{Pedidos}
 
-\subsection{POST /api/v1/orders}
+\subsection{POST /api/v1/orders/:store_id/:costumer_id}
 
 \noindent\textbf{Finalidade}: Criar um novo pedido
 
@@ -13,18 +13,13 @@
 \begin{minted}{json}
 {
   "channel": "app",
-  "type": "delivery",
+  "type": "takeaway",
   "items": [
     {
-        "name": "Hambúrguer com Batata Frita",
-        "quantity": 1
-    },
-    {
-        "name": "Brigadeiro (6un)",
-        "quantity": 1
+      "dish_id": "{{ _.frangoassadoID }}",
+      "quantity": 1
     }
   ],
-  "notes": "",
   "payment_method": "pix"
 }
 \end{minted}
@@ -35,29 +30,25 @@
 \begin{minted}{json}
 {
   "channel": "app",
-  "id": "069fbafd-9f9d-77fd-8000-f9429e2381b0",
+  "points_earned": 17,
+  "updated_at": 1778255947,
+  "id": "069fe084-b4b9-7a38-8000-66c59d4bf7e7",
+  "delivery_address": null,
+  "payment_method": "pix",
+  "status": "pending",
   "items": [
     {
-      "name": "Hambúrguer com Batata Frita",
-      "quantity": 1
-    },
-    {
-      "name": "Brigadeiro (6un)",
+      "dish_id": "069fe03b-5379-7884-8000-4b52ad6a431f",
       "quantity": 1
     }
   ],
-  "payment_method": "pix",
-  "pointsEarned": 38,
-  "delivery_address": null,
-  "status": "pending",
-  "updated_at": 1778102233,
+  "notes": null,
   "type": "takeaway",
-  "costumer_id": "069fb788-0940-7431-8000-c1d2a353b3f0",
+  "price": "17.49",
+  "created_at": 1778255947,
   "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "notes": "",
-  "price": "38.94",
-  "table_number": null,
-  "created_at": 1778102233
+  "customer_id": "069fdd1e-30e8-7145-8000-622d09ef189d",
+  "table_number": null
 }
 \end{minted}
 \end{tcolorbox}
@@ -75,71 +66,26 @@
 [
   {
     "channel": "app",
-    "id": "069fbafd-9f9d-77fd-8000-f9429e2381b0",
+    "id": "069fe084-b4b9-7a38-8000-66c59d4bf7e7",
     "items": [
       {
-        "name": "Hambúrguer com Batata Frita",
-        "quantity": 1
-      },
-      {
-        "name": "Brigadeiro (6un)",
+        "dish_id": "069fe03b-5379-7884-8000-4b52ad6a431f",
         "quantity": 1
       }
     ],
     "payment_method": "pix",
-    "points_earned": 38,
+    "points_earned": 17,
     "delivery_address": null,
     "status": "pending",
-    "updated_at": 1778102233,
+    "updated_at": 1778255947,
     "type": "takeaway",
-    "costumer_id": "069fb788-0940-7431-8000-c1d2a353b3f0",
+    "customer_id": "069fdd1e-30e8-7145-8000-622d09ef189d",
     "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-    "notes": "",
-    "price": "38.94",
+    "notes": null,
+    "price": "17.49",
     "table_number": null,
-    "created_at": 1778102233
-  }
-]
-\end{minted}
-\end{tcolorbox}
-
-\subsection{GET /api/v1/orders/me/:customer\_id}
-
-\noindent\textbf{Finalidade}: Lista todos os pedidos realizados pelo cliente
-
-\noindent\textbf{Permissão}: JWT | Perfil: Cliente
-
-\noindent\textbf{Status Codes}: 200, 401, 403, 404
-
-\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
-\begin{minted}{json}
-[
-  {
-    "channel": "app",
-    "id": "069fbafd-9f9d-77fd-8000-f9429e2381b0",
-    "items": [
-      {
-        "name": "Hambúrguer com Batata Frita",
-        "quantity": 1
-      },
-      {
-        "name": "Brigadeiro (6un)",
-        "quantity": 1
-      }
-    ],
-    "payment_method": "pix",
-    "points_earned": 38,
-    "delivery_address": null,
-    "status": "pending",
-    "updated_at": 1778102233,
-    "type": "takeaway",
-    "costumer_id": "069fb788-0940-7431-8000-c1d2a353b3f0",
-    "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-    "notes": "",
-    "price": "38.94",
-    "table_number": null,
-    "created_at": 1778102233
-  }
+    "created_at": 1778255947
+    }
 ]
 \end{minted}
 \end{tcolorbox}
@@ -156,29 +102,163 @@
 \begin{minted}{json}
 {
   "channel": "app",
-  "id": "069fbafd-9f9d-77fd-8000-f9429e2381b0",
+  "id": "069fe084-b4b9-7a38-8000-66c59d4bf7e7",
   "items": [
     {
-      "name": "Hambúrguer com Batata Frita",
-      "quantity": 1
-    },
-    {
-      "name": "Brigadeiro (6un)",
+      "dish_id": "069fe03b-5379-7884-8000-4b52ad6a431f",
       "quantity": 1
     }
   ],
   "payment_method": "pix",
-  "points_earned": 38,
+  "points_earned": 17,
   "delivery_address": null,
   "status": "pending",
-  "updated_at": 1778102233,
+  "updated_at": 1778255947,
   "type": "takeaway",
-  "costumer_id": "069fb788-0940-7431-8000-c1d2a353b3f0",
+  "customer_id": "069fdd1e-30e8-7145-8000-622d09ef189d",
   "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "notes": "",
-  "price": "38.94",
+  "notes": null,
+  "price": "17.49",
   "table_number": null,
-  "created_at": 1778102233
+  "created_at": 1778255947
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{GET /api/v1/orders/me/:customer\_id}
+
+\noindent\textbf{Finalidade}: Lista todos os pedidos do cliente autenticado
+
+\noindent\textbf{Permissão}: JWT | Perfil: Cliente
+
+\noindent\textbf{Status Codes}: 200, 401, 403, 404
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+[
+  {
+    "channel": "app",
+    "id": "069fdfb8-afdb-7068-8000-39994cd51fcc",
+    "items": [
+      {
+        "dish_id": "069fdfb8-0769-74ff-8000-4dbc631ad190",
+        "quantity": 1
+      }
+    ],
+    "payment_method": "pix",
+    "points_earned": 17,
+    "delivery_address": null,
+    "status": "pending",
+    "updated_at": 1778252682,
+    "type": "takeaway",
+    "customer_id": "069fdd1e-30e8-7145-8000-622d09ef189d",
+    "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+    "notes": "",
+    "price": "17.49",
+    "table_number": null,
+    "created_at": 1778252682
+  },
+  {
+    "channel": "app",
+    "id": "069fe084-b4b9-7a38-8000-66c59d4bf7e7",
+    "items": [
+      {
+          "dish_id": "069fe03b-5379-7884-8000-4b52ad6a431f",
+          "quantity": 1
+      }
+    ],
+    "payment_method": "pix",
+    "points_earned": 17,
+    "delivery_address": null,
+    "status": "pending",
+    "updated_at": 1778255947,
+    "type": "takeaway",
+    "customer_id": "069fdd1e-30e8-7145-8000-622d09ef189d",
+    "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+    "notes": null,
+    "price": "17.49",
+    "table_number": null,
+    "created_at": 1778255947
+  }
+]
+\end{minted}
+\end{tcolorbox}
+
+\subsection{PATCH /api/v1/orders/:order\_id}
+
+\noindent\textbf{Finalidade}: Atualizar o status de um pedido específico
+
+\noindent\textbf{Permissão}: JWT | Perfil: Manager, Waiter, Delivery
+
+\noindent\textbf{Body}: Todos os campos são opcionais
+
+\begin{minted}{json}
+{
+  "items": [
+    {
+      "dish_id": "{{ _.frangoassadoID }}",
+      "quantity": 1
+    }
+  ]
+}
+\end{minted}
+
+\noindent\textbf{Status Codes}: 200, 400, 401, 403, 404
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+\begin{minted}{json}
+{
+  "channel": "app",
+  "id": "069fe084-b4b9-7a38-8000-66c59d4bf7e7",
+  "items": [
+    {
+      "dish_id": "069fe03b-5379-7884-8000-4b52ad6a431f",
+      "quantity": 1
+    },
+    {
+      "dish_id": "069fe03b-5379-7884-8000-4b52ad6a431f",
+      "quantity": 1
+    }
+  ],
+  "payment_method": "pix",
+  "points_earned": 34,
+  "delivery_address": null,
+  "status": "pending",
+  "updated_at": 1778256525,
+  "type": "takeaway",
+  "customer_id": "069fdd1e-30e8-7145-8000-622d09ef189d",
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "notes": null,
+  "price": "34.98",
+  "table_number": null,
+  "created_at": 1778255947
+}
+\end{minted}
+\end{tcolorbox}
+
+\subsection{PATCH /api/v1/orders/:order\_id/status}
+
+\noindent\textbf{Finalidade}: Atualizar o status de um pedido específico
+
+\noindent\textbf{Permissão}: JWT | Perfil: Manager, Waiter, Delivery
+
+\noindent\textbf{Body}: Todos os campos são opcionais
+
+\begin{minted}{json}
+{
+  "status": "preparing"
+}
+\end{minted}
+
+\noindent\textbf{Status Codes}: 200, 400, 401, 403, 404
+
+\begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+Para fins de visualização breve, é mostrado apenas os campos atualizados.
+\begin{minted}{json}
+{
+  "id": "069fe084-b4b9-7a38-8000-66c59d4bf7e7",
+  "status": "preparing",
+  "updated_at": 1778256612
 }
 \end{minted}
 \end{tcolorbox}

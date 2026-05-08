@@ -39,7 +39,7 @@ A API estará disponível em `http://localhost:8000`
 ## 📚 Documentação
 
 | Recurso        | URL                                |
-| -------------- | ---------------------------------- |
+|----------------|------------------------------------|
 | Swagger UI     | http://localhost:8000/docs         |
 | OpenAPI Schema | http://localhost:8000/openapi.json |
 
@@ -55,9 +55,10 @@ Não há testes automatizados. Para testar os endpoints:
 
 **Insomnia**
 
-- Importe `Food_Service_4668871.yaml`
-- Endpoints pré-configurados em ordem de execução
-- As váriaveis da coleção estão configuradas para facilitar o teste, como `{{bearerToken}}` para o token JWT então basta fazer login para mudar automaticamente o token para os próximos testes
+- Importe `Food_Service_Insomnia.yaml`
+- Endpoints pré-configurados em ordem de execução e com variáveis da coleção para facilitar o teste
+- Cada endpoint está documentado indicando quais tokens podem ser utilizados
+- Ao fazer login, os tokens de acesso são armazenados como variáveis da coleção para uso nos próximos endpoints (ex: `adminToken`, `chefToken`)
 
 ## 🗄️ Banco de Dados
 

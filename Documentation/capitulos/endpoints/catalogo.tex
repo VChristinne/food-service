@@ -10,14 +10,12 @@
 
 \begin{minted}{json}
 {
-  "name": "Hambúrguer com Batata Frita",
-  "items": [
-    {"ingredient_id": "id_carne_bovina", "quantity": 200.0},
-    {"ingredient_id": "id_batata_frita", "quantity": 150.0}
-  ],
-  "price": 25.90,
+  "name": "Frango Assado",
+  "price": 15.90,
   "available": true,
-  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a"
+  "items": [
+    {"ingredient_id": "{{ _.frangoID }}", "quantity": 1000.0}
+  ]
 }
 \end{minted}
 
@@ -26,19 +24,19 @@
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{201 Created}]
 \begin{minted}{json}
 {
-  "price": "25.90",
-  "name": "Hambúrguer com Batata Frita",
+  "name": "Frango Assado",
+  "price": "15.90",
+  "updated_at": 1778254773,
   "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "updated_at": 1778085006,
-  "available": true,
-  "id": "069fb6c8-e763-7d3e-8000-39308786ceea",
-  "created_at": 1778085006,
-  "deleted_at": null
+  "created_at": 1778254773,
+  "id": "069fe03b-5379-7884-8000-4b52ad6a431f",
+  "deleted_at": null,
+  "available": true
 }
 \end{minted}
 \end{tcolorbox}
 
-\subsection{\texttt{GET /api/v1/catalogue}}
+\subsection{\texttt{GET /api/v1/catalogue/:store_id}}
 
 \noindent\textbf{Finalidade}: Listar todos os produtos do catálogo
 
@@ -55,27 +53,17 @@
 {
   "data": [
     {
-      "price": "25.90",
-      "id": "069fb6c8-e763-7d3e-8000-39308786ceea",
-      "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-      "updated_at": 1778085006,
       "available": true,
-      "name": "Hambúrguer com Batata Frita",
-      "created_at": 1778085006,
-      "deleted_at": null
-    },
-    {
-      "price": "10.00",
-      "id": "069fb715-30c8-7a37-8000-0f19c23558b4",
+      "name": "Frango Assado",
+      "created_at": 1778254773,
+      "deleted_at": null,
+      "id": "069fe03b-5379-7884-8000-4b52ad6a431f",
+      "price": "15.90",
       "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-      "updated_at": 1778086227,
-      "available": true,
-      "name": "Brigadeiro (6un)",
-      "created_at": 1778086227,
-      "deleted_at": null
+      "updated_at": 1778254773
     }
   ],
-  "total": 2,
+  "total": 1,
   "page": 1,
   "page_size": 10,
   "total_pages": 1
@@ -83,7 +71,7 @@
 \end{minted}
 \end{tcolorbox}
 
-\subsection{\texttt{GET /api/v1/catalogue/:dish\_id}}
+\subsection{\texttt{GET /api/v1/catalogue/:store_id/:dish_id}}
 
 \noindent\textbf{Finalidade}: Obter detalhes de um prato específico
 
@@ -91,21 +79,19 @@
 
 \noindent\textbf{Body}: Nenhum campo é necessário
 
-\noindent\textbf{Path Parameters}: \texttt{dish\_id}
-
 \noindent\textbf{Status Codes}: 200, 404
 
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
 \begin{minted}{json}
 {
-  "price": "10.00",
-  "id": "069fb715-30c8-7a37-8000-0f19c23558b4",
-  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "updated_at": 1778086227,
   "available": true,
-  "name": "Brigadeiro (6un)",
-  "created_at": 1778086227,
-  "deleted_at": null
+  "name": "Frango Assado",
+  "created_at": 1778254773,
+  "deleted_at": null,
+  "id": "069fe03b-5379-7884-8000-4b52ad6a431f",
+  "price": "15.90",
+  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+  "updated_at": 1778254773
 }
 \end{minted}
 \end{tcolorbox}
@@ -120,25 +106,19 @@
 
 \begin{minted}{json}
 {
-  "price": 9.50
+  "price": 25.50
 }
 \end{minted}
-
-\noindent\textbf{Path Parameters}: \texttt{dish\_id}
 
 \noindent\textbf{Status Codes}: 200, 403, 404, 422
 
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
+Para fins de visualização breve, é mostrado apenas os campos atualizados.
 \begin{minted}{json}
 {
-  "price": "9.50",
-  "id": "069fb715-30c8-7a37-8000-0f19c23558b4",
-  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "updated_at": 1778086442,
-  "available": true,
-  "name": "Brigadeiro (6un)",
-  "created_at": 1778086227,
-  "deleted_at": null
+    "id": "069fe03b-5379-7884-8000-4b52ad6a431f",
+    "price": "15.50",
+    "updated_at": 1778256939
 }
 \end{minted}
 \end{tcolorbox}
@@ -150,8 +130,6 @@
 \noindent\textbf{Permissão}: JWT | Perfil: Manager
 
 \noindent\textbf{Body}: Nenhum campo é necessário
-
-\noindent\textbf{Path Parameters}: \texttt{dish\_id}
 
 \noindent\textbf{Status Codes}: 204, 403, 404
 

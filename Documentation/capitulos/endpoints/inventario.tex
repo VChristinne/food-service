@@ -15,8 +15,8 @@
   "name": "Frango",
   "quantity": 5000,
   "unit": "g",
-  "min_quantity": 1000,
-  "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a"
+  "min_quantity": 2000,
+  "store_id": "{{ _.storeID }}"
 }
 \end{minted}
 
@@ -26,19 +26,19 @@
 \begin{minted}{json}
 {
   "unit": "g",
-  "id": "069fb14d-a64e-79b3-8000-7e9fb7ca8730",
+  "id": "069fdfb5-7daa-777a-8000-5f5d01cd4047",
   "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "updated_at": 1778062554,
+  "updated_at": 1778252631,
   "name": "Frango",
   "quantity": "5000.000",
-  "min_quantity": "1000.000",
-  "created_at": 1778062554,
+  "min_quantity": "2000.000",
+  "created_at": 1778252631,
   "deleted_at": null
 }
 \end{minted}
 \end{tcolorbox}
 
-\subsection{\texttt{GET /api/v1/inventory}}
+\subsection{\texttt{GET /api/v1/inventory/:store_id}}
 
 \noindent\textbf{Finalidade}: Listar itens do inventário da loja associada ao usuário autenticado
 
@@ -51,26 +51,29 @@
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
 Para fins de visualização breve, o item criado anteriormente está listado truncado.
 \begin{minted}{json}
-[
-  {
-    "..."
-  },
-  {
-    "unit": "g",
-    "id": "069fb465-548f-7cf8-8000-984bc84a85e6",
-    "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-    "updated_at": 1778075221,
-    "name": "Pão de Forma",
-    "quantity": "3000.000",
-    "min_quantity": "500.000",
-    "created_at": 1778075221,
-    "deleted_at": null
-  }
-]
+{
+  "data": [
+    {
+      "unit": "g",
+      "id": "069fdfb5-7daa-777a-8000-5f5d01cd4047",
+      "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
+      "updated_at": 1778252682,
+      "name": "Frango",
+      "quantity": "5000.000",
+      "min_quantity": "2000.000",
+      "created_at": 1778252631,
+      "deleted_at": null
+    }
+  ],
+  "total": 1,
+  "page": 1,
+  "page_size": 10,
+  "total_pages": 1
+}
 \end{minted}
 \end{tcolorbox}
 
-\subsection{\texttt{GET /api/v1/inventory/:item\_id}}
+\subsection{\texttt{GET /api/v1/inventory/:store\_id/:item\_id}}
 
 \noindent\textbf{Finalidade}: Obter detalhes de um item específico do inventário
 
@@ -78,21 +81,19 @@ Para fins de visualização breve, o item criado anteriormente está listado tru
 
 \noindent\textbf{Body}: Nenhum campo é necessário
 
-\noindent\textbf{Path Parameters}: \texttt{item\_id} (string, obrigatório)
-
 \noindent\textbf{Status Codes}: 200, 401, 403, 404
 
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
 \begin{minted}{json}
 {
   "unit": "g",
-  "id": "069fb465-548f-7cf8-8000-984bc84a85e6",
+  "id": "069fe027-af7c-7903-8000-79ad2b55d366",
   "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "updated_at": 1778075221,
-  "name": "Pão de Forma",
-  "quantity": "3000.000",
-  "min_quantity": "500.000",
-  "created_at": 1778075221,
+  "updated_at": 1778254458,
+  "name": "Frango",
+  "quantity": "5000.000",
+  "min_quantity": "2000.000",
+  "created_at": 1778254458,
   "deleted_at": null
 }
 \end{minted}
@@ -110,11 +111,9 @@ Para fins de visualização breve, o item criado anteriormente está listado tru
 
 \begin{minted}{json}
 {
-  "name": "Pão de Forma Tradicional"
+  "quantity": "6000.000",
 }
 \end{minted}
-
-\noindent\textbf{Path Parameters}: \texttt{item\_id} (string, obrigatório)
 
 \noindent\textbf{Status Codes}: 200, 401, 403, 404, 422
 
@@ -122,13 +121,13 @@ Para fins de visualização breve, o item criado anteriormente está listado tru
 \begin{minted}{json}
 {
   "unit": "g",
-  "id": "069fb465-548f-7cf8-8000-984bc84a85e6",
+  "id": "069fe027-af7c-7903-8000-79ad2b55d366",
   "store_id": "069f3640-e1bc-7fa2-8000-a6059a7ab69a",
-  "updated_at": 1778084191,
-  "name": "Pão de Forma Tradicional",
-  "quantity": "3000.000",
-  "min_quantity": "500.000",
-  "created_at": 1778075221,
+  "updated_at": 1778255293,
+  "name": "Frango",
+  "quantity": "6000.000",
+  "min_quantity": "2000.000",
+  "created_at": 1778254458,
   "deleted_at": null
 }
 \end{minted}
@@ -141,8 +140,6 @@ Para fins de visualização breve, o item criado anteriormente está listado tru
 \noindent\textbf{Permissão}: JWT | Perfil: Manager
 
 \noindent\textbf{Body}: Nenhum campo é necessário
-
-\noindent\textbf{Path Parameters}: \texttt{item\_id} (string, obrigatório)
 
 \noindent\textbf{Status Codes}: 204, 401, 403, 404
 

@@ -14,14 +14,10 @@
 {
   "name": "{{ _.firstName }} {{ _.lastName }}",
   "password": "12345678!C",
-  "email": "{{ _.firstName }}{{ _.lastName }}@gmail.com",
+  "email": "{{ _.firstName }}{{ _.lastName }}@outlook.com",
   "phone": "{% faker 'randomPhoneNumber' %}",
   "cep": "22775055",
-  "complement": "string",
-  "orders": [
-    null
-  ],
-  "points": 0
+  "complement": "AP 10"
 }
 \end{minted}
 
@@ -30,23 +26,23 @@
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{201 Created}]
 \begin{minted}{json}
 {
-  "name": "Cory Balistreri",
-  "email": "CoryBalistreri@gmail.com",
+  "name": "Rene Gibson",
+  "email": "ReneGibson@outlook.com",
   "address": {
     "cep": "22775-055",
     "state": "RJ",
     "city": "Rio de Janeiro",
     "neighborhood": "Barra da Tijuca",
     "street": "Avenida Luís Carlos Prestes",
-    "complement": "AP 42"
+    "complement": "AP 10"
   },
   "points": 0,
-  "updated_at": 1778088064,
-  "id": "069fb788-0940-7431-8000-c1d2a353b3f0",
-  "phone": "+5521910272721",
-  "password_hash": "$5$rounds=1000$kHW63hGpr9eoOvm4$Ev1Y.hJ0S9ZN9QQ8abL9I...",
+  "updated_at": 1778242019,
+  "id": "069fdd1e-30e8-7145-8000-622d09ef189d",
+  "phone": "+5521985539962",
+  "password_hash": "$5$rounds=1000$OemsG748azxaLQWJ$.kaAm5kBS79elM6ZLlhlM...",
   "orders": [],
-  "created_at": 1778088064,
+  "created_at": 1778242019,
   "deleted_at": null
 }
 \end{minted}
@@ -66,13 +62,10 @@
 Para fins de visualização breve, o cliente criado anteriormente está listado truncado.
 \begin{minted}{json}
 {
-  "data": [
-  {
-      "..."
-    },
+    "data": [
     {
-      "name": "Danyka Keebler",
-      "email": "DanykaKeebler@outlook.com",
+      "name": "Ashlee Mayert",
+      "email": "AshleeMayert@outlook.com",
       "address": {
         "cep": "22775-055",
         "state": "RJ",
@@ -82,19 +75,24 @@ Para fins de visualização breve, o cliente criado anteriormente está listado 
         "complement": "AP 10"
       },
       "points": 0,
-      "updated_at": 1778088253,
-      "id": "069fb793-d9b9-725b-8000-597c91f9a534",
-      "phone": "+5521910272271",
-      "password_hash": "$5$rounds=1000$Ydnx7U24QRW8Z/T6$wbVjQkzc1GnLkdDp7...",
-      "orders": [],
-      "created_at": 1778088253,
+      "updated_at": 1778177812,
+      "password_hash": "$5$rounds=1000$JVzpv7dHX8nQWEtu$TbzTNxDisWDEsdHoW...",
+      "id": "069fcd71-402c-7ecc-8000-9869eae74ed9",
+      "phone": "+5521974493396",
+      "orders": [
+        {
+          "id": "069fdece-d78a-71f0-8000-7758a8215000",
+          "created_at": 1778248941
+        }
+      ],
+      "created_at": 1778177812,
       "deleted_at": null
     }
   ],
-  "total": 2,
+  "total": 3,
   "page": 1,
-  "page_size": 10,
-  "total_pages": 1
+  "page_size": 1,
+  "total_pages": 2
 }
 \end{minted}
 \end{tcolorbox}
@@ -112,23 +110,23 @@ Para fins de visualização breve, o cliente criado anteriormente está listado 
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
 \begin{minted}{json}
 {
-  "name": "Cory Balistreri",
-  "email": "CoryBalistreri@gmail.com",
+  "name": "Joaquin Mraz",
+  "email": "JoaquinMraz@gmail.com",
   "address": {
-      "cep": "22775-055",
-      "state": "RJ",
-      "city": "Rio de Janeiro",
-      "neighborhood": "Barra da Tijuca",
-      "street": "Avenida Luís Carlos Prestes",
-      "complement": "AP 42"
+    "cep": "22775-055",
+    "state": "RJ",
+    "city": "Rio de Janeiro",
+    "neighborhood": "Barra da Tijuca",
+    "street": "Avenida Luís Carlos Prestes",
+    "complement": "AP 10"
   },
   "points": 0,
-  "updated_at": 1778088064,
-  "id": "069fb788-0940-7431-8000-c1d2a353b3f0",
-  "phone": "+5521910272721",
-  "password_hash": "$5$rounds=1000$kHW63hGpr9eoOvm4$Ev1Y.hJ0S9ZN9QQ8abL9I...",
+  "updated_at": 1778247720,
+  "password_hash": "$5$rounds=1000$OemsG748azxaLQWJ$.kaAm5kBS79elM6ZLlhlMWlLUJuC4gpU4vd31py9re/",
+  "id": "069fdd1e-30e8-7145-8000-622d09ef189d",
+  "phone": "+5521964491104",
   "orders": [],
-  "created_at": 1778088064,
+  "created_at": 1778242019,
   "deleted_at": null
 }
 \end{minted}
@@ -152,14 +150,13 @@ Para fins de visualização breve, o cliente criado anteriormente está listado 
 \noindent\textbf{Status Codes}: 200, 401, 403, 404, 422
 
 \begin{tcolorbox}[colback=green!5, colframe=black, title=\textbf{200 OK}]
-Para fins de visualização breve, alguns campos foram truncados.
+Para fins de visualização breve, é mostrado apenas os campos atualizados.
 \begin{minted}{json}
 {
   "name": "Reed Schoen",
   "email": "ReedSchoen@gmail.com",
-  "updated_at": 1778090958,
-  "id": "069fb788-0940-7431-8000-c1d2a353b3f0",
-  "..."
+  "updated_at": 1778247720,
+  "id": "069fdd1e-30e8-7145-8000-622d09ef189d",
 }
 \end{minted}
 \end{tcolorbox}
