@@ -38,7 +38,6 @@ A seguir, estão descritas as principais regras de negócio para cada área do s
 \begin{enumerate}[topsep=1pt, itemsep=0pt]
   \item Apenas admin cria lojas
   \item Gerente é associado a uma loja
-  \item Gerente adiciona funcionários à loja
 \end{enumerate}
 
 \subsection{Catálogo de Pratos}
@@ -76,7 +75,7 @@ A seguir, estão descritas as principais regras de negócio para cada área do s
 
 \begin{enumerate}[topsep=1pt, itemsep=0pt]
   \item Todas ações registradas (create, read, update, delete, login, logout, password\_change)
-  \item Informações: action, entity\_type, entity\_id, user\_id, timestamp, details, ip\_address
+  \item Informações: action, model, affected\_item\_id, requester\_id, timestamp, ip\_address, status\_code, user\_agent
   \item Não apagável (append-only)
   \item Acesso restrito a admin
 \end{enumerate}

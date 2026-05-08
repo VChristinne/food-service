@@ -32,7 +32,7 @@ Cada entidade é representada por um domínio específico, totalizando sete dom�
   \item[Catalogue] Representa o cardápio de pratos oferecidos. Estabelece relacionamento muitos-para-muitos com \texttt{Inventory}
   através do modelo de ligação \texttt{DishIngredient}, que mapeia quais ingredientes compõem cada prato.
 
-  \item[Costumer] Modela clientes finais com autenticação, dados de contato, endereço como JSON estruturado,
+  \item[Customer] Modela clientes finais com autenticação, dados de contato, endereço como JSON estruturado,
   sistema de pontos (loyalty) e histórico de pedidos.
 
   \item[Employee] Define funcionários com papéis de autorização (\texttt{RoleEnum}), dados de endereço e autenticação separada.
@@ -73,7 +73,7 @@ Isso assegura type-safety, além de documentar os valores permitidos de forma ex
   \item \texttt{RoleEnum}: Define os papéis de acesso de funcionários (admin, manager, chef, waiter, delivery).
   \item \texttt{StatusEnum}: Estados de um pedido (pending, preparing, transit, delivered, failed, canceled).
   \item \texttt{ChannelEnum}: Canais de origem de pedidos (app, totem, counter, web).
-  \item \texttt{OrderTypeEnum}: Modos de entrega (dine\_in, takeaway, delivery).
+  \item \texttt{OrderTypeEnum}: Modos de pedido (dine\_in, takeaway, delivery).
   \item \texttt{PaymentMethodEnum}: Métodos de pagamento suportados (cash, credit\_card, pix, vale\_alimentacao).
   \item \texttt{AuditActionEnum}: Ações registradas em auditoria (create, read, update, delete, login, logout, password\_change).
 \end{itemize}
@@ -81,7 +81,7 @@ Isso assegura type-safety, além de documentar os valores permitidos de forma ex
 \subsection{Padrão Repository}
 
 \hspace{0.5cm} A camada Repository encapsula todas as operações de banco de dados em uma classe genérica
-\texttt{BaseRepository<T>}, que implementa CRUD padrão (create, read, update, delete) através de métodos type-safe.
+\texttt{BaseRepository[T]}, que implementa CRUD padrão (create, read, update, delete) através de métodos type-safe.
 Esta separação mantém consultas SQL e gerenciamento de sessão afastados da lógica de negócio.
 
 Cada domínio pode estender \texttt{BaseRepository} com queries específicas quando necessário. Por exemplo,
@@ -109,12 +109,12 @@ aplicando lógica de negócio, validações e transformações adicionais. Cada 
 \end{itemize}
 
 A classe genérica \texttt{BaseService<ModelT, CreateSchemaT, UpdateSchemaT>} implementa operações padrão,
-permitindo que Services específicos adicionem métodos customizados. Por exemplo, \texttt{CostumerService.create\_costumer()}
+permitindo que Services específicos adicionem métodos customizados. Por exemplo, \texttt{CustomerService.create\_customer()}
 não apenas cria um registro, mas também busca o endereço completo via CEP e aplica hash à senha antes de persistir.
 
 \subsection{Padrões de Persistência}
 
-\hspace{0.5cm} Todas as entidades implementam soft delete através do campo \texttt{deleted\_at}, exceto orders que são imutáveis após criação.
+\hspace{0.5cm} Todas as entidades implementam soft delete através do campo \texttt{deleted\_at}, exceto orders que são permantentemente armazenados para fins de auditoria e histórico.
 Isso preserva integridade referencial e permite auditoria histórica sem perder dados. Timestamps (\texttt{created\_at}, \texttt{updated\_at}) são gerenciados automaticamente
 via \texttt{default\_factory}, garantindo consistência sem requerer lógica explícita nos controladores.
 

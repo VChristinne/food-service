@@ -57,7 +57,7 @@
   \item \textbf{RF4: Realização e Gestão de Pedidos}
 
   Pedidos registram itens solicitados, valores, status de preparo e canal de origem. \\
-  Fluxo completo: pendente $\rightarrow$ em preparo $\rightarrow$ pronto $\rightarrow$ entregue ou cancelado.
+  Fluxo completo: pendente $\rightarrow$ preparando $\rightarrow$ a caminho $\rightarrow$ entregue ou cancelado.
 
   \begin{itemize}[topsep=0pt, itemsep=0pt]
     \item Criação de pedido com múltiplos itens (produto, quantidade, preço unitário);
@@ -65,7 +65,7 @@
     \item Cálculo automático de valor total com taxa de serviço (10\%);
     \item Atualização de status (pendente, preparando, a caminho, entregue, falhou);
     \item Cancelamento de pedido (com restrições por status);
-    \item Consulta e filtragem de pedidos por cliente, unidade ou canal;
+    \item Consulta de pedidos por cliente ou loja;
     \item Integração com serviço de pagamento (mock) no fluxo de confirmação.
   \end{itemize}
 \end{itemize}
@@ -94,7 +94,6 @@
     \item Log de operações administrativas referentes a funcionários (cadastro, acesso);
     \item Log de operações de clientes (cadastro, acesso, pedidos);
     \item Log de criação, atualização e cancelamento de pedidos;
-    \item Identificação de autor (usuário), timestamp, ação, recurso afetado e user-agent;
     \item Persistência em banco de dados para consulta posterior.
   \end{itemize}
 \end{itemize}

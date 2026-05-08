@@ -298,7 +298,7 @@ collection:
         pathParameters:
           - name: employee_id
             value: 069fdb6b-a312-7bb2-8000-34d9118dd566
-  - name: Costumer
+  - name: Customer
     meta:
       id: fld_01ea33a9f1cd4a858f5877d69461b23a
       created: 1777888354321
@@ -307,7 +307,7 @@ collection:
       description: ""
     children:
       - url: "{{ _.base_url }}/customers/"
-        name: Get Costumers
+        name: Get Customers
         meta:
           id: req_04aff231e29b4d4f91a56290dbbf9fc2
           created: 1777888209989
@@ -336,7 +336,7 @@ collection:
             store: true
           rebuildPath: true
       - url: "{{ _.base_url }}/customers/:customer_id"
-        name: Get Costumer
+        name: Get Customer
         meta:
           id: req_25316716de3241ddabca62d7fa1047fd
           created: 1777888209989
@@ -361,7 +361,7 @@ collection:
           - name: customer_id
             value: 069fdd1e-30e8-7145-8000-622d09ef189d
       - url: "{{ _.base_url }}/customers/"
-        name: Create Costumer
+        name: Create Customer
         meta:
           id: req_560c7c22ab9f496e8a841393f831e78a
           created: 1777888209989
@@ -394,7 +394,7 @@ collection:
             store: true
           rebuildPath: true
       - url: "{{ _.base_url }}/customers/:customer_id"
-        name: Update Costumer
+        name: Update Customer
         meta:
           id: req_c6ecf0777e4c4f819d92ef1029401598
           created: 1777888209990
@@ -416,7 +416,7 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: "{{ _.costumerToken }}"
+          token: "{{ _.customerToken }}"
           prefix: ""
         settings:
           renderRequestBody: true
@@ -506,7 +506,7 @@ collection:
             store: true
           rebuildPath: true
       - url: "{{ _.base_url }}/auth/login"
-        name: Login Costumer
+        name: Login Customer
         meta:
           id: req_acfc9654c7c8438586aa4c7bf430e6af
           created: 1778242088768
@@ -529,7 +529,7 @@ collection:
         scripts:
           afterResponse: |-
             const body = insomnia.response.json();
-            insomnia.environment.set("costumerToken", body.access_token);
+            insomnia.environment.set("customerToken", body.access_token);
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -1003,7 +1003,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/orders/:store_id/:costumer_id"
+      - url: "{{ _.base_url }}/orders/:store_id/:customer_id"
         name: Create Order
         meta:
           id: req_bfcfab7d564445f58528beaec270d836
@@ -1032,7 +1032,7 @@ collection:
             value: application/json
         authentication:
           type: bearer
-          token: "{{ _.costumerToken }}"
+          token: "{{ _.customerToken }}"
         scripts:
           afterResponse: |-
             const body = insomnia.response.json();
@@ -1048,9 +1048,9 @@ collection:
         pathParameters:
           - name: store_id
             value: "{{ _.storeID }}"
-          - name: costumer_id
+          - name: customer_id
             value: 069fdd1e-30e8-7145-8000-622d09ef189d
-      - url: "{{ _.base_url }}/orders/me/:costumer_id"
+      - url: "{{ _.base_url }}/orders/me/:customer_id"
         name: Get my orders
         meta:
           id: req_5d1ded9e55ba4a1891eb8caaf2c8562b
@@ -1067,7 +1067,7 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: "{{ _.costumerToken }}"
+          token: "{{ _.customerToken }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -1077,7 +1077,7 @@ collection:
             store: true
           rebuildPath: true
         pathParameters:
-          - name: costumer_id
+          - name: customer_id
             value: 069fdd1e-30e8-7145-8000-622d09ef189d
       - url: "{{ _.base_url }}/orders/:order_id"
         name: Update Order
@@ -1304,7 +1304,7 @@ environments:
         chefToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmZGQ0OS0yOGQzLTc1ODYtODAwMC0xMGRjZWJmZmFmNmEiLCJlbWFpbCI6ImtyaXN0aW5hLnNjaGFlZmVyQHJhaXplc25vcmRlc3RlLmNvbSIsInJvbGUiOiJjaGVmIiwic3RvcmVfaWQiOiIwNjlmMzY0MC1lMWJjLTdmYTItODAwMC1hNjA1OWE3YWI2OWEiLCJleHAiOjE3NzgyNTk1ODV9.9Yng5YP-SHQueRGkPuaLItvq9Recj2BFKmJyrQXfIlA
         waiterToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmZGI2Yi1hMzEyLTdiYjItODAwMC0zNGQ5MTE4ZGQ1NjYiLCJlbWFpbCI6ImVtbWV0LnN3aWZ0QHJhaXplc25vcmRlc3RlLmNvbSIsInJvbGUiOiJ3YWl0ZXIiLCJzdG9yZV9pZCI6IjA2OWYzNjQwLWUxYmMtN2ZhMi04MDAwLWE2MDU5YTdhYjY5YSIsImV4cCI6MTc3ODI2MDEyMn0.7Bl_ZWJTFoF8QAdw3ZyK10putKTXFwwd39HKm0dtKTg
         deliveryToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmZGQ0OC03ZGRiLTc1NTItODAwMC05ZjMyNDlhYjQ3YTYiLCJlbWFpbCI6ImFtZXJpY2EuZ3JhZHlAcmFpemVzbm9yZGVzdGUuY29tIiwicm9sZSI6ImRlbGl2ZXJ5Iiwic3RvcmVfaWQiOiIwNjlmMzY0MC1lMWJjLTdmYTItODAwMC1hNjA1OWE3YWI2OWEiLCJleHAiOjE3NzgyNTk1OTB9.e805T4ydD9C2Ghs6So7CD7C_h9E5dq7Jsje4I_vjhh0
-        costumerToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmZGQxZS0zMGU4LTcxNDUtODAwMC02MjJkMDllZjE4OWQiLCJlbWFpbCI6IkpvYXF1aW5NcmF6QGdtYWlsLmNvbSIsInJvbGUiOiJDVVNUT01FUiIsInN0b3JlX2lkIjpudWxsLCJleHAiOjE3NzgyNTk5Mzd9.66zsV2jyEkU4mcCF2kMrKTw0FlVWkwP4DWP5XNmsQhc
+        customerToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjlmZGQxZS0zMGU4LTcxNDUtODAwMC02MjJkMDllZjE4OWQiLCJlbWFpbCI6IkpvYXF1aW5NcmF6QGdtYWlsLmNvbSIsInJvbGUiOiJDVVNUT01FUiIsInN0b3JlX2lkIjpudWxsLCJleHAiOjE3NzgyNTk5Mzd9.66zsV2jyEkU4mcCF2kMrKTw0FlVWkwP4DWP5XNmsQhc
         frangoID: 069fe027-af7c-7903-8000-79ad2b55d366
         frangoassadoID: 069fe03b-5379-7884-8000-4b52ad6a431f
         carnebovinaID: 069f3640-e1bc-7fa2-8000-a6059a7ab69a
@@ -1441,12 +1441,12 @@ spec:
                 application/json:
                   schema:
                     $ref: "#/components/schemas/HTTPValidationError"
-      /api/v1/costumers/:
+      /api/v1/customers/:
         get:
           tags:
-            - costumers
-          summary: Get Costumers
-          operationId: get_costumers_api_v1_costumers__get
+            - customers
+          summary: Get Customer
+          operationId: get_customers_api_v1_customers__get
           parameters:
             - name: page
               in: query
@@ -1474,7 +1474,7 @@ spec:
               content:
                 application/json:
                   schema:
-                    $ref: "#/components/schemas/PaginatedCostumerResponse"
+                    $ref: "#/components/schemas/PaginatedCustomerResponse"
             "422":
               description: Validation Error
               content:
@@ -1483,48 +1483,48 @@ spec:
                     $ref: "#/components/schemas/HTTPValidationError"
         post:
           tags:
-            - costumers
-          summary: Create Costumer
-          operationId: create_costumer_api_v1_costumers__post
+            - customers
+          summary: Create Customer
+          operationId: create_customer_api_v1_customers__post
           requestBody:
             required: true
             content:
               application/json:
                 schema:
-                  $ref: "#/components/schemas/CostumerSchema"
+                  $ref: "#/components/schemas/CustomerSchema"
           responses:
             "201":
               description: Successful Response
               content:
                 application/json:
                   schema:
-                    $ref: "#/components/schemas/CostumerModel"
+                    $ref: "#/components/schemas/CustomerModel"
             "422":
               description: Validation Error
               content:
                 application/json:
                   schema:
                     $ref: "#/components/schemas/HTTPValidationError"
-      /api/v1/costumers/{costumer_id}:
+      /api/v1/customers/{customer_id}:
         get:
           tags:
-            - costumers
-          summary: Get Costumer
-          operationId: get_costumer_api_v1_costumers__costumer_id__get
+            - customers
+          summary: Get Customer
+          operationId: get_customer_api_v1_customers__customer_id__get
           parameters:
-            - name: costumer_id
+            - name: customer_id
               in: path
               required: true
               schema:
                 type: string
-                title: Costumer Id
+                title: Customer Id
           responses:
             "200":
               description: Successful Response
               content:
                 application/json:
                   schema:
-                    $ref: "#/components/schemas/CostumerModel"
+                    $ref: "#/components/schemas/CustomerModel"
             "422":
               description: Validation Error
               content:
@@ -1533,29 +1533,29 @@ spec:
                     $ref: "#/components/schemas/HTTPValidationError"
         patch:
           tags:
-            - costumers
-          summary: Update Costumer
-          operationId: update_costumer_api_v1_costumers__costumer_id__patch
+            - customers
+          summary: Update Customer
+          operationId: update_customer_api_v1_customers__customer_id__patch
           parameters:
-            - name: costumer_id
+            - name: customer_id
               in: path
               required: true
               schema:
                 type: string
-                title: Costumer Id
+                title: Customer Id
           requestBody:
             required: true
             content:
               application/json:
                 schema:
-                  $ref: "#/components/schemas/CostumerUpdateSchema"
+                  $ref: "#/components/schemas/CustomerUpdateSchema"
           responses:
             "200":
               description: Successful Response
               content:
                 application/json:
                   schema:
-                    $ref: "#/components/schemas/CostumerModel"
+                    $ref: "#/components/schemas/CustomerModel"
             "422":
               description: Validation Error
               content:
@@ -1912,19 +1912,19 @@ spec:
                 application/json:
                   schema:
                     $ref: "#/components/schemas/HTTPValidationError"
-      /api/v1/orders/{costumer_id}:
+      /api/v1/orders/{customer_id}:
         post:
           tags:
             - orders
           summary: Create Order
-          operationId: create_order_api_v1_orders__costumer_id__post
+          operationId: create_order_api_v1_orders__customer_id__post
           parameters:
-            - name: costumer_id
+            - name: customer_id
               in: path
               required: true
               schema:
                 type: string
-                title: Costumer Id
+                title: Customer Id
           responses:
             "201":
               description: Successful Response
@@ -2205,7 +2205,7 @@ spec:
             - web
           title: ChannelEnum
           description: Onde o cliente faz o pedido.
-        CostumerModel:
+        CustomerModel:
           properties:
             id:
               type: string
@@ -2251,8 +2251,8 @@ spec:
             - email
             - phone
             - address
-          title: CostumerModel
-        CostumerSchema:
+          title: CustomerModel
+        CustomerSchema:
           properties:
             name:
               type: string
@@ -2288,8 +2288,8 @@ spec:
             - email
             - phone
             - cep
-          title: CostumerSchema
-        CostumerUpdateSchema:
+          title: CustomerSchema
+        CustomerUpdateSchema:
           properties:
             name:
               anyOf:
@@ -2332,7 +2332,7 @@ spec:
                 - type: "null"
               title: Points
           type: object
-          title: CostumerUpdateSchema
+          title: CustomerUpdateSchema
         EmployeeModel:
           properties:
             id:
@@ -2587,9 +2587,9 @@ spec:
             id:
               type: string
               title: Id
-            costumer_id:
+            customer_id:
               type: string
-              title: Costumer Id
+              title: Customer Id
             store_id:
               type: string
               title: Store Id
@@ -2638,7 +2638,7 @@ spec:
               title: Updated At
           type: object
           required:
-            - costumer_id
+            - customer_id
             - store_id
             - channel
             - type
@@ -2657,11 +2657,11 @@ spec:
             - delivery
           title: OrderTypeEnum
           description: Como o pedido será cumprido.
-        PaginatedCostumerResponse:
+        PaginatedCustomerResponse:
           properties:
             data:
               items:
-                $ref: "#/components/schemas/CostumerModel"
+                $ref: "#/components/schemas/CustomerModel"
               type: array
               title: Data
             total:
@@ -2683,7 +2683,7 @@ spec:
             - page
             - page_size
             - total_pages
-          title: PaginatedCostumerResponse
+          title: PaginatedCustomerResponse
         PaginatedEmployeeResponse:
           properties:
             data:

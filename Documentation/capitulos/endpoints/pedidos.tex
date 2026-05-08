@@ -1,6 +1,6 @@
 \section{Pedidos}
 
-\subsection{POST /api/v1/orders/:store\_id/:costumer\_id}
+\subsection{POST /api/v1/orders/:store\_id/:customer\_id}
 
 \noindent\textbf{Finalidade}: Criar um novo pedido
 
@@ -164,7 +164,7 @@
 
 \subsection{PATCH /api/v1/orders/:order\_id}
 
-\noindent\textbf{Finalidade}: Atualizar o status de um pedido específico
+\noindent\textbf{Finalidade}: Atualizar os detalhes de um pedido específico, exceto o status
 
 \noindent\textbf{Permissão}: JWT | Perfil: Manager, Waiter, Delivery
 
@@ -220,7 +220,7 @@
 
 \noindent\textbf{Permissão}: JWT | Perfil: Manager, Waiter, Delivery
 
-\noindent\textbf{Body}: Todos os campos são opcionais
+\noindent\textbf{Body}: Todos os campos são obrigatórios
 
 \begin{minted}{json}
 {
