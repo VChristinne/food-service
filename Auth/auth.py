@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status, Request
+from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer
 from jwt import encode, decode
 from jwt.exceptions import InvalidTokenError
@@ -30,6 +30,11 @@ def decode_access_token(token: str) -> dict:
         )
 
 def get_current_user(credentials = Depends(security)) -> dict:
+    if not credentials:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token não fornecido"
+        )
     try:
         payload = decode_access_token(credentials.credentials)
         user_id = payload.get("sub")
@@ -37,7 +42,4 @@ def get_current_user(credentials = Depends(security)) -> dict:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
         return payload
     except HTTPException:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token"
-        )
+        raise

@@ -1,5 +1,4 @@
 from sqlmodel import Session
-from math import ceil
 
 from Store.store import StoreModel, StoreSchema, StoreUpdateSchema, PaginatedStoreResponse
 from Store.store_repository import StoreRepositoy

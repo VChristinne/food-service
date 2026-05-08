@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends, status, Request
-from typing import Sequence
+from fastapi import APIRouter, Depends, status, Request, Query
+from typing import Any
 from sqlmodel import Session
 
 from Inventory.inventory import InventorySchema, InventoryModel, InventoryUpdateSchema
@@ -15,19 +15,21 @@ router = APIRouter()
 def get_inventory_service(session: Session = Depends(db.get_session)) -> InventoryService:
     return InventoryService(session)
 
-@router.get("/", status_code=status.HTTP_200_OK)
-@require_roles(["manager"])
+@router.get("/{store_id}", status_code=status.HTTP_200_OK)
+@require_roles(["manager", "chef"])
 @save_log(AuditActionEnum.READ, InventoryModel)
 async def get_inventory(
-    request: Request,
-    current_user: dict = Depends(get_current_user),
-    service: InventoryService = Depends(get_inventory_service)
-) -> Sequence[InventoryModel]:
-    store_id = request.state.store_id
-    return await service.get_all_by_store(store_id)
+        request: Request,
+        store_id: str,
+        page: int = Query(1, ge=1, description="Page number"),
+        page_size: int = Query(10, ge=1, le=100, description="Number of items per page"),
+        current_user: dict = Depends(get_current_user),
+        service: InventoryService = Depends(get_inventory_service),
+) -> dict[str, Any]:
+    return await service.get_paginated_by_store(store_id, page, page_size)
 
 @router.get("/{item_id}", status_code=status.HTTP_200_OK)
-@require_roles(["manager"])
+@require_roles(["manager", "chef"])
 @save_log(AuditActionEnum.READ, InventoryModel)
 async def get_item(
     request: Request,

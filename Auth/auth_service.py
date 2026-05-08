@@ -4,7 +4,7 @@ from uuid_extensions import uuid7
 
 from Employee.employee_repository import EmployeeRepository
 from Employee.employee import EmployeeModel, RoleEnum
-from Costumer.costumer_repository import CostumerRepository
+from Customer.customer_repository import CustomerRepository
 from Auth.auth import create_access_token
 from Utils.validations import verify_password, hash_password
 from Utils.address import fetch_address
@@ -13,7 +13,7 @@ from Utils.address import fetch_address
 class AuthService:
     def __init__(self, session: Session):
         self.emploee_repository = EmployeeRepository(session)
-        self.costumer_repository = CostumerRepository(session)
+        self.customer_repository = CustomerRepository(session)
 
     async def create_first_admin(self, admin_data) -> dict:
         """
@@ -80,10 +80,10 @@ class AuthService:
             user_id = user.id
             store_id = user.store_id
         else:
-            user = self.costumer_repository.get_by_email(email)
+            user = self.customer_repository.get_by_email(email)
             if not user or not verify_password(password, user.password_hash):
                 raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Email or password is invalid")
-            role = "COSTUMER"
+            role = "CUSTOMER"
             user_id = user.id
             store_id = None
 

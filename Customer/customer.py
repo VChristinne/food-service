@@ -9,18 +9,16 @@ from time import time
 router = APIRouter()
 
 
-class CostumerSchema(BaseModel):
+class CustomerSchema(BaseModel):
     name: str
     password: str
     email: str
     phone: str
     cep: str
     complement: Optional[str] = None
-    orders: list = Field(default_factory=list)
-    points: int = Field(default=0)
 
 
-class CostumerUpdateSchema(BaseModel):
+class CustomerUpdateSchema(BaseModel):
     name: Optional[str] = None
     password: Optional[str] = None
     email: Optional[str] = None
@@ -31,8 +29,8 @@ class CostumerUpdateSchema(BaseModel):
     points: Optional[int] = None
 
 
-class CostumerModel(SQLModel, table=True):
-    __tablename__ = "costumers"
+class CustomerModel(SQLModel, table=True):
+    __tablename__ = "customers"
 
     id: str = Field(primary_key=True, default_factory=lambda: str(uuid7()))
     name: str
@@ -47,10 +45,11 @@ class CostumerModel(SQLModel, table=True):
     deleted_at: Optional[int] = None
 
 
-class PaginatedCostumerResponse(BaseModel):
-    data: list[CostumerModel]
+class PaginatedCustomerResponse(BaseModel):
+    data: list[CustomerModel]
     total: int
     page: int
     page_size: int
     total_pages: int
     model_config = ConfigDict(from_attributes=True)
+

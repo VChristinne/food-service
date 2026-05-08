@@ -18,7 +18,7 @@ class AuditActionEnum(str, Enum):
 class AuditSchema(BaseModel):
     timestamp: int
     action: AuditActionEnum
-    model: str                  # e.g., "costumers", "orders"
+    model: str                  # e.g., "customers", "orders"
     affected_item_id: str
     requester_id: str           # who performed the action
     ip_address: str             # IP address of the requester

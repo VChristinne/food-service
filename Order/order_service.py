@@ -9,7 +9,7 @@ from Order.order import OrderModel, OrderSchema, OrderUpdateSchema, StatusEnum
 from Order.order_repository import OrderRepository
 from Catalogue.catalogue_service import CatalogueService
 from Inventory.inventory_service import InventoryService
-from Costumer.costumer_service import CostumerService
+from Customer.customer_service import CustomerService
 from Utils.base_service import BaseService
 from Audit.audit_service import AuditService
 
@@ -46,10 +46,10 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
         self.audit_service = AuditService(session)
         self.catalogue_service = CatalogueService(session)
         self.inventory_service = InventoryService(session)
-        self.costumer_service = CostumerService(session)
+        self.customer_service = CustomerService(session)
 
-    async def get_by_costumer(self, costumer_id: str) -> Sequence[OrderModel]:
-        return self.repository.get_all_by_costumer(costumer_id)
+    async def get_by_customer(self, customer_id: str) -> Sequence[OrderModel]:
+        return self.repository.get_all_by_customer(customer_id)
 
     async def get_by_id_and_store(self, order_id: str, store_id: str) -> OrderModel:
         order = self.repository.get_by_id(order_id)
@@ -74,9 +74,44 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
         order.updated_at = int(time())
         return self.repository.update(order)
 
-    async def create_for_costumer(self, costumer_id: str, store_id: str, order_data: OrderSchema) -> OrderModel:
-        costumer = await self.costumer_service.get_by_id(costumer_id)
-        if not costumer:
+    async def update_order_items(self, order_id: str, store_id: str, items: list) -> OrderModel:
+        """Atualizar items do pedido com merge (append) em vez de substituir."""
+        order = await self.get_by_id_and_store(order_id, store_id)
+        if items:
+            # Fazer merge dos items
+            merged_items = order.items + items
+            order.items = merged_items
+
+            # Recalcular preço total dos items adicionados
+            additional_subtotal = Decimal("0.00")
+            for item in items:
+                dish_id = item.get("dish_id")
+                item_quantity = Decimal(str(item.get("quantity", 1)))
+
+                dish = self.catalogue_service.repository.get_by_id(dish_id)
+                if not dish or dish.store_id != store_id:
+                    raise HTTPException(
+                        status_code=status.HTTP_404_NOT_FOUND,
+                        detail=f"Prato '{dish_id}' não encontrado no catálogo desta loja"
+                    )
+
+                additional_subtotal += dish.price * item_quantity
+
+            # Extrair subtotal atual do preço (remover taxa)
+            current_subtotal = order.price / (1 + FOOD_TAX_RATE)
+            new_subtotal = current_subtotal + additional_subtotal
+
+            # Recalcular preço total e pontos
+            new_price, new_points = _calculate_totals(new_subtotal)
+            order.price = new_price
+            order.points_earned = new_points
+
+        order.updated_at = int(time())
+        return self.repository.update(order)
+
+    async def create_for_customer(self, customer_id: str, store_id: str, order_data: OrderSchema) -> OrderModel:
+        customer = await self.customer_service.get_by_id(customer_id)
+        if not customer:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Cliente não encontrado"
@@ -85,15 +120,14 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
         subtotal = Decimal("0.00")
 
         for item in order_data.items:
-            dish_name = item.get("name")
+            dish_id = item.get("dish_id")
             item_quantity = Decimal(str(item.get("quantity", 1)))
 
-            # Buscar prato pelo nome
-            dish = self.catalogue_service.repository.get_by_name(dish_name, store_id)
-            if not dish:
+            dish = self.catalogue_service.repository.get_by_id(dish_id)
+            if not dish or dish.store_id != store_id:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
-                    detail=f"Prato '{dish_name}' não encontrado no catálogo"
+                    detail=f"Prato '{dish_id}' não encontrado no catálogo desta loja"
                 )
 
             subtotal += dish.price * item_quantity
@@ -103,7 +137,7 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
         order_id = str(uuid7())
         new_order = OrderModel(
             id=order_id,
-            costumer_id=costumer_id,
+            customer_id=customer_id,
             store_id=store_id,
             channel=order_data.channel,
             type=order_data.type,
@@ -111,22 +145,21 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
             notes=order_data.notes,
             payment_method=order_data.payment_method,
             price=total_price,
-            pointsEarned=points_earned,
+            points_earned=points_earned,
             table_number=order_data.table_number,
             delivery_address=order_data.delivery_address,
             status=StatusEnum.PENDING
         )
 
         for item in order_data.items:
-            dish_name = item.get("name")
+            dish_id = item.get("dish_id")
             item_quantity = Decimal(str(item.get("quantity", 1)))
 
-            # Buscar prato pelo nome
-            dish = self.catalogue_service.repository.get_by_name(dish_name, store_id)
-            if not dish:
+            dish = self.catalogue_service.repository.get_by_id(dish_id)
+            if not dish or dish.store_id != store_id:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
-                    detail=f"Prato '{dish_name}' não encontrado no catálogo"
+                    detail=f"Prato '{dish_id}' não encontrado no catálogo desta loja"
                 )
 
             # Obter ingredientes do prato com suas quantidades
@@ -137,4 +170,14 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
                 quantity_to_reduce = dish_ingredient.quantity * item_quantity
                 await self.inventory_service.reduce_quantity(ingredient.id, quantity_to_reduce)
 
-        return self.repository.create(new_order)
+        created_order = self.repository.create(new_order)
+
+        if customer.orders is None:
+            customer.orders = []
+        customer.orders.append({
+            "id": created_order.id,
+            "created_at": created_order.created_at
+        })
+        self.customer_service.repository.update(customer)
+
+        return created_order

@@ -8,6 +8,6 @@ class OrderRepository(BaseRepository[OrderModel]):
     def __init__(self, session: Session):
         super().__init__(session, OrderModel)
 
-    def get_all_by_costumer(self, costumer_id: str):
-        statement = select(OrderModel).where(OrderModel.costumer_id == costumer_id)
+    def get_all_by_customer(self, customer_id: str):
+        statement = select(OrderModel).where(OrderModel.customer_id == customer_id)
         return self.session.exec(statement).all()

@@ -10,7 +10,7 @@ def require_roles(roles: list[str]):
             current_user = kwargs.get("current_user")
 
             resource_id = kwargs.get("resource_id") or (
-                kwargs.get("costumer_id") or
+                kwargs.get("customer_id") or
                 kwargs.get("employee_id") or
                 kwargs.get("inventory_id")
             )

@@ -50,14 +50,17 @@ class OrderSchema(BaseModel):
 
 class OrderUpdateSchema(BaseModel):
     items: Optional[list]
-    status: Optional[StatusEnum]
+
+
+class StatusUpdateSchema(BaseModel):
+    status: StatusEnum
 
 
 class OrderModel(SQLModel, table=True):
     __tablename__ = "orders"
 
     id: str = Field(primary_key=True, default_factory=lambda: str(uuid7()))
-    costumer_id: str = Field(foreign_key="costumers.id", ondelete="CASCADE")
+    customer_id: str = Field(foreign_key="customers.id", ondelete="CASCADE")
     store_id: str = Field(foreign_key="stores.id")
     channel: ChannelEnum
     type: OrderTypeEnum
@@ -65,7 +68,7 @@ class OrderModel(SQLModel, table=True):
     notes: Optional[str] = None
     payment_method: PaymentMethodEnum
     price: Decimal = Field(max_digits=10, decimal_places=2)
-    pointsEarned: int
+    points_earned: int
     table_number: Optional[int] = None
     delivery_address: Optional[dict] = Field(default_factory=None, sa_type=JSON)
     status: StatusEnum
