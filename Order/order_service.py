@@ -165,6 +165,9 @@ class OrderService(BaseService[OrderModel, OrderSchema, OrderUpdateSchema]):
             # Obter ingredientes do prato com suas quantidades
             ingredients = self.catalogue_service.repository.get_ingredients_for_dish(dish.id)
 
+            print(f"Ingredientes encontrados: {ingredients}")
+            print(f"Quantidade de ingredientes: {len(ingredients)}")
+
             # Reduzir quantidade de cada ingrediente
             for ingredient, dish_ingredient in ingredients:
                 quantity_to_reduce = dish_ingredient.quantity * item_quantity
