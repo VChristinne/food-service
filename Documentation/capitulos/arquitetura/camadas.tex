@@ -13,7 +13,7 @@ integrando padrões de design amplamente adotados na indústria. A implementaç�
   entre lógica de negócio e camadas de persistência.
 
   \item \textbf{Service Layer}: O padrão de organização \textit{Service Layer} concentra a lógica de negócio
-  em uma camada dedicada, seguindo arquiteturas em camadas conforme descrito por \cite{hohpe2015enterprise}
+  em uma camada dedicada, seguindo arquiteturas em camadas conforme descrito por \cite{fowler2015patterns}
   e \cite{evans2014domain}.
 \end{enumerate}
 
@@ -42,7 +42,7 @@ Cada entidade é representada por um domínio específico, totalizando sete dom�
   Permite controle de estoque e alertas para reposição.
 
   \item[Order] Modela pedidos realizados por clientes, incluindo itens do pedido (pratos e quantidades), status, canal de origem,
-  método de pagamento, tipo de entrega e vericação de status do pedido.
+  método de pagamento, tipo de entrega e verificação de status do pedido.
 \end{description}
 
 \subsubsection{Estrutura Padronizada}
@@ -70,7 +70,7 @@ Cada entidade é representada por um domínio específico, totalizando sete dom�
 Isso assegura type-safety, além de documentar os valores permitidos de forma explícita. Exemplos incluem:
 
 \begin{itemize}
-  \item \texttt{RoleEnum}: Define os papéis de acesso de funcionários (manager, chef, waiter, delivery).
+  \item \texttt{RoleEnum}: Define os papéis de acesso de funcionários (admin, manager, chef, waiter, delivery).
   \item \texttt{StatusEnum}: Estados de um pedido (pending, preparing, transit, delivered, failed, canceled).
   \item \texttt{ChannelEnum}: Canais de origem de pedidos (app, totem, counter, web).
   \item \texttt{OrderTypeEnum}: Modos de entrega (dine\_in, takeaway, delivery).
@@ -114,8 +114,8 @@ não apenas cria um registro, mas também busca o endereço completo via CEP e a
 
 \subsection{Padrões de Persistência}
 
-\hspace{0.5cm} Todas as entidades implementam soft delete através do campo \texttt{deleted\_at}. Isso preserva integridade referencial
-e permite auditoria histórica sem perder dados. Timestamps (\texttt{created\_at}, \texttt{updated\_at}) são gerenciados automaticamente
+\hspace{0.5cm} Todas as entidades implementam soft delete através do campo \texttt{deleted\_at}, exceto orders que são imutáveis após criação.
+Isso preserva integridade referencial e permite auditoria histórica sem perder dados. Timestamps (\texttt{created\_at}, \texttt{updated\_at}) são gerenciados automaticamente
 via \texttt{default\_factory}, garantindo consistência sem requerer lógica explícita nos controladores.
 
 Tipos de dados complexos (endereços, itens de pedidos com variações) são serializados como JSON direto no banco,

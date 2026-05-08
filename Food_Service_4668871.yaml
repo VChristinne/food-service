@@ -276,7 +276,7 @@ collection:
         pathParameters:
           - name: employee_id
             value: ""
-  - name: Costumer
+  - name: Customer
     meta:
       id: fld_01ea33a9f1cd4a858f5877d69461b23a
       created: 1777888354321
@@ -314,7 +314,7 @@ collection:
             store: true
           rebuildPath: true
       - url: "{{ _.base_url }}/costumers/:costumer_id"
-        name: Get Costumer
+        name: Get Customer
         meta:
           id: req_25316716de3241ddabca62d7fa1047fd
           created: 1777888209989
@@ -339,7 +339,7 @@ collection:
           - name: costumer_id
             value: ""
       - url: "{{ _.base_url }}/costumers/"
-        name: Create Costumer
+        name: Create Customer
         meta:
           id: req_560c7c22ab9f496e8a841393f831e78a
           created: 1777888209989
@@ -376,7 +376,7 @@ collection:
             store: true
           rebuildPath: true
       - url: "{{ _.base_url }}/costumers/:costumer_id"
-        name: Update Costumer
+        name: Update Customer
         meta:
           id: req_c6ecf0777e4c4f819d92ef1029401598
           created: 1777888209990
@@ -1179,7 +1179,7 @@ spec:
         post:
           tags:
             - costumers
-          summary: Create Costumer
+          summary: Create Customer
           operationId: create_costumer_api_v1_costumers__post
           requestBody:
             required: true
@@ -1204,7 +1204,7 @@ spec:
         get:
           tags:
             - costumers
-          summary: Get Costumer
+          summary: Get Customer
           operationId: get_costumer_api_v1_costumers__costumer_id__get
           parameters:
             - name: costumer_id
@@ -1212,7 +1212,7 @@ spec:
               required: true
               schema:
                 type: string
-                title: Costumer Id
+                title: Customer Id
           responses:
             "200":
               description: Successful Response
@@ -1229,7 +1229,7 @@ spec:
         patch:
           tags:
             - costumers
-          summary: Update Costumer
+          summary: Update Customer
           operationId: update_costumer_api_v1_costumers__costumer_id__patch
           parameters:
             - name: costumer_id
@@ -1237,7 +1237,7 @@ spec:
               required: true
               schema:
                 type: string
-                title: Costumer Id
+                title: Customer Id
           requestBody:
             required: true
             content:
@@ -1619,7 +1619,7 @@ spec:
               required: true
               schema:
                 type: string
-                title: Costumer Id
+                title: Customer Id
           responses:
             "201":
               description: Successful Response
@@ -2284,7 +2284,7 @@ spec:
               title: Id
             costumer_id:
               type: string
-              title: Costumer Id
+              title: Customer Id
             store_id:
               type: string
               title: Store Id

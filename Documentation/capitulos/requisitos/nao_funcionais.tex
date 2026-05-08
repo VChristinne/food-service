@@ -6,8 +6,7 @@
   A segurança dos dados e das operações é fundamental para proteger informações sensíveis e garantir a integridade do sistema.
 
   \begin{itemize}[topsep=0pt, itemsep=0pt]
-    \item Criptografia de senhas usando bcrypt;
-    \item Implementação de HTTP para todas as comunicações;
+    \item Criptografia de senhas usando SHA-256-crypt;
     \item Validação obrigatória de JWT em endpoints protegidos;
     \item Token JWT codifica a função/role do usuário para autorização;
     \item Controle de acesso baseado em funções (role-based access control);
@@ -21,7 +20,7 @@
 
   \begin{itemize}[topsep=0pt, itemsep=0pt]
     \item Disponibilização de API REST como interface principal;
-    \item Suporte a múltiplos canais: App, Totem, Balcão, Pickup e Web;
+    \item Suporte a múltiplos canais: App, Totem, Balcão e Web;
     \item Rastreabilidade de origem (canal) em todas as transações.
   \end{itemize}
 \end{itemize}
@@ -62,7 +61,7 @@
     \item Registro de consentimento do usuário ao aceitar políticas de privacidade e LGPD;
     \item Minimização de dados: coleta apenas do necessário (nome, email, telefone, endereço);
     \item Retenção limitada: dados pessoais são mantidos apenas enquanto necessário para a finalidade;
-    \item Não exposição de dados sensíveis em respostas de API (ex: senhas, tokens internos).
+    \item Não exposição de dados sensíveis em respostas de API (ex: senhas sem hash, tokens internos).
   \end{itemize}
 \end{itemize}
 

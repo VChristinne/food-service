@@ -9,7 +9,7 @@ A seguir, estão descritas as principais regras de negócio para cada área do s
 \label{subsec:auth}
 
 \begin{enumerate}[topsep=1pt, itemsep=0pt]
-  \item JWT Token com validade de 24 horas
+  \item JWT Token com validade de 1 hora
   \item Papéis: admin, gerente, chef, garçom, entregador
   \item Restrição de acesso por loja e papel
 \end{enumerate}
@@ -20,7 +20,7 @@ A seguir, estão descritas as principais regras de negócio para cada área do s
 \begin{enumerate}[topsep=1pt, itemsep=0pt]
   \item Aceite obrigatório de LGPD
   \item Exclusão de dados com soft delete
-  \item Pontos de fidelidade: 1 ponto por real gasto
+  \item Pontos de fidelidade: 1 ponto por real gasto (arredondado para baixo)
 \end{enumerate}
 
 \subsection{Gestão de Funcionários}
@@ -37,7 +37,7 @@ A seguir, estão descritas as principais regras de negócio para cada área do s
 
 \begin{enumerate}[topsep=1pt, itemsep=0pt]
   \item Apenas admin cria lojas
-  \item Associação de gerente obrigatório
+  \item Gerente é associado a uma loja
   \item Gerente adiciona funcionários à loja
 \end{enumerate}
 
@@ -68,7 +68,7 @@ A seguir, estão descritas as principais regras de negócio para cada área do s
   \item Cálculo de preço com taxa de 10\%
   \item Cálculo de pontos: (total com taxa) x 1
   \item Tipos: dine\_in, takeaway, delivery
-  \item Canais: app, totem, counter, web
+  \item Canais onde pedido pode ser criado: app, totem, balcão, web
   \item Métodos de pagamento: cash, credit\_card, pix, vale\_alimentacao
 \end{enumerate}
 
