@@ -6,8 +6,6 @@ from typing import Optional
 from uuid_extensions import uuid7
 from time import time
 
-router = APIRouter()
-
 
 class CustomerSchema(BaseModel):
     name: str

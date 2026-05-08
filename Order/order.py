@@ -49,7 +49,7 @@ class OrderSchema(BaseModel):
 
 
 class OrderUpdateSchema(BaseModel):
-    items: Optional[list]
+    items: list = Field(min_length=1)
 
 
 class StatusUpdateSchema(BaseModel):

@@ -102,13 +102,3 @@ class CatalogueService(BaseService[CatalogueModel, CatalogueSchema, CatalogueUpd
             page_size=result["page_size"],
             total_pages=result["total_pages"]
         )
-
-    async def mark_unavailable_if_out_of_stock(self, dish_id: str, store_id: str) -> CatalogueModel:
-        dish = await self.get_by_id_and_store(dish_id, store_id)
-        ingredients = self.repository.get_ingredients_for_dish(dish_id)
-
-        for ingredient in ingredients:
-            if ingredient.quantity <= ingredient.min_quantity:
-                dish.available = False
-                return self.repository.update(dish)
-        return dish

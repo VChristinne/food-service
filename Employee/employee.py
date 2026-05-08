@@ -1,13 +1,10 @@
 from sqlalchemy import Column, JSON
 from sqlmodel import SQLModel, Field
 from pydantic import BaseModel, ConfigDict
-from fastapi import APIRouter
 from typing import Optional
 from enum import Enum
 from uuid_extensions import uuid7
 from time import time
-
-router = APIRouter()
 
 
 class RoleEnum(str, Enum):

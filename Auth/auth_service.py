@@ -75,14 +75,14 @@ class AuthService:
         if is_employee:
             user = self.emploee_repository.get_by_email(email)
             if not user or not verify_password(password, user.password_hash):
-                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Email or password is invalid")
+                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Email ou senha são inválidas")
             role = user.role
             user_id = user.id
             store_id = user.store_id
         else:
             user = self.customer_repository.get_by_email(email)
             if not user or not verify_password(password, user.password_hash):
-                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Email or password is invalid")
+                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Email ou senha são inválidas")
             role = "CUSTOMER"
             user_id = user.id
             store_id = None
